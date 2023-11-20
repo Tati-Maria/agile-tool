@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { config } from 'dotenv';
 config();
 import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
@@ -16,7 +17,7 @@ const opts: UploadApiOptions = {
   use_filename: true,
 };
 
-const uploadAvatar = (image: string) => {
+const uploadAvatar = (image: any) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(image, opts, (err, result) => {
       if (result && result.secure_url) {
@@ -52,7 +53,7 @@ const optsLogo: UploadApiOptions = {
   use_filename: true,
 };
 
-const uploadLogo = (image: string) => {
+const uploadLogo = (image: any) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload(image, optsLogo, (err, result) => {
       if (result && result.secure_url) {
