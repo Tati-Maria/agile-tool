@@ -1,8 +1,11 @@
+import { Header } from "@/components/home";
 
 
 const Home = () => {
   return (
-    <div>Marketing</div>
+    <>
+    <Header />
+    </>
   )
 }
 
