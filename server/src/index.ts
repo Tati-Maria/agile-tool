@@ -12,6 +12,7 @@ import helmet from 'helmet';
 import indexRoute from './routes/index-route';
 import connectDB from './config/db';
 import { notFound, errorHandler } from './middlewares/error';
+import userRoutes from "./routes/user/routes";
 
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(morgan(customLogFormat));
 app.use(cookieParser());
 app.use(helmet());
 app.use('/', indexRoute);
+app.use('/api/users', userRoutes);
 
 // Error handling
 app.use(notFound);
