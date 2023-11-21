@@ -5,13 +5,13 @@ import { Icons } from '../ui/icons';
 import { Typography } from '.';
 
 interface FileUploaderProps {
-  mediaUrl: string;
+  mediaUrl?: string;
   fielChange: (file: File[]) => void;
 }
 
 const FileUploader = ({ mediaUrl, fielChange }: FileUploaderProps) => {
   const [file, setFile] = useState<File[]>([]);
-  const [preview, setPreview] = useState<string>(mediaUrl);
+  const [preview, setPreview] = useState<string>(mediaUrl || '');
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {

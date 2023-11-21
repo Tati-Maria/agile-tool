@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import User from 'models/user';
+import User from '../../models/user';
 import { IUserRequest } from 'types/user-interface';
 
 // @desc Get user profile

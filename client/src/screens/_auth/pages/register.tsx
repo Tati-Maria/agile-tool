@@ -1,7 +1,10 @@
 import RegisterForm from "@/components/auth/register-form"
-import { Heading, Typography } from "@/components/shared"
+import { Heading, Typography } from "@/components/shared";
+import { useSetDocumentTitle } from "@/hooks/user-document-title";
 
 const Register = () => {
+  useSetDocumentTitle("Register");
+
   return (
     <section>
       <div className="flex-col-center space-y-1 text-center">
@@ -13,7 +16,6 @@ const Register = () => {
         </Typography>
       </div>
       <RegisterForm
-      onSubmit={() => {}}
        />
     </section>
   )

@@ -22,31 +22,27 @@ import {
 } from '@/components/shared';
 import { roles } from '@/constants';
 import { Icons } from '@/components/ui/icons';
-import { User } from '@/types';
+import { useRegister } from '@/hooks/use-register';
 
-interface RegisterFormProps {
-    onSubmit: (data: UserSchema) => void;
-    values?: User;
-    isLoading?: boolean;
-}
 
-const RegisterForm = ({onSubmit, values, isLoading}: RegisterFormProps) => {
+const RegisterForm = () => {
+  const {register} = useRegister();
   const form = useForm<UserSchema>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-        name: '' || values?.name,
-        email: '' || values?.email,
+        name: '',
+        email: '',
         password: '',
         confirmPassword: '',
-        role: '' || values?.role,
-        avatar: [] || values?.avatar,
+        role: '',
+        avatar: [],
     },
   });
 
   const { isSubmitting } = form.formState;
 
-  const handleSubmit = (data: UserSchema) => {
-    onSubmit(data);
+  const handleSubmit = async(data: UserSchema) => {
+    await register(data);
   }
 
   return (
@@ -61,7 +57,6 @@ const RegisterForm = ({onSubmit, values, isLoading}: RegisterFormProps) => {
                 <FormControl>
                     <FileUploader 
                     fielChange={field.onChange}
-                    mediaUrl={values?.avatar || ''}
                     />
                 </FormControl>
             </FormItem>
@@ -176,7 +171,7 @@ const RegisterForm = ({onSubmit, values, isLoading}: RegisterFormProps) => {
           <div className="flex-col-center ">
             <Button className="w-full mb-4" type="submit" variant="brand">
               Register
-              {isSubmitting && isLoading && (
+              {isSubmitting && (
                 <Icons.spinner className="animate-spin h-4 w-4 ml-2" />
               )}
             </Button>

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import asyncHandler from 'express-async-handler';
-import User from 'models/user';
-import { IUserRequest } from 'types/user-interface';
-import generateToken from 'utils/generate-token';
-import { uploadAvatar, deleteAvatar } from 'utils/cloudinary';
+import User from '../../models/user';
+import { IUserRequest } from '../../types/user-interface';
+import generateToken from '../../utils/generate-token';
+import { uploadAvatar, deleteAvatar } from '../../utils/cloudinary';
 import { Response } from 'express';
 
 // @desc    Register a new user

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { protect, adminRoute } from "middlewares/auth";
+import { protect, adminRoute } from "../../middlewares/auth";
 
 import {
     registerUser,

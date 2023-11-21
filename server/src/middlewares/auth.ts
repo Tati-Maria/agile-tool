@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Response, NextFunction } from 'express';
-import User from 'models/user';
+import User from '../models/user';
 import { IUserRequest } from 'types/user-interface';
 import asyncHandler from 'express-async-handler';
 import {config} from 'dotenv';
@@ -11,7 +11,7 @@ interface TokenPayload extends JwtPayload {
 }
 
 const protect = asyncHandler(async (req: IUserRequest, res: Response, next: NextFunction) => {
-    const token = req.cookies.token;
+    const token = req.cookies.jwt;
 
     if(token) {
         try {

@@ -1,8 +1,11 @@
 import LoginForm from "@/components/auth/login-form"
 import { Heading, Typography } from "@/components/shared"
+import { useSetDocumentTitle } from "@/hooks/user-document-title"
 
 
 const Login = () => {
+  useSetDocumentTitle("Login")
+
   return (
     <section>
       <div className="text-center space-y-1">

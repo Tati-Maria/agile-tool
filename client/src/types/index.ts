@@ -7,6 +7,7 @@ export type User = {
     name: string;
     email: string;
     avatar: string;
+    password: string;
     avatarPublicId: string; // Cloudinary public ID
     role: Role;
     createdAt: string;
