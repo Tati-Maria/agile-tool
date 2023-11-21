@@ -16,9 +16,7 @@ const Login = () => {
           Glad to see you again 👋! Login to your account to continue.
         </Typography>
       </div>
-      <LoginForm 
-      onSubmit={() => {}}
-      />
+      <LoginForm />
     </section>
   )
 }

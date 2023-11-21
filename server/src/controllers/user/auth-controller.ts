@@ -4,7 +4,7 @@ import User from '../../models/user';
 import { IUserRequest } from '../../types/user-interface';
 import generateToken from '../../utils/generate-token';
 import { uploadAvatar, deleteAvatar } from '../../utils/cloudinary';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -48,22 +48,21 @@ const registerUser = asyncHandler(async (req: IUserRequest, res: Response) => {
 // @route   POST /api/users/login
 // @access  Public
 
-const loginUser = asyncHandler(async (req: IUserRequest, res: Response) => {
-    const {email, password} = req.body;
-
-    const user = await User.findOne({email}).exec();
-    if(user && (await user.matchPassword(password))) {
-        generateToken(res, user._id);
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            avatar: user.avatar,
-        });
+const loginUser = asyncHandler(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email }).exec();
+    if (user && (await user.matchPassword(password))) {
+      generateToken(res, user._id);
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+      });
     } else {
-        res.status(401);
-        throw new Error('Invalid email or password');
+      res.status(401);
+      throw new Error('Invalid email or password');
     }
 });
 

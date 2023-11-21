@@ -16,19 +16,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema, loginSchema } from '@/lib/validation/user';
 import { Link } from 'react-router-dom';
 import { Typography } from '@/components/shared';
+import { useLogin } from '@/hooks/use-login';
 
-interface LoginFormProps {
-  onSubmit: (data: LoginSchema) => void;
-  isLoading?: boolean;
-}
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading }) => {
+const LoginForm = () => {
+  const {login} = useLogin();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
 
-  const handleSubmit = (data: LoginSchema) => {
-    onSubmit(data);
+  const handleSubmit = async (data: LoginSchema) => {
+    await login(data);
   };
 
   return (
@@ -74,13 +72,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading }) => {
             </FormItem>
           )}
         />
+        <pre>
+          {JSON.stringify(form.getValues(), null, 2)}
+        </pre>
         <div className="flex flex-col space-y-3">
-          <Button variant={'brand'} type="submit" disabled={isLoading}>
+          <Button variant={'brand'} type="submit">
             Login
-            {isLoading ||
-              (form.formState.isSubmitting && (
+            {form.formState.isSubmitting && (
                 <Icons.spinner className="animate-spin h-4 w-4 ml-2" />
-              ))}
+              )}
           </Button>
           <Typography className="text-center text-slate-700">
             Don't have an account?{' '}
