@@ -1,9 +1,12 @@
 import { Navbar } from "@/components/home";
 import { Logo, Typography } from "@/components/shared";
+import { useSetDocumentTitle } from "@/hooks/user-document-title";
 import { Outlet } from "react-router-dom";
 
 
 const HomeLayout = () => {
+  useSetDocumentTitle('Home');
+  
   return (
     <div
     className="relative grid grid-cols-1 md:grid-cols-2 min-h-screen overflow-hidden"
