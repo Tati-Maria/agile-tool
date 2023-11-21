@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 import { IProject } from "./project-interface";
 import { IComment } from "./comment";
 import { ITask } from "./tasks";
+import { ILogEntry } from "./activity";
 
 export interface IUser extends Document{
     _id: string;
@@ -22,6 +23,7 @@ export interface IUser extends Document{
     projects: IProject[];
     comments: IComment[];
     tasks: ITask[];
+    activityLog: ILogEntry[];
 }
 
 export interface IUserRequest extends Request {

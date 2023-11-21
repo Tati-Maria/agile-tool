@@ -34,6 +34,27 @@ const userSchema: Schema = new Schema<IUser>({
     type: String,
     required: true,
   },
+  projects: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Project',
+    required: false,
+  }],
+  activityLog: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Activity',
+    required: false,
+  }],
+  tasks: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Task',
+    required: false,
+  }],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment',
+    required: false,
+  }],
+  
 }, {timestamps: true});
 
 // Encrypt password before saving user

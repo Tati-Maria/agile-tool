@@ -31,6 +31,10 @@ const projectSchema: Schema = new Schema<IProject>({
         type: String,
         required: false,
     },
+    accessCode: {
+        type: String,
+        required: false,
+    },
     team: [{
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -50,8 +54,19 @@ const projectSchema: Schema = new Schema<IProject>({
         type: String,
         required: false,
     }],
+    activityLog: [{
+        type: Schema.Types.ObjectId,
+        ref: "Activity",
+        required: false,
+    }],
+    userStories: [{
+        type: Schema.Types.ObjectId,
+        ref: "UserStory",
+        required: false,
+    }],
 }, {
     timestamps: true,
 });
 
-export default model<IProject>("Project", projectSchema);
+const Project = model<IProject>("Project", projectSchema);
+export default Project;

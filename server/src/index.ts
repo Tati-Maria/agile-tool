@@ -13,7 +13,7 @@ import indexRoute from './routes/index-route';
 import connectDB from './config/db';
 import { notFound, errorHandler } from './middlewares/error';
 import userRoutes from "./routes/user/routes";
-
+import projectRoutes from "./routes/project";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(helmet());
 app.use('/', indexRoute);
 app.use('/api/users', userRoutes);
-
+app.use('/api/projects', projectRoutes);
 // Error handling
 app.use(notFound);
 app.use(errorHandler);
