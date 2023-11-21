@@ -87,22 +87,21 @@ const logoutUser = asyncHandler(async (req: IUserRequest, res: Response) => {
 
 const forgotPassword = asyncHandler(async (req: IUserRequest, res: Response) => {
     const {email, password} = req.body;
-
-    if(!email) {
-        res.status(400);
-        throw new Error('Please enter your email');
-    }
-
-    const findUser = await User.findOne({email}).exec();
-
-    if(!findUser) {
+    const user = await User.findOne({email}).exec();
+    if(user) {
+        res.cookie("jwt", "", {
+            httpOnly: true,
+            expires: new Date(0),
+        });
+        user.password = password;
+        await user.save();
+        res.status(200).json({
+            message: "Password updated successfully",
+        });
+    } else {
         res.status(404);
         throw new Error('User not found');
     }
-
-    findUser.password = password;
-    await findUser.save();
-
 });
 
 // @desc Update user profile

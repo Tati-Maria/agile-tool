@@ -72,9 +72,6 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <pre>
-          {JSON.stringify(form.getValues(), null, 2)}
-        </pre>
         <div className="flex flex-col space-y-3">
           <Button variant={'brand'} type="submit">
             Login

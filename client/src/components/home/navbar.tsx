@@ -30,7 +30,6 @@ const Navbar = () => {
             </Button>
           ) : (
             <Button
-              className="border-muted hover:border-icon hover:text-icon"
               variant={'brand'}
               asChild
             >
