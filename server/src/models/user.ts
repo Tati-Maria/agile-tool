@@ -1,5 +1,6 @@
 import {model, Schema} from "mongoose";
 import { IUser } from "types/user-interface";
+import bycript from 'bcryptjs';
 
 const userSchema: Schema = new Schema<IUser>({
   name: {
@@ -35,6 +36,18 @@ const userSchema: Schema = new Schema<IUser>({
     required: true,
   },
 }, {timestamps: true});
+
+// Encrypt password before saving user
+userSchema.pre<IUser>('save', async function (next) {
+  if(!this.isModified('password')) next();
+  const salt = await bycript.genSalt(10);
+  this.password = await bycript.hash(this.password, salt);
+});
+
+// Compare password
+userSchema.methods.matchPassword = async function (enteredPassword: string) {
+  return await bycript.compare(enteredPassword, this.password);
+}
 
 const User = model<IUser>('User', userSchema);
 export default User;
