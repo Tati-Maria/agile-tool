@@ -9,7 +9,7 @@ body,
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'DM Sans', sans-serif;
 }
 
 @layer base {
@@ -103,6 +103,6 @@ body {
   }
 
   .link-text {
-    @apply hover:text-icon transition-colors duration-200;
+    @apply hover:text-blue-800 transition-colors duration-200;
   }
 }

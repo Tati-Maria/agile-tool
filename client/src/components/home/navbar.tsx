@@ -15,7 +15,7 @@ const Navbar = () => {
             variant={'primary'}
             asChild
           >
-            <Link to="/sign-up">Sign Up</Link>
+            <Link to="/register">Sign Up</Link>
           </Button>
         </div>
       </div>
