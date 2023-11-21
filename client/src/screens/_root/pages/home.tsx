@@ -4,7 +4,7 @@ import { Header } from "@/components/home";
 const Home = () => {
   return (
     <>
-    <Header />
+      <Header />
     </>
   )
 }
