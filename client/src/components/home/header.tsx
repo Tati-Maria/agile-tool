@@ -6,7 +6,7 @@ const Header = () => {
       <div className="flex-col-center space-y-6 h-full justify-center items-center text-center md:items-end md:text-right">
         <Heading
           level={1}
-          className="text-3xl mx-auto font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-7xl"
+          className="text-5xl mx-auto font-bold tracking-tighter sm:text-6xl md:text-7xl"
         >
           Manage Your{' '}
           <span className="bg-gradient-to-r from-primary to-icon bg-clip-text text-transparent">

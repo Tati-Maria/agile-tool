@@ -12,7 +12,7 @@ const Navbar = () => {
         <div>
           <Button
             className="border-muted hover:border-icon hover:text-icon"
-            variant={'primary'}
+            variant={'brand'}
             asChild
           >
             <Link to="/register">Sign Up</Link>

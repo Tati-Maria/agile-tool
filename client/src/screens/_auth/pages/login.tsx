@@ -1,8 +1,22 @@
+import LoginForm from "@/components/auth/login-form"
+import { Heading, Typography } from "@/components/shared"
 
 
 const Login = () => {
   return (
-    <div>Login</div>
+    <section>
+      <div className="text-center space-y-1">
+        <Heading className="text-xl md:text-2xl" level={2}>
+          Welcome Back
+        </Heading>
+        <Typography className="text-slate-500">
+          Glad to see you again 👋! Login to your account to continue.
+        </Typography>
+      </div>
+      <LoginForm 
+      onSubmit={() => {}}
+      />
+    </section>
   )
 }
 

@@ -2,7 +2,7 @@ import {FacebookIcon, TwitterIcon, LinkedinIcon, InstagramIcon} from "lucide-rea
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-slate-900 text-white py-4">
+    <footer className="w-full bg-slate-100 py-4">
       <div className="container mx-auto px-4 flex flex-col items-center justify-center space-y-4">
         <div className="flex space-x-6">
           <a

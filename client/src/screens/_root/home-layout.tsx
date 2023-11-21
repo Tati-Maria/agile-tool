@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 const HomeLayout = () => {
   return (
     <div
-    className="relative grid grid-cols-1 md:grid-cols-2 h-screen overflow-hidden"
+    className="relative grid grid-cols-1 md:grid-cols-2 min-h-screen overflow-hidden"
     >
       <div
         style={{ backgroundImage: 'url(/images/business.jpg' }}
