@@ -61,17 +61,22 @@ const onboardUser = asyncHandler(async (req: IUserRequest, res: Response) => {
         throw new Error('Project not found');
     }
 
-    if (project.team.includes(req.user?._id as any)) {
+    if(!req.user?._id) {
+        res.status(401);
+        throw new Error('You need to be logged in to join a project');
+    }
+
+    if (project.team.includes(req.user?._id)) {
       res.status(400);
       throw new Error('You are already a member of this project');
     }
 
-    project.team.push(req.user?._id as any);
+    project.team.push(req.user?._id);
     await project.save();
     res.status(200).json({
         message: 'You have been added to the project successfully',
         name: project.name,
-        _id: project._id,
+        projectId: project._id,
     });
 });
 

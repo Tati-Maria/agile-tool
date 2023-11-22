@@ -7,7 +7,7 @@ const Login = () => {
   useSetDocumentTitle("Login")
 
   return (
-    <section>
+    <section className="h-full">
       <div className="text-center space-y-1">
         <Heading className="text-xl md:text-2xl" level={2}>
           Welcome Back

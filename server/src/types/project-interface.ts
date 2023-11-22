@@ -13,7 +13,7 @@ export interface IProject extends Document {
     logo: string;
     logoPublicId: string; // Cloudinary public ID
     accessCode: string;
-    team: IUser[];
+    team: string[];
     owner: IUser;
     sprints: ISprint[];
     attachments: string[];

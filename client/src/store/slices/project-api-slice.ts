@@ -30,10 +30,10 @@ export const projectApiSlice = apiSlice.injectEndpoints({
             query: (id) => `${PROJECT_API_URL}/${id}/team`,
         }),
         onboardUser: builder.mutation({
-            query: ({body}) => ({
+            query: (formData) => ({
                 url: `${PROJECT_API_URL}/onboard`,
                 method: "POST",
-                body,
+                body: formData,
             }),
             invalidatesTags: ["Project"],
         }),

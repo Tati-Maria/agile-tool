@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
-import { RootModal } from "@/components/modals/root-modal";
-import { useGetProjectsQuery } from "@/store/slices/project-api-slice";
-import { useAuth } from "@/hooks/use-auth";
-import { useSetDocumentTitle } from "@/hooks/user-document-title";
+import { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { RootModal } from '@/components/modals/root-modal';
+import { useGetProjectsQuery } from '@/store/slices/project-api-slice';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/use-auth';
+import { useSetDocumentTitle } from '@/hooks/user-document-title';
 
 /*
 ===== How it supposed to work =====
@@ -14,35 +15,30 @@ import { useSetDocumentTitle } from "@/hooks/user-document-title";
  */
 
 const ProjectLayout = () => {
-    useSetDocumentTitle('Projects');
-    const { user } = useAuth();
-    const [isOpen, setIsOpen] = useState(true);
-    const { data: projects, isLoading } = useGetProjectsQuery(null, { skip: !user });
-    console.log({ projects });
+  useSetDocumentTitle('Projects');
+  const { user } = useAuth();
+  const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate();
+  const { data: projects, isLoading } = useGetProjectsQuery(null, {
+    skip: !user,
+  });
 
-    useEffect(() => {
-        if (isLoading) return;
-        if (projects?.length === 0) {
-            setIsOpen(true);
-        } else {
-            setIsOpen(false);
-        }
-    }, [isLoading, projects]);
+  useEffect(() => {
+    if (isLoading) return;
+    if (projects?.length === 0) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+      navigate(`/projects/${projects?.[0]?._id}`);
+    }
+  }, [isLoading, projects, navigate]);
 
   return (
     <>
-      {user && projects?.length > 0 ? (
-        <Navigate 
-        to={`/projects/${projects[0]?._id}`} 
-        />
-      ) : (
-        <RootModal 
-        isOpen={isOpen} 
-        onClose={() => {}}
-        />
-      )}
+      <Outlet />
+      {isOpen && <RootModal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
     </>
-  )
-}
+  );
+};
 
-export default ProjectLayout
+export default ProjectLayout;

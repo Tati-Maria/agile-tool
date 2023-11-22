@@ -18,15 +18,23 @@ import {
 import { useJoinProject } from '@/hooks/use-join-project';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export const JoinProjectForm = () => {
+interface JoinProjectFormProps {
+  onClose: () => void;
+}
+
+export const JoinProjectForm = ({onClose}: JoinProjectFormProps) => {
     const { joinProject } = useJoinProject();
   const form = useForm<ProjectOnboardSchemaType>({
     resolver: zodResolver(projectOnboardSchema),
+    defaultValues: {
+      accessCode: '',
+    }
   });
   const { isSubmitting } = form.formState;
 
-  async function onSubmit(data: ProjectOnboardSchemaType) {
-    await joinProject({ accessCode: data.accessCode });
+  async function onSubmit(data: ProjectOnboardSchemaType) { 
+    await joinProject(data.accessCode);
+    onClose();
   }
 
   return (

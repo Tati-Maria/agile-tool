@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom"
 
 const AuthLayout = () => {
   return (
-    <section className="min-h-screen bg-[#f6f5fd]">
+    <section className="min-h-screen">
       <div className="max-w-7xl mx-auto px-6 py-2">
         <Logo />
       </div>
