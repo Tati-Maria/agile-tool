@@ -3,24 +3,13 @@ import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/slices/auth-slice";
 import { UserSchema } from "@/lib/validation/user";
-
-const convertBase64 = (file: File) => {
-    return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-        fileReader.onload = () => {
-            resolve(fileReader.result);
-        };
-        fileReader.onerror = (error) => {
-            reject(error);
-        };
-    });
-
-}
+import { useNavigate } from "react-router-dom";
+import { convertBase64 } from "@/lib/utils";
 
 export const useRegister = () => {
     const [registerUser, {isLoading, isSuccess}] = useRegisterUserMutation();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     async function register(data: UserSchema) {
         try {
@@ -33,6 +22,7 @@ export const useRegister = () => {
             }).unwrap();
             dispatch(setCredentials({...res}));
             toast.success("Successfully registered!");
+            navigate("/projects");
         } catch (error) {
             const err = error as {data: {message: string}};
             toast.error(err.data.message);

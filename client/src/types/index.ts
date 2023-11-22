@@ -3,29 +3,28 @@ export type RootProps = {
 } extends React.HTMLAttributes<HTMLElement> ? React.HTMLAttributes<HTMLElement> : never;
 
 export type User = {
-    id: string;
+    _id: string;
     name: string;
     email: string;
     avatar: string;
     password: string;
     avatarPublicId: string; // Cloudinary public ID
-    role: Role;
+    role: string;
     createdAt: string;
     updatedAt: string;
 }
 
 export type Project = {
-    id: string;
-    title: string;
+    _id: string;
+    name: string;
     description: string;
     logo: string;
     logoPublicId: string; // Cloudinary public ID
-    status: ProjectStatus;
-    manager: User;
+    owner: User;
     team: User[];
     startDate: string;
     tasks: Task[];
-    documents: Document[];
+    attachments: Attachments[];
     endDate: string;
     createdAt: string;
     updatedAt: string;
@@ -42,7 +41,7 @@ export type Task = {
     updatedAt: string;
 }
 
-export type Document = {
+export type Attachments = {
     id: string;
     title: string;
     description: string;
@@ -59,21 +58,6 @@ export type Comment = {
     createdAt: string;
     updatedAt: string;
     attachments: Document[];
-}
-
-enum ProjectStatus {
-    UNRELEASED = 'UNRELEASED',
-    RELEASED = 'RELEASED',
-    ARCHIVED = 'ARCHIVED'
-}
-
-enum Role {
-    PROJECT_MANAGER = 'Project Manager',
-    DEVELOPER = 'Developer',
-    QA = 'QA',
-    UX_UI_DESIGNER = 'UX/UI Designer',
-    DEVOPS = 'DevOps',
-    GUEST = 'Guest'
 }
 
 enum TaskStatus {

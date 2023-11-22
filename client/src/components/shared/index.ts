@@ -5,3 +5,5 @@ export {default as FormGroup} from "./form-group";
 export {default as Required} from "./required";
 export {default as SelectField} from "./select-field";
 export {default as FileUploader} from "./file-uploader";
+export {default as Sidebar} from "./sidebar";
+export {default as Loading} from "./loading";

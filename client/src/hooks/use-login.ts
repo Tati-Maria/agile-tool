@@ -18,7 +18,7 @@ export const useLogin = () => {
             }).unwrap();
             dispatch(setCredentials({...res}));
             toast.success("Successfully logged in!");
-            navigate("/");
+            navigate("/projects");
         } catch (error) {
             const err = error as {message: string};
             toast.error(err.message);
