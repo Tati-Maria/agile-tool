@@ -14,6 +14,9 @@ import connectDB from './config/db';
 import { notFound, errorHandler } from './middlewares/error';
 import userRoutes from "./routes/user/routes";
 import projectRoutes from "./routes/project";
+import sprintRoutes from "./routes/sprint";
+import userStoryRoutes from "./routes/user-story";
+import taskRoutes from "./routes/task";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -29,6 +32,9 @@ app.use(helmet());
 app.use('/', indexRoute);
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/sprints', sprintRoutes);
+app.use('/api/user-stories', userStoryRoutes);
+app.use('/api/tasks', taskRoutes);
 // Error handling
 app.use(notFound);
 app.use(errorHandler);
