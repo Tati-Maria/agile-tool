@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { useDropzone, FileWithPath } from 'react-dropzone';
 import { Icons } from '../ui/icons';
 import { Typography } from '.';
+import { Button } from '../ui/button';
 
 interface FileUploaderProps {
   mediaUrl?: string;
@@ -30,22 +31,29 @@ const FileUploader = ({ mediaUrl, fielChange }: FileUploaderProps) => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
+    <div className="flex space-x-2 items-center w-full">
       <div
         {...getRootProps()}
-        className="w-32 h-32 cursor-pointer rounded-full flex items-center justify-center"
+        className="w-20 h-20 cursor-pointer rounded-full flex items-center justify-center"
       >
-        <input className='cursor-pointer' {...getInputProps()} />
+        <input className="cursor-pointer" {...getInputProps()} />
         {isDragActive && <Icons.user className="w-10 h-10 text-blue-800" />}
         {!isDragActive && (
           <img
             src={preview || '/images/placehold-avatar.jpg'}
             alt="avatar"
-            className="w-32 h-32 rounded-full object-cover"
+            className="w-20 h-20 rounded-full object-cover"
           />
         )}
       </div>
-      <Typography className="mt-2">Drag & drop your avatar here</Typography>
+      <div>
+        <Button className='h-7' type="button" variant={'outline'} size={'sm'}>
+          <Typography>Upload</Typography>
+        </Button>
+        <Typography className='text-slate-500'>
+          {file.length > 0 ? file[0].name : 'No file selected'}
+        </Typography>
+      </div>
     </div>
   );
 };

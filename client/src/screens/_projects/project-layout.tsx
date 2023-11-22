@@ -8,30 +8,38 @@ import { useSetDocumentTitle } from "@/hooks/user-document-title";
 /*
 ===== How it supposed to work =====
 1. Check if the current user has any projects
-2. If not, show the RootModal
-3. If yes, show the ProjectList
+2. if not keep the modal open, till the user creates a project
+3. if yes redirect to the first project
+4. the user cannot close the if he has no projects
  */
 
 const ProjectLayout = () => {
     useSetDocumentTitle('Projects');
     const { user } = useAuth();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const { data: projects, isLoading } = useGetProjectsQuery(null, { skip: !user });
+    console.log({ projects });
 
     useEffect(() => {
-        if (!isLoading && projects.length === 0) {
+        if (isLoading) return;
+        if (projects?.length === 0) {
             setIsOpen(true);
+        } else {
+            setIsOpen(false);
         }
     }, [isLoading, projects]);
 
   return (
     <>
-      {user && projects.length > 0 ? (
+      {user && projects?.length > 0 ? (
         <Navigate 
         to={`/projects/${projects[0]?._id}`} 
         />
       ) : (
-        <RootModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        <RootModal 
+        isOpen={isOpen} 
+        onClose={() => {}}
+        />
       )}
     </>
   )

@@ -45,7 +45,7 @@ export const CreateProjectForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form className='space-y-4' onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField 
         name="logo"
         control={form.control}

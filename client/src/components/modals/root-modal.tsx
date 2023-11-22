@@ -5,14 +5,14 @@ import { DatePicker } from '@/components/forms/date-picker';
 import { CreateProjectForm } from '@/components/forms/create-project-form';
 import { JoinProjectForm } from '@/components/forms/join-project';
 
-import { useState } from 'react';
+import { useState} from 'react';
 import { toast } from 'sonner';
 import { DateRange } from 'react-day-picker';
 import { addDays } from 'date-fns';
 import { ProjectSchemaType } from '@/lib/validation/project';
 import { useNavigate } from 'react-router-dom';
-import { convertBase64 } from '@/lib/utils';
-import { CSSTransition } from 'react-transition-group';
+import { cn, convertBase64 } from '@/lib/utils';
+import { CSSTransition} from 'react-transition-group';
 
 interface RootModalProps {
   isOpen: boolean;
@@ -21,13 +21,23 @@ interface RootModalProps {
 
 export const RootModal = ({ isOpen, onClose }: RootModalProps) => {
   const navigate = useNavigate();
-  const [openCreateProject, setOpenCreateProject] = useState(false);
+  const [openCreateProject, setOpenCreateProject] = useState(true);
   const [openJoinProject, setOpenJoinProject] = useState(false);
   const [createProject, { isLoading }] = useCreateProjectMutation();
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 7),
   });
+
+  const handleOpen = (type: 'create' | 'join') => {
+    if (type === 'create') {
+      setOpenCreateProject(true);
+      setOpenJoinProject(false);
+    } else {
+      setOpenCreateProject(false);
+      setOpenJoinProject(true);
+    }
+  };
 
   async function handleCreateProject(data: ProjectSchemaType) {
     try {
@@ -56,21 +66,14 @@ export const RootModal = ({ isOpen, onClose }: RootModalProps) => {
     >
       {/* Content */}
       {openCreateProject && (
-        <CSSTransition
-          in={openCreateProject}
-          timeout={300}
-          classNames="slide-up"
-          unmountOnExit
-        >
-          <div className="flex flex-col space-y-4">
-            <DatePicker date={date} setDate={setDate} />
-            <CreateProjectForm
-              onSubmit={handleCreateProject}
-              isLoading={isLoading}
-              buttonText="Create Project"
-            />
-          </div>
-        </CSSTransition>
+        <div className={cn('flex flex-col space-y-4', !openCreateProject && "hidden")}>
+          <DatePicker date={date} setDate={setDate} />
+          <CreateProjectForm
+            onSubmit={handleCreateProject}
+            isLoading={isLoading}
+            buttonText="Create Project"
+          />
+        </div>
       )}
       {openJoinProject && (
         <CSSTransition
@@ -83,12 +86,12 @@ export const RootModal = ({ isOpen, onClose }: RootModalProps) => {
         </CSSTransition>
       )}
       {/* Switch content buttons */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 mt-6 w-full justify-end">
         <Button
           type="button"
           variant={'brand'}
           size={'sm'}
-          onClick={() => setOpenCreateProject(true)}
+          onClick={handleOpen.bind(null, 'create')}
         >
           Create Project
         </Button>
@@ -96,7 +99,7 @@ export const RootModal = ({ isOpen, onClose }: RootModalProps) => {
           type="button"
           variant={'outline'}
           size={'sm'}
-          onClick={() => setOpenJoinProject(true)}
+          onClick={handleOpen.bind(null, 'join')}
         >
           Join Project
         </Button>

@@ -69,5 +69,14 @@ userSchema.methods.matchPassword = async function (enteredPassword: string) {
   return await bycript.compare(enteredPassword, this.password);
 }
 
+userSchema.pre("deleteOne", {document: true}, async function (next) {
+  const user = this as IUser;
+  await user.model('Project').deleteMany({owner: user._id});
+  await user.model('Task').deleteMany({assignedTo: user._id});
+  await user.model('Comment').deleteMany({author: user._id});
+  await user.model('Activity').deleteMany({author: user._id});
+  next();
+});
+
 const User = model<IUser>('User', userSchema);
 export default User;

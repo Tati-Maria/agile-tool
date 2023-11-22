@@ -19,20 +19,24 @@ const Navbar = () => {
             Pricing & Plans
           </Link>
         </div>
-        <div>
+        <div className='flex-center space-x-4'>
           {user ? (
-            <Button 
-            disabled={isLoading}
-            onClick={logout}
-            size={"sm"} variant={'destructive'}>
-              Logout
-              {isLoading && <Icons.spinner className="animate-spin ml-2" />}
-            </Button>
+            <>
+            <Link className='link-text font-medium' to="/projects">
+              Projects
+            </Link>
+              <Button
+                disabled={isLoading}
+                onClick={logout}
+                size={'sm'}
+                variant={'destructive'}
+              >
+                Logout
+                {isLoading && <Icons.spinner className="animate-spin ml-2" />}
+              </Button>
+            </>
           ) : (
-            <Button
-              variant={'brand'}
-              asChild
-            >
+            <Button variant={'brand'} asChild>
               <Link to="/register">Sign Up</Link>
             </Button>
           )}

@@ -68,5 +68,14 @@ const projectSchema: Schema = new Schema<IProject>({
     timestamps: true,
 });
 
+projectSchema.pre("deleteOne", {document: true}, async function (next) {
+    const project = this as IProject;
+    await project.model("Sprint").deleteMany({project: project._id});
+    await project.model("UserStory").deleteMany({project: project._id});
+    await project.model("Task").deleteMany({project: project._id});
+    await project.model("Activity").deleteMany({project: project._id});
+    next();
+});
+
 const Project = model<IProject>("Project", projectSchema);
 export default Project;
