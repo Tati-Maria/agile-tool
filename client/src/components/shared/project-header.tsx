@@ -20,7 +20,7 @@ const ProjectHeader = ({routes, projectId}: ProjectHeaderProps) => {
   const location = useLocation();
 
   return (
-    <nav className="flex-between py-4  border-b mb-10 max-w-[1450px] px-4">
+    <nav className="flex-between py-4  border-b mb-10 max-w-[1450px] mx-auto px-4">
       <div className='flex-center space-x-16'>
         <NavLink className={"flex-center space-x-1"} to={`/projects/${projectId}`}>
           <img src="/icons/logo.svg" alt="logo" width={40} height={40} />

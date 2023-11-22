@@ -1,9 +1,42 @@
-
+import { Loading } from "@/components/shared";
+import AvatarGroup from "@/components/shared/avatar-group";
+import EmptyState from "@/components/shared/empty-state";
+import ProjectIntro from "@/components/shared/project-intro";
+import { useGetProjectQuery } from "@/store/slices/project-api-slice"
+import { useParams } from "react-router-dom"
 
 const ProjectPage = () => {
+  const {projectId} = useParams()
+  const {data: project, isLoading} = useGetProjectQuery(projectId, {skip: !projectId});
+
+
+  if(isLoading) {
+    return (
+      <Loading />
+    )
+  } else if(!isLoading && !project) {
+    return (
+      <EmptyState text="Project not found" />
+    )
+  }
+
   return (
-    <div>ProjectPage</div>
-  )
+    <section className="min-h-screen">
+      <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
+        <ProjectIntro
+          avatar={project.logo}
+          name={project.name}
+          isActive={project.isActive}
+          startDate={project.startDate}
+          endDate={project.endDate}
+        />
+        <AvatarGroup
+        avatars={project.team}
+        max={5} 
+        />
+      </div>
+    </section>
+  );
 }
 
 export default ProjectPage
