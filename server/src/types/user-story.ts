@@ -5,7 +5,7 @@ import { ITask } from "./tasks";
 export interface IUserStory extends Document {
     name: string;
     description: string;
-    acceptanceCriteria: string;
+    acceptanceCriteria: string[];
     estimationPoints: number;
     project: IProject;
     tasks: ITask[];

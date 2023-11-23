@@ -31,12 +31,15 @@ export type Project = {
 }
 
 export type Task = {
-    id: string;
-    title: string;
+    _id: string;
+    name: string;
     description: string;
     status: TaskStatus;
-    project: Project;
+    priority: TaskPriority;
+    dueDate: string;
     assignedTo: User;
+    comments: Comment[];
+    sprint: Sprint;
     createdAt: string;
     updatedAt: string;
 }
@@ -65,4 +68,34 @@ enum TaskStatus {
     IN_PROGRESS = 'In Progress',
     IN_REVIEW = 'In Review',
     DONE = 'Done'
+}
+
+enum TaskPriority {
+    LOW = 'Low',
+    MEDIUM = 'Medium',
+    HIGH = 'High'
+}
+
+export type UserStory = {
+    _id: string;
+    name: string;
+    description: string | null;
+    acceptanceCriteria: string | null;
+    estimationPoints: number;
+    project: Project;
+    tasks: Task[];
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type Sprint = {
+    _id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    project: Project;
+    goal: string;
+    tasks: Task[];
+    createdAt: string;
+    updatedAt: string;
 }

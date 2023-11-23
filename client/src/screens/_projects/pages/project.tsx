@@ -1,4 +1,4 @@
-import { Loading } from "@/components/shared";
+import { Loading, Typography, UserStoryList } from "@/components/shared";
 import AvatarGroup from "@/components/shared/avatar-group";
 import EmptyState from "@/components/shared/empty-state";
 import ProjectIntro from "@/components/shared/project-intro";
@@ -21,7 +21,7 @@ const ProjectPage = () => {
   }
 
   return (
-    <section className="min-h-screen">
+    <section className="min-h-screen space-y-6">
       <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
         <ProjectIntro
           avatar={project.logo}
@@ -35,6 +35,14 @@ const ProjectPage = () => {
         max={5} 
         />
       </div>
+      <Typography>
+        {project.description}
+      </Typography>
+      <UserStoryList
+      projectId={projectId}
+      userStories={project.userStories} 
+      />
+      {/* Current Active Sprint with tasks */}
     </section>
   );
 }
