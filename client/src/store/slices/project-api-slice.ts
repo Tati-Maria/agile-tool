@@ -13,10 +13,10 @@ export const projectApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ["Project"],
         }),
         updateProject: builder.mutation({
-            query: ({ id, body }) => ({
+            query: ({ id, formData }) => ({
                 url: `${PROJECT_API_URL}/${id}`,
                 method: "PUT",
-                body,
+                body: formData,
             }),
             invalidatesTags: ["Project"],
         }),
