@@ -56,7 +56,6 @@ export const DatePicker = ({className, date, setDate}: DatePickerProps) => {
             selected={date}
             onSelect={setDate}
             numberOfMonths={3}
-            disabled={date?.from !== undefined && date?.to !== undefined}
             />
           </PopoverContent>
         </Popover>
