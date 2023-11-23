@@ -9,10 +9,10 @@ const userStorySchema: Schema = new Schema({
         type: String,
         required: false,
     },
-    acceptanceCriteria: {
+    acceptanceCriteria: [{
         type: String,
         required: false,
-    },
+    }],
     estimationPoints: {
         type: Number,
         required: false,

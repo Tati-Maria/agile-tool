@@ -27,3 +27,20 @@ export function formatDateRange(startDate: Date, endDate: Date) {
   const daysLeftText = daysLeft > 0 ? `${daysLeft} days left` : 'Ended'
   return `${formattedStartDate} - ${formattedEndDate} (${daysLeftText})`
 }
+
+export function separateBySpace(text: string) {
+  return text.split(' ')
+}
+
+export function separateByComma(text: string) {
+  return text.split(',')
+}
+
+export function separateByNewLine(text: string) {
+  return text.split('\n')
+}
+
+export function transformStringToArr(text: string) {
+  const arr = separateBySpace(text)
+  return arr.filter((item) => item !== '')
+}

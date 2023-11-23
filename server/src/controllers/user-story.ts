@@ -133,8 +133,10 @@ const getUserStoriesByProjectId = asyncHandler(async (req: IUserRequest, res: Re
 // @route GET /api/user-stories/search/:searchTerm
 // @access Private
 const searchUserStories = asyncHandler(async (req: IUserRequest, res: Response) => {
-    const {searchTerm} = req.params;
-    const userStories = await UserStory.find({name: {$regex: searchTerm, $options: 'i'}}).exec();
+    const {projectId, searchTerm} = req.query;
+
+    const userStories = await UserStory.find({project: projectId, name: {$regex: searchTerm, $options: 'i'}}).exec();
+
     if(!userStories) {
         res.status(404);
         throw new Error('User stories not found');
