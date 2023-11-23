@@ -32,7 +32,7 @@ const columns: ColumnDef<Project>[] = [
   },
   {
     accessorKey: 'isActive',
-    header: 'Active',
+    header: 'Status',
     cell: ({ row }) => {
       return <span>{row.original.isActive ? 'Yes' : 'No'}</span>;
     },

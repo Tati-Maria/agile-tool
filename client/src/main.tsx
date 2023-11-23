@@ -17,7 +17,14 @@ import AuthLayout from '@/screens/_auth/auth-layout.tsx';
 import { ProtectedPages } from '@/components/shared/private-route';
 import { ForgotPassword, Login, Register } from '@/screens/_auth/pages';
 import ProjectLayout from '@/screens/_projects/project-layout.tsx';
-import {ProjectPage, ProjectIdLayout} from '@/screens/_projects/pages';
+import {
+  ProjectPage,
+  ProjectIdLayout,
+  ProjectsPage,
+  UpdateProjectPage,
+} from '@/screens/_projects/pages';
+import NotFound from '@/errors/not-found.tsx';
+import ErrorLog from './errors/error-page.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,13 +38,15 @@ const router = createBrowserRouter(
         <Route path="forgot-password" element={<ForgotPassword />} />
       </Route>
       <Route path="" element={<ProtectedPages />}>
-        <Route path="projects" element={<ProjectLayout />}>
-          <Route path="" element={<ProjectIdLayout />}>
-            <Route path=':projectId' element={<ProjectPage />} />
+        <Route path="" element={<ProjectLayout />}>
+          <Route path="projects" element={<ProjectsPage />} />
+          <Route path="projects/:projectId" errorElement={<ErrorLog />} element={<ProjectIdLayout />}>
+            <Route index element={<ProjectPage />} />
+            <Route path="projects/:projectId/update" element={<UpdateProjectPage />} />
           </Route>
-          <Route path="onboarding" element={<div>Onboarding</div>} />
         </Route>
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );

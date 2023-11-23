@@ -19,19 +19,19 @@ const ProjectLayout = () => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
-  const { data: projects, isLoading } = useGetProjectsQuery(null, {
-    skip: !user,
-  });
+  const { data: projects, isLoading } = useGetProjectsQuery();
+
+  const currentUserProjects = projects?.filter(project => project.team?.map(member => member._id).includes(user?._id));
 
   useEffect(() => {
     if (isLoading) return;
-    if (projects?.length === 0) {
+    if (currentUserProjects?.length === 0) {
       setIsOpen(true);
     } else {
       setIsOpen(false);
-      navigate(`/projects/${projects?.[0]?._id}`);
+      navigate(`/projects/${currentUserProjects?.[0]?._id}`);
     }
-  }, [isLoading, projects, navigate]);
+  }, [isLoading, currentUserProjects, navigate]);
 
   return (
     <>
