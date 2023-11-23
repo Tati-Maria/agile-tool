@@ -25,7 +25,7 @@ const createTask = asyncHandler(async (req: Request, res: Response) => {
         throw new Error('Assigned user is required for completed tasks');
     }
 
-    // TODO: Ensure that the sprint is part of the project
+    // TODO: Ensure that the sprint is part of a project
     const sprintExists = await Sprint.exists({_id: sprint});
     if(!sprintExists) {
         res.status(404);
@@ -166,7 +166,7 @@ const updateTaskStatus = asyncHandler(async (req: Request, res: Response) => {
     }
 });
 
-// @desc Search for tasks
+// @desc Search for sprint tasks
 // @route GET /api/tasks/search
 // @access Private
 const searchTasks = asyncHandler(async (req: Request, res: Response) => {
