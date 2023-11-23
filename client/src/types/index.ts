@@ -23,6 +23,7 @@ export type Project = {
     owner: User;
     team: User[];
     startDate: string;
+    isActive: boolean;
     tasks: Task[];
     attachments: Attachments[];
     endDate: string;

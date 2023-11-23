@@ -1,4 +1,5 @@
 import { apiSlice } from "@/store/slices/api-slice";
+import { Project } from "@/types";
 
 const PROJECT_API_URL = "/api/projects";
 
@@ -20,7 +21,7 @@ export const projectApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Project"],
         }),
-        getProjects: builder.query({
+        getProjects: builder.query<Project[], void>({
             query: () => `${PROJECT_API_URL}`,
         }),
         getProject: builder.query({
