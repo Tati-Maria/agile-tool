@@ -2,6 +2,10 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import Task from '../models/task';
 import Sprint from '../models/sprint';
+import Project from '../models/project';
+import User from '../models/user';
+import Activity from '../models/activity-log';
+import { IUserRequest } from '../types/user-interface';
 
 // @desc    Create a new task
 // @route   POST /api/tasks
@@ -25,7 +29,13 @@ const createTask = asyncHandler(async (req: Request, res: Response) => {
         throw new Error('Assigned user is required for completed tasks');
     }
 
-    // TODO: Ensure that the sprint is part of a project
+    // Ensure that the sprint exists and is part of a project
+    const projectExists = await Project.exists({sprints: sprint});
+    if(!projectExists) {
+        res.status(404);
+        throw new Error('Project not found');
+    }
+
     const sprintExists = await Sprint.exists({_id: sprint});
     if(!sprintExists) {
         res.status(404);
@@ -175,5 +185,39 @@ const searchTasks = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json(tasks);
 });
 
+// @desc assign a task to a member
+// @route PATCH /api/tasks/:id/assign
+// @access Private
+const assignTask = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const task = await Task.findById(req.params.id).exec();
+    const {assignedTo} = req.body;
 
-export {createTask,searchTasks, updateTask, deleteTask, getTasks, getTaskById, updateTaskStatus};
+    if(!task) {
+        res.status(404);
+        throw new Error('Task not found');
+    } else {
+        const userExists = await User.exists({_id: assignedTo});
+        if(!userExists) {
+            res.status(404);
+            throw new Error('User not found');
+        }
+        task.assignedTo = assignedTo || task.assignedTo;
+        await task.save();
+
+        await Activity.create({
+            user: req.user?._id,
+            action: 'updated',
+            details: `assigned task: ${task.name} to ${task.assignedTo}`,
+            entity: 'task',
+            entityId: task._id,
+        });
+
+        res.status(200).json({
+            message: 'Task updated successfully',
+            name: task.name,
+            _id: task._id,
+        });
+    }
+});
+
+export {createTask,searchTasks, updateTask, deleteTask, getTasks, getTaskById, updateTaskStatus, assignTask};

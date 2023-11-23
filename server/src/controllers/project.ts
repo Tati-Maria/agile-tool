@@ -4,8 +4,9 @@ import crypto from 'crypto-js';
 import { Request, Response } from 'express';
 import Project from '../models/project';
 import User from '../models/user';
-import { IUserRequest } from 'types/user-interface';
+import { IUserRequest } from '../types/user-interface';
 import { uploadLogo, deleteLogo } from '../utils/cloudinary';
+import Activity from '../models/activity-log';
 
 // @desc    Create a new project
 // @route   POST /api/projects
@@ -66,6 +67,8 @@ const onboardUser = asyncHandler(async (req: IUserRequest, res: Response) => {
         throw new Error('You need to be logged in to join a project');
     }
 
+    const user = await User.findById(req.user?._id).exec();
+
     if (project.team.includes(req.user?._id)) {
       res.status(400);
       throw new Error('You are already a member of this project');
@@ -73,6 +76,15 @@ const onboardUser = asyncHandler(async (req: IUserRequest, res: Response) => {
 
     project.team.push(req.user?._id);
     await project.save();
+
+    await Activity.create({
+        user: req.user?._id,
+        action: 'joined',
+        details: `${user?.name} joined the project`,
+        entity: 'project',
+        entityId: project._id,
+    });
+
     res.status(200).json({
         message: 'You have been added to the project successfully',
         name: project.name,
@@ -122,7 +134,10 @@ const getProject = asyncHandler(async (req: Request, res: Response) => {
 // @route PUT /api/projects/:id
 // @access Private
 const updateProject = asyncHandler(async (req: Request, res: Response) => {
-    const project = await Project.findById(req.params.id).exec();
+    const project = await Project.findById(req.params.id)
+    .populate('owner', 'name avatar role email')
+    .exec();
+
     if(!project) {
         res.status(404);
         throw new Error('Project not found');
@@ -151,6 +166,15 @@ const updateProject = asyncHandler(async (req: Request, res: Response) => {
     project.isActive = isActive || project.isActive;
 
     await project.save();
+
+    await Activity.create({
+        user: project.owner._id,
+        action: 'updated',
+        details: `updated project: ${project.name}`,
+        entity: 'project',
+        entityId: project._id,
+    });
+
     res.status(200).json({
         message: 'Project updated successfully',
         name: project.name,
@@ -195,4 +219,34 @@ const getTeam = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json(team);
 });
 
-export { createProject, onboardUser, getProjects, getProject, updateProject, deleteProject, getTeam };
+// @desc Remove a user from a project
+// @route DELETE /api/projects/:id/team/:userId
+// @access Private
+const removeUserFromProject = asyncHandler(async (req: Request, res: Response) => {
+    const project = await Project.findById(req.params.id)
+    .populate("team", "name avatar role email").exec();
+
+    if(!project) {
+        res.status(404);
+        throw new Error('Project not found');
+    }
+
+    if(project.owner.toString() === req.params.userId) {
+        res.status(400);
+        throw new Error('You cannot remove the project owner from the project');
+    }
+
+    if(!project.team.includes(req.params.userId)) {
+        res.status(400);
+        throw new Error('User is not a member of this project');
+    }
+
+    project.team = project.team.filter((member: any) => member._id.toString() !== req.params.userId);
+    await project.save();
+    res.status(200).json({
+        message: 'User removed from project successfully',
+    });
+
+});
+
+export { createProject, onboardUser, getProjects, getProject, updateProject, deleteProject, getTeam, removeUserFromProject };

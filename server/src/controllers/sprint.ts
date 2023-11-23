@@ -3,6 +3,7 @@ import Activity from "../models/activity-log"
 import { Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { IUserRequest } from '../types/user-interface';
+import Task from '../models/task';
 
 // @desc    Create a new sprint
 // @route   POST /api/sprints
@@ -138,4 +139,80 @@ const getSprintsByProject = asyncHandler(async (req: IUserRequest, res: Response
     }
 });
 
-export {createSprint, updateSprint, deleteSprint, getSprintById, getSprintsByProject};
+// @desc Add a task to a sprint
+// @route PATCH /api/sprints/:id/add-task
+// @access Private
+const addTaskToSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
+    // TODO: Add task to sprint
+    const sprint = await Sprint.findById(req.params.id).exec();
+    if(!sprint) {
+        res.status(404);
+        throw new Error('Sprint not found');
+    } else {
+        const {task} = req.body;
+        const taskExists = await Task.findById(task).exec();
+        if(!taskExists) {
+            res.status(404);
+            throw new Error('Task not found');
+        }
+        sprint.tasks.push(task);
+        await sprint.save();
+
+        await Activity.create({
+            user: req.user?._id,
+            action: 'added',
+            details: `task ${taskExists.name} was added to sprint: ${sprint.name}`,
+            entity: 'sprint',
+            entityId: sprint._id,
+        });
+
+
+        res.status(200).json({
+            message: 'Task added to sprint successfully',
+            name: sprint.name,
+            _id: sprint._id,
+        });
+    }
+});
+
+// @desc Remove a task from a sprint
+// @route PATCH /api/sprints/:id/remove-task
+// @access Private
+const removeTaskFromSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const sprint = await Sprint.findById(req.params.id).exec();
+    if(!sprint) {
+        res.status(404);
+        throw new Error('Sprint not found');
+    } else {
+        const {task} = req.body;
+        const taskExists = await Task.findById(task).exec();
+        if(!taskExists) {
+            res.status(404);
+            throw new Error('Task not found');
+        }
+        const index = sprint.tasks.indexOf(task);
+        if(index > -1) {
+            sprint.tasks.splice(index, 1);
+        } else {
+            res.status(404);
+            throw new Error('Task not found in sprint');
+        }
+
+        await Activity.create({
+            user: req.user?._id,
+            action: 'removed',
+            details: `task ${taskExists.name} was removed from sprint: ${sprint.name}`,
+            entity: 'sprint',
+            entityId: sprint._id,
+        });
+
+        await sprint.save();
+        res.status(200).json({
+            message: 'Task removed from sprint successfully',
+            name: sprint.name,
+            _id: sprint._id,
+        });
+    }
+});
+
+export {createSprint, updateSprint, deleteSprint, getSprintById, getSprintsByProject, addTaskToSprint, removeTaskFromSprint};

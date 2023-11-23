@@ -4,6 +4,8 @@ import { IUserRequest } from '../types/user-interface';
 import { Response } from 'express';
 import Project from '../models/project';
 import Activity from '../models/activity-log';
+import Task from '../models/task';
+import { ITask } from '../types/tasks';
 
 // @desc    Create a new user story
 // @route   POST /api/user-stories
@@ -146,6 +148,74 @@ const searchUserStories = asyncHandler(async (req: IUserRequest, res: Response) 
             userStories,
         });
     }
-})
+});
 
-export {createUserStory, updateUserStory, deleteUserStory, getUserStoryById, getUserStoriesByProjectId, searchUserStories};
+// @desc    Add a task to a user story
+// @route   PATCH /api/user-stories/:id/add-task
+// @access  Private
+const addTaskToUserStory = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const userStory = await UserStory.findById(req.params.id).exec();
+    if(!userStory) {
+        res.status(404);
+        throw new Error('User story not found');
+    } else {
+        const {task} = req.body;
+        const taskExists = await Task.findById(task).exec();
+        if(!taskExists) {
+            res.status(404);
+            throw new Error('Task not found');
+        }
+        userStory.tasks.push(task);
+        await userStory.save();
+
+        await Activity.create({
+            user: req.user?._id,
+            action: 'updated',
+            details: `${taskExists.name} was added to user story: ${userStory.name}`,
+            entity: 'user story',
+            entityId: userStory._id,
+        });
+
+        res.status(200).json({
+            message: 'Task added to user story successfully',
+            name: userStory.name,
+            _id: userStory._id,
+        });
+    }
+});
+
+// @desc    Remove a task from a user story
+// @route   PATCH /api/user-stories/:id/remove-task
+// @access  Private
+const removeTaskFromUserStory = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const userStory = await UserStory.findById(req.params.id).exec();
+    if(!userStory) {
+        res.status(404);
+        throw new Error('User story not found');
+    } else {
+        const {task} = req.body;
+        const taskExists = await Task.findById(task).exec();
+        if(!taskExists) {
+            res.status(404);
+            throw new Error('Task not found');
+        }
+        userStory.tasks = userStory.tasks.filter((t: ITask) => t._id !== task);
+        await userStory.save();
+
+        await Activity.create({
+            user: req.user?._id,
+            action: 'updated',
+            details: `${taskExists.name} was removed from user story: ${userStory.name}`,
+            entity: 'user story',
+            entityId: userStory._id,
+        });
+
+        res.status(200).json({
+            message: 'Task removed from user story successfully',
+            name: userStory.name,
+            _id: userStory._id,
+        });
+    }
+});
+
+export {createUserStory, updateUserStory, deleteUserStory, getUserStoryById, getUserStoriesByProjectId, searchUserStories, addTaskToUserStory, removeTaskFromUserStory};
