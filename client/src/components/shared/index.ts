@@ -11,3 +11,4 @@ export {default as EmptyState} from './empty-state';
 export { default as ProjectHeader } from './project-header';
 export {default as UserStoryList} from './user-story-list';
 export {default as SprintList} from './sprint-list';
+export {default as Actions} from './actions';

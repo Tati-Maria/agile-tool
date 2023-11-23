@@ -6,7 +6,7 @@ import { useGetProjectQuery } from "@/store/slices/project-api-slice"
 import { useParams } from "react-router-dom"
 
 const ProjectPage = () => {
-  const {projectId} = useParams()
+  const {projectId} = useParams<{projectId: string}>()
   const {data: project, isLoading} = useGetProjectQuery(projectId, {skip: !projectId});
 
 
@@ -17,6 +17,10 @@ const ProjectPage = () => {
   } else if(!isLoading && !project) {
     return (
       <EmptyState text="Project not found" />
+    )
+  } else if(!projectId) {
+    return (
+      <EmptyState text="Please select a project" />
     )
   }
 
@@ -29,6 +33,7 @@ const ProjectPage = () => {
           isActive={project.isActive}
           startDate={project.startDate}
           endDate={project.endDate}
+          projectId={projectId}
         />
         <AvatarGroup
         avatars={project.team}
