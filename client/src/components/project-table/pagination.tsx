@@ -20,12 +20,12 @@ export default function Pagination<TData>({table}: PaginationProps<TData>) {
         <div className="px-2">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium">
-            {table.getFilteredRowModel().rows.length} Items
+            {table?.getFilteredRowModel()?.rows?.length} Items
           </p>
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Rows per page</p>
             <Select
-              value={`${table.getState().pagination.pageSize}`}
+              value={`${table?.getState().pagination.pageSize}`}
               onValueChange={value => {
                 table.setPageSize(Number(value));
               }}

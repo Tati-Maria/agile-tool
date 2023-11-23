@@ -21,7 +21,7 @@ export const PickADate = ({value, onChange, className}: PickADateProps) => {
             <FormControl>
               <Button
                 className={cn(
-                  'pl-3 text-left font-normal',
+                  'pl-3 font-normal w-full',
                   !value && 'text-muted-foreground'
                 )}
                 variant={'outline'}

@@ -45,7 +45,7 @@ export const CreateSprintForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form className='space-y-4' onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField
           name="name"
           control={form.control}
@@ -81,9 +81,9 @@ export const CreateSprintForm = ({
             name="startDate"
             control={form.control}
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='w-full'>
                 <FormLabel>Start Date</FormLabel>
-                <PickADate value={field.value} onChange={field.onChange} />
+                <PickADate className='w-full' value={field.value} onChange={field.onChange} />
                 <FormMessage />
               </FormItem>
             )}
@@ -94,7 +94,7 @@ export const CreateSprintForm = ({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>End Date</FormLabel>
-                <PickADate value={field.value} onChange={field.onChange} />
+                <PickADate className='w-full' value={field.value} onChange={field.onChange} />
                 <FormMessage />
               </FormItem>
             )}

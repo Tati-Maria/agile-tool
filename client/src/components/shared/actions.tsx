@@ -19,12 +19,12 @@ const Actions = ({route}: ActionsProps) => {
     <DropdownMenu>
         <DropdownMenuTrigger asChild>
             <Button variant={"ghost"} className='p-0'>
-                <HiDotsVertical className='h-4 w-4' />
+                <HiDotsVertical className='h-5 w-5' />
             </Button>
         </DropdownMenuTrigger>
+        <DropdownMenuContent>
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuContent>
             <DropdownMenuItem>
                 <HiOutlinePencilAlt className='h-4 w-4 mr-2' />
                 <Link to={`${route}/edit`}>Edit</Link>

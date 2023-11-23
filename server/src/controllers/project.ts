@@ -101,7 +101,7 @@ const getProjects = asyncHandler(async (req: IUserRequest, res: Response) => {
     .populate('team', 'name avatar role email')
     .populate('owner', 'name avatar role email')
     .populate('sprints')
-    .populate('userStories')
+    .populate('userStories', "name description")
     .populate('activityLog')
     .populate('attachments')
     .exec();
@@ -116,10 +116,8 @@ const getProject = asyncHandler(async (req: Request, res: Response) => {
     const project = await Project.findById(req.params.id)
     .populate('team', 'name avatar role email')
     .populate('owner', 'name avatar role email')
-    .populate('sprints')
-    .populate('userStories')
-    .populate('activityLog')
-    .populate('attachments')
+    .populate('sprints', 'name startDate endDate')
+    .populate('userStories', "name description")
     .exec();
 
     if(!project) {

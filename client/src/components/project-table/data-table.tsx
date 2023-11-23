@@ -81,13 +81,13 @@ export default function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+            {/* {table.getRowModel().rows?.length ? (
+              table?.getRowModel()?.rows?.map(row => (
                 <TableRow
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row?.getIsSelected() && 'selected'}
                   key={row.id}
                 >
-                  {row.getVisibleCells().map(cell => (
+                  {row.getVisibleCells()?.map(cell => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -101,16 +101,16 @@ export default function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   className="h-24 text-center"
-                  colSpan={columns.length}
+                  colSpan={columns?.length}
                 >
                   No results.
                 </TableCell>
               </TableRow>
-            )}
+            )} */}
           </TableBody>
         </Table>
       </div>
-     <ProjectPagination table={table} />
+     {/* <ProjectPagination table={table} /> */}
     </div>
   );
 }

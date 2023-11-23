@@ -1,44 +1,92 @@
-import { UserStory } from "@/types";
-import { CiCirclePlus } from "react-icons/ci";
-import { EmptyState } from "@/components/shared";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { UserStoryModal } from "@/components/modals/user-story-modal";
+import { UserStory } from '@/types';
+import Slider from 'react-slick';
+import { CiCirclePlus } from 'react-icons/ci';
+import { EmptyState, Loading } from '@/components/shared';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { UserStoryModal } from '@/components/modals/user-story-modal';
+import { useGetProjectUserStoriesQuery } from '@/store/slices/user-story-api-slice';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import UserStoryCard from '../cards/user-story-card';
+
+const settings = {
+  dots: true,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3
+      }
+    },
+    {
+      breakpoint: 640,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false
+      }
+    }
+  ]
+};
 
 interface UserStoryListProps {
-    projectId?: string;
-    userStories: UserStory[];
+  projectId?: string;
 }
 
-const UserStoryList = ({projectId, userStories}: UserStoryListProps) => {
-    const [isOpen, setIsOpen] = useState(false);
+const UserStoryList = ({ projectId }: UserStoryListProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: userStoriesData, isLoading } = useGetProjectUserStoriesQuery(
+    projectId,
+    { skip: !projectId }
+  );
 
   return (
     <>
-    {isOpen && (
+      {isOpen && (
         <UserStoryModal
-        projectId={projectId}
-        isOpen={isOpen}
-        isClose={() => setIsOpen(false)}
+          projectId={projectId}
+          isOpen={isOpen}
+          isClose={() => setIsOpen(false)}
         />
-    )}
-      <div className="grid grid-cols-1 md:grid-cols-3 h-52">
-        <ul className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 overflow-x-auto">
-          {userStories?.length === 0 && <EmptyState text="No user stories" />}
-        </ul>
-        <div className="border rounded-md hover:border-blue-100 transition-colors cursor-pointer justify-center flex-col-center border-dashed border-muted">
-          <Button
-            onClick={() => setIsOpen(true)}
-            variant={'ghost'}
-            className="flex hover:bg-transparent flex-col space-y-1"
-          >
-            <CiCirclePlus className="text-2xl" />
-            <span>Add User Story</span>
-          </Button>
-        </div>
+      )}
+      <div className="flex justify-between items-center">
+        <h3 className="text-2xl font-semibold">User Stories</h3>
+        <Button variant={"ghost"} onClick={() => setIsOpen(true)}>
+          <CiCirclePlus className="w-6 h-6" />
+        </Button>
       </div>
+      <Slider {...settings}>
+        {isLoading ? (
+          <Loading />
+        ) : userStoriesData?.userStories?.length ? (
+          userStoriesData?.userStories?.map((userStory: UserStory) => (
+            <UserStoryCard
+              id={userStory._id}
+              key={userStory._id}
+              description={userStory.description}
+              points={userStory.estimationPoints}
+              name={userStory.name}
+            />
+          ))
+        ) : (
+          <EmptyState text="No user stories" />
+        )}
+      </Slider>
     </>
   );
-}
+};
 
-export default UserStoryList
+export default UserStoryList;

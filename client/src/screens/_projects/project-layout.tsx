@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import { RootModal } from '@/components/modals/root-modal';
 import { useGetProjectsQuery } from '@/store/slices/project-api-slice';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/use-auth';
 import { useSetDocumentTitle } from '@/hooks/user-document-title';
 
 /*
@@ -16,27 +15,21 @@ import { useSetDocumentTitle } from '@/hooks/user-document-title';
 
 const ProjectLayout = () => {
   useSetDocumentTitle('Projects');
-  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
   const { data: projects, isLoading } = useGetProjectsQuery();
 
-  const currentUserProjects = projects?.filter(project => project.team?.map(member => member._id).includes(user?._id));
-
   useEffect(() => {
-    if (isLoading) return;
-    if (currentUserProjects?.length === 0) {
-      setIsOpen(true);
-    } else {
+    if (projects?.length) {
       setIsOpen(false);
-      navigate(`/projects/${currentUserProjects?.[0]?._id}`);
+      navigate(`/projects/${projects[0]._id}`);
     }
-  }, [isLoading, currentUserProjects, navigate]);
+  }, [projects, navigate]);
 
   return (
     <>
       <Outlet />
-      {isOpen && <RootModal isOpen={isOpen} onClose={() => setIsOpen(false)} />}
+      {isOpen && !isLoading && (<RootModal isOpen={isOpen} onClose={() => {}} />)}
     </>
   );
 };

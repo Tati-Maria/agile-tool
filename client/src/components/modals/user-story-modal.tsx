@@ -21,13 +21,11 @@ export const UserStoryModal: React.FC<UserStoryModal> = ({isOpen, isClose, proje
     const onSubmit = async (values: UserStory) => {
         try {
             const res = await createUserStory({
-                formData: {
-                    name: values.name,
-                    description: values.description,
-                    project: projectId,
-                    estimationPoints: values.estimationPoints,
-                    acceptanceCriteria: transformStringToArr(values.acceptanceCriteria || ""),
-                }
+                project: projectId as string,
+                name: values.name,
+                description: values.description,
+                acceptanceCriteria: transformStringToArr(values.acceptanceCriteria || ""),
+                estimationPoints: values.estimationPoints,
             }).unwrap();
             console.log(res);
             toast.success(res.message);
