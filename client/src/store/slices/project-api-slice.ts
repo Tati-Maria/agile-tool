@@ -47,6 +47,20 @@ export const projectApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Project"],
         }),
+        removeUserFromProject: builder.mutation({
+            query: ({ id, userId }) => ({
+                url: `${PROJECT_API_URL}/${id}/team/${userId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Project"],
+        }),
+        makeProjectActiveOrInactive: builder.mutation({
+            query: (id) => ({
+                url: `${PROJECT_API_URL}/${id}/active`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["Project"],
+        }),
     }),
 });
 
@@ -58,4 +72,6 @@ export const {
     useGetTeamQuery,
     useOnboardUserMutation,
     useDeleteProjectMutation,
+    useRemoveUserFromProjectMutation,
+    useMakeProjectActiveOrInactiveMutation,
 } = projectApiSlice;

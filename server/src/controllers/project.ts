@@ -212,6 +212,7 @@ const getTeam = asyncHandler(async (req: Request, res: Response) => {
 
     const team = await User.find({ _id: { $in: project.team } })
     .sort({ createdAt: -1 })
+    .populate('team', 'name avatar role email')
     .exec();
 
     res.status(200).json(team);
@@ -247,4 +248,25 @@ const removeUserFromProject = asyncHandler(async (req: Request, res: Response) =
 
 });
 
-export { createProject, onboardUser, getProjects, getProject, updateProject, deleteProject, getTeam, removeUserFromProject };
+// @desc Make project inactive or active
+// @route PATCH /api/projects/:id/active
+// @access Private
+const makeProjectActiveOrInactive = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const project = await Project.findById(req.params.id).exec();
+    if(!project) {
+        res.status(404);
+        throw new Error('Project not found');
+    } else if(project.owner._id.toString() !== req.user?._id.toString()) {
+        res.status(401);
+        throw new Error('You are not authorized to perform this action');
+    } else {
+        project.isActive = !project.isActive;
+        await project.save();
+        res.status(200).json({
+            message: 'Project status updated successfully',
+            isActive: project.isActive,
+        });
+    }
+});
+
+export { createProject, onboardUser, getProjects, getProject, updateProject, deleteProject, getTeam, removeUserFromProject, makeProjectActiveOrInactive };

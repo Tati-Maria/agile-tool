@@ -82,7 +82,7 @@ const ProjectList = () => {
                   <TableCell>{project.owner?.name}</TableCell>
                   <TableCell>{project.team?.length}</TableCell>
                   <TableCell>
-                    <ProjectRowActions data={project._id} />
+                    <ProjectRowActions isActive={project.isActive} data={project._id} />
                   </TableCell>
                 </TableRow>
               ))}

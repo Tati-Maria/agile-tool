@@ -3,7 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useDeleteProjectMutation } from '@/store/slices/project-api-slice';
+import {
+  useDeleteProjectMutation,
+  useMakeProjectActiveOrInactiveMutation,
+} from '@/store/slices/project-api-slice';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,18 +19,33 @@ import {
 import DeleteModal from '@/components/modals/delete-modal';
 
 interface ActionsProps {
-  data: string
+  data: string;
+  isActive?: boolean;
 }
 
-export default function ProjectRowActions({ data }: ActionsProps) {
+export default function ProjectRowActions({ data, isActive }: ActionsProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [deleteProject, { isLoading }] = useDeleteProjectMutation();
+  const [makeProjectActiveOrInactive, { isLoading: isPending }] =
+    useMakeProjectActiveOrInactiveMutation();
 
   const handleDelete = async () => {
     try {
       const res = await deleteProject(data).unwrap();
+      toast.success(res.message);
+      navigate('/projects');
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message);
+    }
+  };
+
+  //handle make project active or inactive
+  const handleActiveOrInactive = async () => {
+    try {
+      const res = await makeProjectActiveOrInactive(data).unwrap();
       toast.success(res.message);
       navigate('/projects');
     } catch (error) {
@@ -67,7 +85,13 @@ export default function ProjectRowActions({ data }: ActionsProps) {
               <DropdownMenuItem>
                 <Link to={`/projects/${data}/update-project`}>Edit</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>Archive</DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={handleActiveOrInactive}
+                disabled={isPending}
+              >
+                {isActive ? 'Make Inactive' : 'Make Active'}
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer"
