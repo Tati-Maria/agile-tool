@@ -23,9 +23,11 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         }),
         getProjects: builder.query<Project[], void>({
             query: () => `${PROJECT_API_URL}`,
+            providesTags: ["Project"],
         }),
         getProject: builder.query({
             query: (id) => `${PROJECT_API_URL}/${id}`,
+            providesTags: ["Project"],
         }),
         getTeam: builder.query({
             query: (id) => `${PROJECT_API_URL}/${id}/team`,

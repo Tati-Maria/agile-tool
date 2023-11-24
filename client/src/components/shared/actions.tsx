@@ -27,7 +27,7 @@ const Actions = ({route}: ActionsProps) => {
         <DropdownMenuSeparator />
             <DropdownMenuItem>
                 <HiOutlinePencilAlt className='h-4 w-4 mr-2' />
-                <Link to={`${route}/edit`}>Edit</Link>
+                <Link to={`${route}/update`}>Edit</Link>
             </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>

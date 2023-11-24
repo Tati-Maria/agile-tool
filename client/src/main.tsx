@@ -24,7 +24,7 @@ import {
   UpdateProjectPage,
 } from '@/screens/_projects/pages';
 import NotFound from '@/errors/not-found.tsx';
-import ErrorLog from './errors/error-page.tsx';
+import ErrorLog from '@/errors/error-page.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,9 +40,16 @@ const router = createBrowserRouter(
       <Route path="" element={<ProtectedPages />}>
         <Route path="" element={<ProjectLayout />}>
           <Route path="projects" element={<ProjectsPage />} />
-          <Route path="projects/:projectId" errorElement={<ErrorLog />} element={<ProjectIdLayout />}>
-            <Route index element={<ProjectPage />} />
-            <Route path="projects/:projectId/update" element={<UpdateProjectPage />} />
+          <Route
+            path=""
+            errorElement={<ErrorLog />}
+            element={<ProjectIdLayout />}
+          >
+            <Route path="projects/:projectId" element={<ProjectPage />} />
+            <Route
+              path="projects/:projectId/update"
+              element={<UpdateProjectPage />}
+            />
           </Route>
         </Route>
       </Route>

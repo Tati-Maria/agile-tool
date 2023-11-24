@@ -150,7 +150,7 @@ const updateProject = asyncHandler(async (req: Request, res: Response) => {
         logo,
     } = req.body;
 
-    if (logo) {
+    if(logo) {
         const result: any = await uploadLogo(logo);
         await deleteLogo(project.logoPublicId);
         project.logo = result.secure_url;

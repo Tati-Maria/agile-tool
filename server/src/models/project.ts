@@ -74,6 +74,7 @@ projectSchema.pre("deleteOne", {document: true}, async function (next) {
     await project.model("UserStory").deleteMany({project: project._id});
     await project.model("Task").deleteMany({project: project._id});
     await project.model("Activity").deleteMany({project: project._id});
+    await project.model("User").updateMany({projects: project._id}, {$pull: {projects: project._id}});
     next();
 });
 

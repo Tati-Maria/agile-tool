@@ -19,7 +19,7 @@ interface ActionsProps {
   data: string
 }
 
-export default function DataTableRowActions({ data }: ActionsProps) {
+export default function ProjectRowActions({ data }: ActionsProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);

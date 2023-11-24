@@ -38,7 +38,7 @@ export const RootModal = ({ isOpen, onClose }: RootModalProps) => {
       }).unwrap();
       onClose();
       toast.success(`Project ${res.name} created!`);
-      navigate(`/projects/${res.id}`);
+      navigate(`/projects/${res._id}`);
     } catch (error) {
       const errorMessage = error as string;
       toast.error(errorMessage);

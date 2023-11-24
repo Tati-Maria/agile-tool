@@ -96,9 +96,9 @@ export const CreateProjectForm = ({
             </FormItem>
         )} 
         />
-        <Button type='submit' variant={"brand"} size={"sm"}>
+        <Button className='w-full' type='submit' variant={"brand"} size={"sm"}>
             {buttonText}
-            {isLoading && form.formState.isSubmitting ? (<Icons.spinner className='animate-spin ml-2 h-4 w-4' />) : (<Icons.plus className='ml-2 h-4 w-4' />)}
+            {isLoading && form.formState.isSubmitting ? (<Icons.spinner className='animate-spin ml-2 h-4 w-4' />) : (<Icons.plusCircle className='ml-2 h-4 w-4' />)}
         </Button>
       </form>
     </Form>

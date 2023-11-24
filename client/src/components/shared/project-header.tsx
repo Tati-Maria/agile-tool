@@ -15,14 +15,14 @@ interface ProjectHeaderProps {
   projectId: string | undefined;
 }
 
-const ProjectHeader = ({routes, projectId}: ProjectHeaderProps) => {
+const ProjectHeader = ({routes}: ProjectHeaderProps) => {
   const { user } = useAuth();
   const location = useLocation();
 
   return (
     <nav className="flex-between py-4  border-b mb-10 max-w-[1450px] mx-auto px-4">
       <div className='flex-center space-x-16'>
-        <NavLink className={"flex-center space-x-1"} to={`/projects/${projectId}`}>
+        <NavLink className={"flex-center space-x-1"} to={`/projects`}>
           <img src="/icons/logo.svg" alt="logo" width={40} height={40} />
           <span className='font-bold text-lg'>Worktec</span>
         </NavLink>

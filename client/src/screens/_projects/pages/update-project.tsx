@@ -6,6 +6,7 @@ import { DateRange } from "react-day-picker";
 import { addDays} from "date-fns";
 import { ProjectSchemaType } from "@/lib/validation/project";
 import { toast } from "sonner";
+import { convertBase64 } from "@/lib/utils";
 
 import { CreateProjectForm } from "@/components/forms/create-project-form";
 import { DatePicker } from "@/components/forms/date-picker";
@@ -25,6 +26,7 @@ export default function UpdateProjectPage() {
         to: new Date(project?.endDate || addDays(Date.now(), 7))
     });
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    console.log(project)
     
 
     if(!projectId) {
@@ -47,14 +49,14 @@ export default function UpdateProjectPage() {
     async function handleUpdateProject(values: ProjectSchemaType) {
         try {
             const res = await updateProject({
-                id: projectId,
-                formData: {
-                    name: values.name,
-                    description: values.description,
-                    startDate: date?.from,
-                    endDate: date?.to
-                }
-
+              id: projectId,
+              formData: {
+                name: values.name,
+                description: values.description,
+                startDate: date?.from,
+                endDate: date?.to,
+                logo: await convertBase64(values?.logo?.[0] as File),
+              },
             }).unwrap();
             console.log(res);
             toast.success('Project updated successfully');

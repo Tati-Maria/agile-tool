@@ -1,8 +1,4 @@
-import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { RootModal } from '@/components/modals/root-modal';
-import { useGetProjectsQuery } from '@/store/slices/project-api-slice';
-import { useNavigate } from 'react-router-dom';
 import { useSetDocumentTitle } from '@/hooks/user-document-title';
 
 /*
@@ -15,21 +11,10 @@ import { useSetDocumentTitle } from '@/hooks/user-document-title';
 
 const ProjectLayout = () => {
   useSetDocumentTitle('Projects');
-  const [isOpen, setIsOpen] = useState(true);
-  const navigate = useNavigate();
-  const { data: projects, isLoading } = useGetProjectsQuery();
-
-  useEffect(() => {
-    if (projects?.length) {
-      setIsOpen(false);
-      navigate(`/projects/${projects[0]._id}`);
-    }
-  }, [projects, navigate]);
-
+ 
   return (
     <>
       <Outlet />
-      {isOpen && !isLoading && (<RootModal isOpen={isOpen} onClose={() => {}} />)}
     </>
   );
 };
