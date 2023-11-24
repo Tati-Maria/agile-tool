@@ -19,6 +19,7 @@ export interface ITask extends Document {
 enum TaskStatus {
     TO_DO = "To Do",
     IN_PROGRESS = "In Progress",
+    QUALITY_CHECK = "Quality Check",
     DONE = "Done",
 }
 
