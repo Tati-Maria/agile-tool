@@ -3,7 +3,7 @@ import { Modal } from "@/components/modals/modal";
 import { CreateUserStoryForm } from "@/components/forms/create-user-story-form";
 
 import { useCreateUserStoryMutation } from "@/store/slices/user-story-api-slice";
-import { transformStringToArr } from "@/lib/utils";
+import { transformStringToArray} from "@/lib/utils";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { UserStory } from "@/lib/validation/user-story";
@@ -24,12 +24,12 @@ export const UserStoryModal: React.FC<UserStoryModal> = ({isOpen, isClose, proje
                 project: projectId as string,
                 name: values.name,
                 description: values.description,
-                acceptanceCriteria: transformStringToArr(values.acceptanceCriteria || ""),
+                acceptanceCriteria: transformStringToArray(values.acceptanceCriteria as string),
                 estimationPoints: values.estimationPoints,
             }).unwrap();
             console.log(res);
             toast.success(res.message);
-            navigate(`/projects/${projectId}/user-stories/${res._id}`)
+            navigate(`/projects/${projectId}/user-stories`)
             isClose();
         } catch (error) {
             const {data} = error as any;

@@ -24,6 +24,7 @@ import {
   UpdateProjectPage,
   MembersPage,
   SprintPage,
+  UserStoriesPage,
 } from '@/screens/_projects/pages';
 import NotFound from '@/errors/not-found.tsx';
 import ErrorLog from '@/errors/error-page.tsx';
@@ -52,6 +53,7 @@ const router = createBrowserRouter(
               path="projects/:projectId/update"
               element={<UpdateProjectPage />}
             />
+            <Route path='projects/:projectId/user-stories' element={<UserStoriesPage />} />
             <Route path="projects/:projectId/sprints" element={<SprintPage />} />
             <Route path="projects/:projectId/team" element={<MembersPage />} />
           </Route>

@@ -81,7 +81,7 @@ export type UserStory = {
     _id: string;
     name: string;
     description: string | null;
-    acceptanceCriteria: string | null;
+    acceptanceCriteria: string[]
     estimationPoints: number;
     project: Project;
     tasks: Task[];

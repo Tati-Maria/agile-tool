@@ -1,4 +1,4 @@
-import { Loading, Typography, UserStoryList } from "@/components/shared";
+import { Loading, Typography } from "@/components/shared";
 import AvatarGroup from "@/components/shared/avatar-group";
 import EmptyState from "@/components/shared/empty-state";
 import ProjectIntro from "@/components/shared/project-intro";
@@ -43,9 +43,6 @@ const ProjectPage = () => {
       <Typography>
         {project.description}
       </Typography>
-      <UserStoryList
-      projectId={project._id}
-      />
     </section>
   );
 }

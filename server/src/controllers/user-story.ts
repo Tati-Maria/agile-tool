@@ -108,10 +108,7 @@ const getUserStoryById = asyncHandler(async (req: IUserRequest, res: Response) =
         res.status(404);
         throw new Error('User story not found');
     } else {
-        res.status(200).json({
-            message: 'User story found',
-            userStory,
-        });
+        res.status(200).json(userStory);
     }
 });
 
@@ -124,10 +121,7 @@ const getUserStoriesByProjectId = asyncHandler(async (req: IUserRequest, res: Re
         res.status(404);
         throw new Error('User stories not found');
     } else {
-        res.status(200).json({
-            message: 'User stories found',
-            userStories,
-        });
+        res.status(200).json(userStories);
     }
 });
 

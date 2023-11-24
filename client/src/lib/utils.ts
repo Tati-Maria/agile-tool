@@ -28,24 +28,6 @@ export function formatDateRange(startDate: Date, endDate: Date) {
   return `${formattedStartDate} - ${formattedEndDate} (${daysLeftText})`
 }
 
-export function separateBySpace(text: string) {
-  return text.split(' ')
-}
-
-export function separateByComma(text: string) {
-  return text.split(',')
-}
-
-export function separateByNewLine(text: string) {
-  return text.split('\n')
-}
-
-export function transformStringToArr(text: string) {
-  const arr = separateBySpace(text)
-  return arr.filter((item) => item !== '')
-}
-
-
 //get sprint status
 export function getSprintStatus(startDate: Date, endDate: Date) {
   const today = new Date();
@@ -94,4 +76,18 @@ export function getTaskStatus(taskDeadLine: Date) {
   }
 
   return 'Unknown Deadline Status'
+}
+
+export function transformStringToArray(inputString: string): string[] {
+  const lines = inputString.split('\n');
+  const outputArray: string[] = [];
+
+  lines.forEach((line) => {
+    const match = line.match(/^\s*([\d]+-|\*)\s*(.*)/);
+    if(match) {
+      outputArray.push(match[2].trim());
+    }
+  });
+
+  return outputArray;
 }
