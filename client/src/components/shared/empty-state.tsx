@@ -8,7 +8,7 @@ interface EmptyStateProps extends React.HTMLAttributes<HTMLElement> {
 
 const EmptyState = ({ text, desc, className, ...rest }: EmptyStateProps) => {
   return (
-    <div {...rest} className={cn('flex-col-center items-center justify-center space-y-1', className)}>
+    <div {...rest} className={cn('flex-col-center items-center justify-center space-y-1 h-full', className)}>
       <Typography className="mb-2 text-base font-light text-center text-muted-foreground">
         {text}
       </Typography>

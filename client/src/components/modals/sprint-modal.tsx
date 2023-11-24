@@ -25,7 +25,7 @@ const SprintModal = ({ isClose, isOpen, projectId }: SprintModalProps) => {
         endDate: values.endDate,
       }).unwrap();
       toast.success(res.message);
-      navigate(`/projects/${projectId}/sprints/${res._id}`);
+      navigate(`/projects/${projectId}/sprints`);
       isClose();
     } catch (error) {
       const err = error as Error;

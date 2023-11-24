@@ -41,12 +41,12 @@ const ProjectIdLayout = () => {
     ];
 
     return (
-        <div>
+        <div className="h-full">
             <ProjectHeader 
             routes={routes}
             projectId={projectId}
             />
-            <main className="max-w-[1450px] mx-auto px-4">
+            <main className="max-w-[1450px] mx-auto px-4 h-full">
                 <Outlet />
                 {/* Project Activity Logs */}
             </main>

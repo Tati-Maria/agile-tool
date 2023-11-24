@@ -132,10 +132,7 @@ const getSprintsByProject = asyncHandler(async (req: IUserRequest, res: Response
         res.status(404);
         throw new Error('No sprints found');
     } else {
-        res.status(200).json({
-            message: 'Sprints found',
-            sprints,
-        });
+        res.status(200).json(sprints);
     }
 });
 
