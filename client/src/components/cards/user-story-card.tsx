@@ -1,21 +1,31 @@
 import { Link } from "react-router-dom"
 import { Heading, Typography } from "@/components/shared"
-import { UserStory } from "@/types";
+import { User, UserStory } from "@/types";
 import { VscDebugBreakpointFunctionUnverified } from 'react-icons/vsc';
 import { CiViewList } from 'react-icons/ci';
 import { FcTodoList } from 'react-icons/fc';
 import { Button } from "../ui/button";
 import { useState } from "react";
+import TaskModal from "../modals/task-modal";
 
 interface UserStoryCardProps {
     userStory: UserStory;
+    team: User[];
 }
 
-const UserStoryCard = ({userStory}: UserStoryCardProps) => {
+const UserStoryCard = ({userStory, team}: UserStoryCardProps) => {
     const [openModal, setOpenModal] = useState(false);
 
   return (
     <>
+    {openModal && (
+      <TaskModal 
+      team={team}
+      isOpen={openModal}
+      onClose={() => setOpenModal(false)}
+      userStoryId={userStory._id}
+      />
+    )}
       <li className="flex-col-center space-y-2 border p-4 rounded-sm shadow-sm border-t-4 border-t-violet-400">
         <Heading className="hover:text-violet-500 text-lg w-max" level={3}>
           <Link className="w-full" to={`/user-stories/${userStory._id}`}>
@@ -43,7 +53,9 @@ const UserStoryCard = ({userStory}: UserStoryCardProps) => {
           </Typography>
         </div>
         <div>
-          <Button variant={'brand'} className="h-7 w-full mt-4">
+          <Button 
+          onClick={() => setOpenModal(true)}
+          variant={'brand'} className="h-7 w-full mt-4">
             Add Task
           </Button>
         </div>

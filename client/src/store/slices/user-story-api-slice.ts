@@ -45,6 +45,13 @@ export const userStoryApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ["UserStory"],
         }),
+        addTaskToUserStory: builder.mutation({
+            query: ({userStoryId, formData}) => ({
+                url: `${USER_STORY_API_URL}/${userStoryId}/add-task`,
+                method: "PATCH",
+                body: formData,
+            })
+        }),
     }),
 });
 
@@ -54,4 +61,6 @@ export const {
     useDeleteUserStoryMutation,
     useGetUserStoryQuery,
     useGetProjectUserStoriesQuery,
+    useSearchUserStoriesQuery,
+    useAddTaskToUserStoryMutation,
 } = userStoryApiSlice;

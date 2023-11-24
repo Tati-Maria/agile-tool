@@ -91,3 +91,42 @@ export function transformStringToArray(inputString: string): string[] {
 
   return outputArray;
 }
+
+export function convertArrayToString(inputArray: string[]): string {
+  let resultString = '';
+
+  inputArray.forEach((item, index) => {
+    const prefix = index + 1 + '-'; // Use index + 1 for numbering
+    resultString += `${prefix} ${item}\n`;
+  });
+
+  return resultString;
+}
+
+export function getTaskPriorityColor(priority: string) {
+  switch(priority) {
+    case 'Low':
+      return 'border-l-4 border-green-500';
+    case 'Medium':
+      return 'border-l border-yellow-500';
+    case 'High':
+      return 'border-l-4 border-red-500';
+    default:
+      return 'border-l-4 border-green-500';
+  }
+}
+
+export function taskStatusColor(status: string) {
+  switch(status) {
+    case 'To Do':
+      return 'bg-sky-200 text-sky-800 dark:bg-sky-800 dark:text-sky-200';
+    case 'In Progress':
+      return 'bg-violet-200 text-violet-800 dark:bg-violet-800 dark:text-violet-200';
+    case 'Quality Check':
+      return 'bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200';
+    case 'Done':
+      return 'bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200'; 
+    default:
+      return 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
+  }
+}

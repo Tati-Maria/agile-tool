@@ -45,7 +45,7 @@ const UserStoryPage = () => {
             Add User Story
           </Button>
         </div>
-        <UserStoryList userStories={data} isLoading={isLoading} />
+        <UserStoryList userStories={data} isLoading={isLoading} projectId={projectId!} />
       </section>
     </>
   );

@@ -61,7 +61,7 @@ export const TaskForm = ({
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             name="name"
             control={form.control}
@@ -164,7 +164,7 @@ export const TaskForm = ({
                         </SelectItem>
                       ))}
                     </SelectGroup>
-                    <SelectGroup>
+                    {/* <SelectGroup>
                       <SelectLabel>Others</SelectLabel>
                       {team?.map(member => (
                         <SelectItem key={member._id} value={member._id}>
@@ -180,7 +180,7 @@ export const TaskForm = ({
                           <span>{member.name}</span>
                         </SelectItem>
                       ))}
-                    </SelectGroup>
+                    </SelectGroup> */}
                   </SelectContent>
                 </Select>
               </FormItem>
@@ -200,7 +200,7 @@ export const TaskForm = ({
                 </FormItem>
             )}
           />
-          <div className="flex-center space-x-4 justify-end">
+          <div className="flex items-center space-x-4 justify-end">
             <Button variant={'outline'} type="button" onClick={onCancel}>
               Cancel
             </Button>

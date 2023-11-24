@@ -96,6 +96,7 @@ const deleteUserStory = asyncHandler(async (req: IUserRequest, res: Response) =>
 
     res.status(200).json({
         message: 'User story deleted successfully',
+        projectId: userStory?.project,
     });
 });
 
@@ -148,32 +149,38 @@ const searchUserStories = asyncHandler(async (req: IUserRequest, res: Response) 
 // @route   PATCH /api/user-stories/:id/add-task
 // @access  Private
 const addTaskToUserStory = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const {name, description, status, priority, dueDate, assignedTo, sprint} = req.body;
     const userStory = await UserStory.findById(req.params.id).exec();
     if(!userStory) {
         res.status(404);
         throw new Error('User story not found');
     } else {
-        const {task} = req.body;
-        const taskExists = await Task.findById(task).exec();
-        if(!taskExists) {
-            res.status(404);
-            throw new Error('Task not found');
-        }
-        userStory.tasks.push(task);
+        const task = await Task.create({
+            name,
+            description,
+            status,
+            priority,
+            dueDate,
+            assignedTo,
+            sprint,
+        });
+
+        userStory.tasks.push(task._id);
         await userStory.save();
 
         await Activity.create({
             user: req.user?._id,
             action: 'updated',
-            details: `${taskExists.name} was added to user story: ${userStory.name}`,
+            details: `${task.name} was added to user story: ${userStory.name}`,
             entity: 'user story',
             entityId: userStory._id,
-        });
+        }); 
 
         res.status(200).json({
             message: 'Task added to user story successfully',
             name: userStory.name,
             _id: userStory._id,
+            projectId: userStory.project,
         });
     }
 });
