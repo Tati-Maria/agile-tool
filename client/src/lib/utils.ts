@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import {format, differenceInDays} from 'date-fns'
+import {format, differenceInDays, isBefore, isAfter, isToday, isTomorrow} from 'date-fns'
  
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -43,4 +43,55 @@ export function separateByNewLine(text: string) {
 export function transformStringToArr(text: string) {
   const arr = separateBySpace(text)
   return arr.filter((item) => item !== '')
+}
+
+
+//get sprint status
+export function getSprintStatus(startDate: Date, endDate: Date) {
+  const today = new Date();
+
+  //check if the sprint has already started
+  if (isBefore(today, startDate)) {
+    return 'Not Started'
+  }
+
+  //check if the sprint is ongoing
+  if (isAfter(today, startDate) && isBefore(today, endDate)) {
+    return 'Started'
+  }
+
+  //check if the sprint has ended
+  if (isAfter(today, endDate)) {
+    return 'Done'
+  }
+
+  return 'Unknown'
+}
+
+export function getTaskStatus(taskDeadLine: Date) {
+  const today = new Date();
+
+  const daysUntilDeadline = differenceInDays(taskDeadLine, today);
+
+  if(isToday(taskDeadLine)) {
+    return 'Today'
+  }
+
+  if(isTomorrow(taskDeadLine)) {
+    return 'Tomorrow'
+  }
+
+  if(daysUntilDeadline < 0) {
+    return 'Overdue'
+  }
+
+  if(isAfter(taskDeadLine, today) && daysUntilDeadline <= 3) {
+    return 'Due soon'
+  }
+
+  if(isBefore(taskDeadLine, today) && daysUntilDeadline > 3) {
+    return 'Overdue'
+  }
+
+  return 'Unknown Deadline Status'
 }

@@ -11,8 +11,12 @@ const ProjectIdLayout = () => {
             label: 'Overview'
         },
         {
-            href: `/projects/${projectId}/calendar`,
-            label: 'Calendar'
+            href: `/projects/${projectId}/user-stories`,
+            label: 'User Stories'
+        },
+        {
+            href: `/projects/${projectId}/sprints`,
+            label: 'Sprints'
         },
         {
             href: `/projects/${projectId}/tasks`,

@@ -1,35 +1,32 @@
-import { useState } from 'react';
-import { Heading } from '.';
-import { Button } from '../ui/button';
-import SprintModal from '../modals/sprint-modal';
+import { EmptyState, Loading } from '.';
+import { Sprint } from '@/types';
+import SprintCard from '@/components/cards/sprint-card';
 
 interface SprintListProps {
-  projectId: string;
+  sprints: Sprint[] | undefined;
+  isLoading: boolean;
+  projectId: string | undefined;
 }
 
-const SprintList = ({ projectId }: SprintListProps) => {
-    const [isOpen, setIsOpen] = useState(false);
-
+const SprintList = ({ sprints, isLoading }: SprintListProps) => {
   return (
-    <>
-    {isOpen && (
-      <SprintModal 
-      projectId={projectId}
-      isOpen={isOpen}
-      isClose={() => setIsOpen(false)}
-      />
-    )}
-      <section>
-        <div className="flex-between">
-          <Heading level={2}>Sprints</Heading>
-          <Button onClick={() => setIsOpen(true)}>
-            <span className="hidden md:block">Create Sprint</span>
-            <span className="md:hidden">+</span>
-          </Button>
-        </div>
-        {/* DIspplay current active sprint */}
-      </section>
-    </>
+    <section className="h-full py-5">
+      {isLoading && <Loading />}
+      {!isLoading && sprints && sprints.length > 0 ? (
+        <ul>
+          {sprints.map((sprint) => (
+            <SprintCard
+            key={sprint._id}
+            sprint={sprint} 
+            />
+          ))}
+        </ul>
+      ) : (
+        <>
+          <EmptyState text="No Sprints Found" desc="Add one to get started" />
+        </>
+      )}
+    </section>
   );
 };
 
