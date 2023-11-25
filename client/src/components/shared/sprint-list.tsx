@@ -13,14 +13,14 @@ const SprintList = ({ sprints, isLoading }: SprintListProps) => {
     <section className="h-full py-5">
       {isLoading && <Loading />}
       {!isLoading && sprints && sprints.length > 0 ? (
-        <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
           {sprints.map((sprint) => (
             <SprintCard
             key={sprint._id}
             sprint={sprint} 
             />
           ))}
-        </ul>
+        </div>
       ) : (
         <>
           <EmptyState text="No Sprints Found" desc="Add one to get started" />

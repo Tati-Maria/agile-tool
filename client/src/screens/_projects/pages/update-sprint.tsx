@@ -84,14 +84,14 @@ const UpdateSprintPage = () => {
           onConfirm={handleDeleteSprint}
         />
       )}
-      <section className="h-full py-5">
+      <section className="h-full space-y-5 py-5">
         <Heading level={1}>{`Update Sprint ${sprint?.name}`}</Heading>
         <CreateSprintForm
           values={sprint}
           onSubmit={onSubmit}
           buttonText="Update Sprint"
         />
-        <div>
+        <div className='mt-5'>
           <Button
             className="w-full sm:w-max"
             variant={'destructive'}

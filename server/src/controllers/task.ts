@@ -158,13 +158,6 @@ const getTaskById = asyncHandler(async (req: Request, res: Response) => {
     }).populate({
         path: 'assignedTo',
         select: 'name email avatar role',
-    }).populate({
-        path: 'comments',
-        select: 'text author createdAt updatedAt',
-        populate: {
-            path: 'author',
-            select: 'name email avatar role',
-        }
     }).exec();
     if(!task) {
         res.status(404);

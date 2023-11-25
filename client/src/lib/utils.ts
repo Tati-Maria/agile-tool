@@ -131,3 +131,9 @@ export function taskStatusColor(status: string) {
       return 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
   }
 }
+
+const requiredRoles = ["Product Owner", "Scrum Master", "Developer", "Tester", "UI/UX Designer", "QA", "DevOps"];
+
+export function hasAccess(role: string) {
+  return requiredRoles.includes(role);
+}

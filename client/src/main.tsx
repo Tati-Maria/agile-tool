@@ -27,7 +27,11 @@ import {
   UserStoriesPage,
   UserStoryByIdPage,
   UpdateUserStoryPage,
-  ProjectTasksPage
+  ProjectTasksPage,
+  UpdateSprintPage,
+  TaskPage,
+  UpdateTaskPage,
+SprintByIdPage
 } from '@/screens/_projects/pages';
 import NotFound from '@/errors/not-found.tsx';
 import ErrorLog from '@/errors/error-page.tsx';
@@ -60,10 +64,12 @@ const router = createBrowserRouter(
             <Route path="projects/:projectId/sprints" element={<SprintPage />} />
             <Route path="projects/:projectId/tasks" element={<ProjectTasksPage />} />
             <Route path="projects/:projectId/team" element={<MembersPage />} />
-            <Route path="user-stories/:userStoryId" element={<UserStoryByIdPage />} />
-            <Route path="user-stories/:userStoryId/update" element={<UpdateUserStoryPage />} />
-            <Route path="sprints/:sprintId" element={<></>} />
-            <Route path='sprints/:sprintId/update' element={<></>} />
+            <Route path="projects/:projectId/user-stories/:userStoryId" element={<UserStoryByIdPage />} />
+            <Route path="projects/:projectId/user-stories/:userStoryId/update" element={<UpdateUserStoryPage />} />
+            <Route path="projects/:projectId/sprints/:sprintId" element={<SprintByIdPage />} />
+            <Route path='projects/:projectId/sprints/:sprintId/update' element={<UpdateSprintPage />} />
+            <Route path="projects/:projectId/tasks/:taskId" element={<TaskPage />} />
+            <Route path="projects/:projectId/tasks/:taskId/update" element={<UpdateTaskPage />} />
           </Route>
         </Route>
       </Route>

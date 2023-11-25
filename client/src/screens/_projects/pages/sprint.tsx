@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams} from "react-router-dom"
 import { useGetSprintByIdQuery } from "@/store/slices/sprint-api-slice"
 import { EmptyState, Loading } from "@/components/shared";
 import SprintCard from "@/components/cards/sprint-card";
@@ -13,7 +13,8 @@ const Sprint = () => {
         {isLoading && <Loading />}
         {!isLoading && !sprint && <EmptyState text="No sprint found" />}
         {!isLoading && sprint && (
-            <SprintCard sprint={sprint} />
+            <SprintCard 
+            sprint={sprint} />
         )}
     </section>
   )

@@ -1,6 +1,7 @@
 import { Typography, Heading, EmptyState } from "@/components/shared"
 import {Button} from "@/components/ui/button";
 import AddTaskToSprintModal from "@/components/modals/add-task-to-sprint";
+import { BiEditAlt } from 'react-icons/bi';
 
 import { DiScrum } from 'react-icons/di';
 import { cn } from "@/lib/utils";
@@ -14,6 +15,7 @@ import { Sprint } from "@/types";
 import { format } from "date-fns";
 import { useState } from "react";
 import TaskSprintCArd from "./task-sprint";
+import { useLocation } from "react-router-dom";
 
 interface SprintCardProps {
     sprint: Sprint;
@@ -24,6 +26,7 @@ const SprintCard = ({sprint}: SprintCardProps) => {
     const done = getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) === 'Done';
     const started = getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) === 'Started';
     const upcoming = getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) === 'Not Started';
+    const location = useLocation();
 
   return (
     <>
@@ -35,11 +38,21 @@ const SprintCard = ({sprint}: SprintCardProps) => {
           onClose={() => setIsModalOpen(false)}
         />
       )}
-      <li className="flex-col-center border p-4 rounded-sm border-t-4">
+      <div className="flex-col-center border p-4 rounded-sm border-t-4">
         <div className="space-y-2">
           <Heading className="text-xl hover:link-text w-max" level={3}>
             <Link to={`/sprints/${sprint._id}`}>{sprint.name}</Link>
           </Heading>
+          {location.pathname === `/sprints/${sprint._id}` && (
+            <>
+            <Typography className="text-xs text-muted-foreground">
+              {sprint.goal}
+            </Typography>
+            <Link to={`/sprints/${sprint._id}/update`}>
+              <BiEditAlt className="inline-block" />
+            </Link>
+            </>
+          )}
           <div className="flex-between">
             <div className="flex-center space-x-1">
               <Typography
@@ -79,7 +92,7 @@ const SprintCard = ({sprint}: SprintCardProps) => {
         </div>
         <div className="flex flex-col space-y-6 mb-4 mt-7 h-full">
           {sprint.tasks?.map(task => (
-            <TaskSprintCArd task={task} key={task._id} />
+            <TaskSprintCArd sprint={sprint} task={task} key={task._id} />
           ))}
           {sprint.tasks?.length === 0 && (
             <EmptyState
@@ -108,7 +121,7 @@ const SprintCard = ({sprint}: SprintCardProps) => {
             </Button>
           </div>
         )}
-      </li>
+      </div>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetProjectQuery, useDeleteProjectMutation, useUpdateProjectMutation } from "@/store/slices/project-api-slice";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 import { addDays} from "date-fns";
 import { ProjectSchemaType } from "@/lib/validation/project";
@@ -14,11 +14,13 @@ import {EmptyState, Heading, Loading} from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import DeleteModal from "@/components/modals/delete-modal";
+import { Project } from "@/types";
 
 export default function UpdateProjectPage() {
     const {projectId} = useParams<{projectId: string}>();
     const navigate = useNavigate();
     const {data: project, isLoading} = useGetProjectQuery(projectId, {skip: !projectId});
+    const [projectData, setProjectData] = useState<Project | undefined>(project);
     const [updateProject, {isLoading: isUpdating}] = useUpdateProjectMutation();
     const [deleteProject, {isLoading: isDeleting}] = useDeleteProjectMutation();
     const [date, setDate] = useState<DateRange | undefined>({
@@ -26,7 +28,10 @@ export default function UpdateProjectPage() {
         to: new Date(project?.endDate || addDays(Date.now(), 7))
     });
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    console.log(project)
+    
+    useEffect(() => {
+        setProjectData(project);
+    }, [project])
     
 
     if(!projectId) {
@@ -109,7 +114,7 @@ export default function UpdateProjectPage() {
               buttonText="Update Project"
               onSubmit={handleUpdateProject}
               isLoading={isUpdating}
-              values={project}
+              values={projectData}
             />
           </div>
         </section>

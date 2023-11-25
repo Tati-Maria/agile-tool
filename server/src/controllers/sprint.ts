@@ -112,22 +112,22 @@ const deleteSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
 // @access Private
 const getSprintById = asyncHandler(async (req: IUserRequest, res: Response) => {
     const sprint = await Sprint.findById(req.params.id)
-    .populate({
-        path: "tasks",
-        select: "name status priority description createdAt updatedAt assignedTo",
+      .populate({
+        path: 'tasks',
+        select:
+          'name status priority description createdAt updatedAt assignedTo dueDate comments',
         populate: {
-            path: "assignedTo",
-            select: "name email avatar role",
-        }
-    }).populate("project", "name startDate endDate").exec();
+          path: 'assignedTo',
+          select: 'name email avatar role',
+        },
+      })
+      .populate('project', 'name startDate endDate')
+      .exec();
     if(!sprint) {
         res.status(404);
         throw new Error('Sprint not found');
     } else {
-        res.status(200).json({
-            message: 'Sprint found',
-            sprint,
-        });
+        res.status(200).json(sprint);
     }
 });
 

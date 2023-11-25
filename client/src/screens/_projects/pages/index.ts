@@ -10,3 +10,5 @@ export {default as UpdateTaskPage} from "./update-task";
 export {default as UpdateUserStoryPage} from "./update-user-story";
 export {default as UserStoryByIdPage} from "./user-story-by-id-page";
 export {default as ProjectTasksPage} from "./project-tasks";
+export {default as UpdateSprintPage} from "./update-sprint";
+export {default as SprintByIdPage} from "./sprint";

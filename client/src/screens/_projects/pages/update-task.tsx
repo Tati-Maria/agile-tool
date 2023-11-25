@@ -11,7 +11,8 @@ import { toast } from "sonner";
 const UpdateTask = () => {
     const { taskId } = useParams<{taskId: string}>();
     const {data: task, isLoading} = useGetTaskByIdQuery(taskId as string, {skip: !taskId});
-    const {data: project} = useGetProjectQuery(task?.sprint.project._id || '', {skip: !task?.sprint.project._id});
+    const {projectId} = useParams<{projectId: string}>();
+    const {data: project} = useGetProjectQuery(projectId);
     const team = project?.team;
     const navigate = useNavigate();
     useSetDocumentTitle(`Update Task ${task?.name}`);
@@ -52,7 +53,7 @@ const UpdateTask = () => {
             onSubmit={onSubmit}
             team={team}
             defaultValues={task}
-            onCancel={() => navigate(`/tasks/${task._id}`)}
+            onCancel={() => navigate(`/projects/${projectId}/tasks/${task?._id}`)}
             />
         )}
     </section>

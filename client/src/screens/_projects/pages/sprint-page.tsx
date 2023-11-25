@@ -10,7 +10,6 @@ const SprintPage = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const [showModal, setShowModal] = useState(false);
   const { data, isLoading } = useGetProjectSprintsQuery(projectId as string);
-  console.log(data)
 
   return (
     <>

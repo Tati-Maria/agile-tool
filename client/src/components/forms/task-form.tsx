@@ -51,12 +51,12 @@ export const TaskForm = ({
       status: defaultValues?.status ?? 'To Do',
       priority: defaultValues?.priority ?? 'Low',
       assignedTo: undefined || defaultValues?.assignedTo._id,
-      dueDate: new Date() || undefined || defaultValues?.dueDate,
+      dueDate: new Date(defaultValues?.dueDate ?? Date.now()) ?? undefined,
     },
   });
 
   //remove team members that have roles other than developer/qa/tester/ui/ux
-  const teamMembers = team.filter(member => {
+  const teamMembers = team?.filter(member => {
     return (
       member.role === 'Developer' ||
       member.role === 'QA' ||
@@ -65,7 +65,7 @@ export const TaskForm = ({
     );
   });
 
-  const otherTeamMembers = team.filter(member => {
+  const otherTeamMembers = team?.filter(member => {
     return (
       member.role !== 'Developer' &&
       member.role !== 'QA' &&
@@ -165,7 +165,7 @@ export const TaskForm = ({
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Developers</SelectLabel>
-                      {teamMembers.map(member => (
+                      {teamMembers?.map(member => (
                         <SelectItem key={member._id} value={member._id}>
                           <Avatar>
                             <AvatarImage
