@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { Heading, Typography } from "@/components/shared"
 import { User, UserStory } from "@/types";
 import { VscDebugBreakpointFunctionUnverified } from 'react-icons/vsc';
@@ -15,6 +15,7 @@ interface UserStoryCardProps {
 
 const UserStoryCard = ({userStory, team}: UserStoryCardProps) => {
     const [openModal, setOpenModal] = useState(false);
+    const {pathname} = useLocation();
 
   return (
     <>
@@ -28,7 +29,9 @@ const UserStoryCard = ({userStory, team}: UserStoryCardProps) => {
     )}
       <li className="flex-col-center space-y-2 border p-4 rounded-sm shadow-sm border-t-4 border-t-violet-400">
         <Heading className="hover:text-violet-500 text-lg w-max" level={3}>
-          <Link className="w-full" to={`/user-stories/${userStory._id}`}>
+          <Link className="w-full" 
+          to={`${pathname}/${userStory._id}`}
+          >
             {userStory.name}
           </Link>
         </Heading>

@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Task } from '@/types';
 import {format} from 'date-fns';
 import { GoComment } from 'react-icons/go';
+import { Link, useLocation } from 'react-router-dom';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import {getTaskPriorityColor, getTaskStatus, cn} from "@/lib/utils";
 import { FaArrowRight } from 'react-icons/fa6';
@@ -14,6 +15,8 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
+    const location = useLocation();
+
   return (
     <div
       className={cn(
@@ -38,7 +41,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
         >
           {task.priority}
         </Typography>
-        <Heading level={3}>{task.name}</Heading>
+        <Heading level={4} className="w-max">
+          <Link to={`${location.pathname}/${task._id}`}>{task.name}</Link>
+        </Heading>
         <Typography>{task.description}</Typography>
       </div>
       <div className="flex-between">

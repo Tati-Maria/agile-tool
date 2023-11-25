@@ -48,7 +48,7 @@ const SprintCard = ({sprint}: SprintCardProps) => {
             <Typography className="text-xs text-muted-foreground">
               {sprint.goal}
             </Typography>
-            <Link to={`/sprints/${sprint._id}/update`}>
+            <Link to={`/projects/${sprint.project._id}/sprints/${sprint._id}/update`}>
               <BiEditAlt className="inline-block" />
             </Link>
             </>

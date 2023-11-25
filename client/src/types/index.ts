@@ -56,12 +56,12 @@ export type Attachments = {
 }
 
 export type Comment = {
-    id: string;
+    _id: string;
     text: string;
     author: User;
     createdAt: string;
     updatedAt: string;
-    attachments: Document[];
+    task: Task;
 }
 
 enum TaskStatus {

@@ -23,7 +23,7 @@ import { Typography } from '../shared';
 interface TaskListFormProps {
   tasks: Task[] | undefined;
   onSubmit: (values: TaskToSprintFormData) => void;
-  values?: TaskToSprintFormData;
+  values?: Task[];
 }
 
 export const TaskListForm = ({
@@ -31,10 +31,11 @@ export const TaskListForm = ({
   onSubmit,
   values,
 }: TaskListFormProps) => {
+  
   const form = useForm<TaskToSprintFormData>({
     resolver: zodResolver(taskToSprintSchema),
     defaultValues: {
-      tasks: values?.tasks || [],
+      tasks: values?.map(task => task._id) ?? [],
     },
   });
 

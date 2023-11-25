@@ -1,5 +1,6 @@
 // Desc: Modal for adding a task to a sprint
 import { useGetProjectUserStoriesQuery } from "@/store/slices/user-story-api-slice";
+import { useGetSprintByIdQuery } from "@/store/slices/sprint-api-slice";
 import { toast } from "sonner";
 import { useAddTaskToSprintMutation } from "@/store/slices/sprint-api-slice";
 
@@ -18,8 +19,10 @@ interface AddTaskToSprintModalProps {
 
 const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSprintModalProps) => {
     const {data: userStories, isLoading: isUserStoriesLoading} = useGetProjectUserStoriesQuery(projectId, {skip: !projectId});
+    const {data: sprint} = useGetSprintByIdQuery(sprintId, {skip: !sprintId});
     const userStoriesWithTasks = userStories?.filter(userStory => userStory.tasks.length > 0);
     const tasks = userStoriesWithTasks?.map(userStory => userStory.tasks).flat();
+    const sprintTasks = sprint?.tasks;
     const [addTaskToSprint] = useAddTaskToSprintMutation();
 
     async function onSubmit(values: TaskToSprintFormData) {
@@ -53,6 +56,7 @@ const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSp
         <TaskListForm 
         tasks={tasks}
         onSubmit={onSubmit}
+        values={sprintTasks}
         />
       </ScrollArea>
     </Modal>
