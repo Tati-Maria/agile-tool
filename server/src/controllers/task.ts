@@ -147,7 +147,25 @@ const getTasks = asyncHandler(async (req: Request, res: Response) => {
 // @route   GET /api/tasks/:id
 // @access  Private
 const getTaskById = asyncHandler(async (req: Request, res: Response) => {
-    const task = await Task.findById(req.params.id).exec();
+    const task = await Task.findById(req.params.id)
+    .populate({
+        path: 'sprint',
+        select: 'name startDate endDate goal project',
+        populate: {
+            path: 'project',
+            select: 'name startDate endDate logo',
+        }
+    }).populate({
+        path: 'assignedTo',
+        select: 'name email avatar role',
+    }).populate({
+        path: 'comments',
+        select: 'text author createdAt updatedAt',
+        populate: {
+            path: 'author',
+            select: 'name email avatar role',
+        }
+    }).exec();
     if(!task) {
         res.status(404);
         throw new Error('Task not found');

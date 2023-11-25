@@ -27,13 +27,13 @@ import { FormGroup } from '@/components/shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { taskSchema, Task } from '@/lib/validation/task';
-import { User } from '@/types';
+import { User, Task as TaskType } from '@/types';
 import { taskPriorities, taskStatuses } from '@/constants';
 
 interface TaskFormProps {
   onSubmit: (data: Task) => void;
   onCancel: () => void;
-  defaultValues?: Task;
+  defaultValues?: TaskType;
   team: User[];
 }
 
@@ -45,7 +45,14 @@ export const TaskForm = ({
 }: TaskFormProps) => {
   const form = useForm<Task>({
     resolver: zodResolver(taskSchema),
-    defaultValues: defaultValues ?? {},
+    defaultValues: {
+      name: defaultValues?.name ?? '',
+      description: defaultValues?.description ?? '',
+      status: defaultValues?.status ?? 'To Do',
+      priority: defaultValues?.priority ?? 'Low',
+      assignedTo: undefined || defaultValues?.assignedTo._id,
+      dueDate: new Date() || undefined || defaultValues?.dueDate,
+    },
   });
 
   //remove team members that have roles other than developer/qa/tester/ui/ux
@@ -55,6 +62,15 @@ export const TaskForm = ({
       member.role === 'QA' ||
       member.role === 'Tester' ||
       member.role === 'UI/UX Designer'
+    );
+  });
+
+  const otherTeamMembers = team.filter(member => {
+    return (
+      member.role !== 'Developer' &&
+      member.role !== 'QA' &&
+      member.role !== 'Tester' &&
+      member.role !== 'UI/UX Designer'
     );
   });
 
@@ -164,9 +180,9 @@ export const TaskForm = ({
                         </SelectItem>
                       ))}
                     </SelectGroup>
-                    {/* <SelectGroup>
+                    <SelectGroup>
                       <SelectLabel>Others</SelectLabel>
-                      {team?.map(member => (
+                      {otherTeamMembers?.map(member => (
                         <SelectItem key={member._id} value={member._id}>
                           <Avatar>
                             <AvatarImage
@@ -180,7 +196,7 @@ export const TaskForm = ({
                           <span>{member.name}</span>
                         </SelectItem>
                       ))}
-                    </SelectGroup> */}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </FormItem>

@@ -67,7 +67,7 @@ export type Comment = {
 enum TaskStatus {
     TO_DO = 'To Do',
     IN_PROGRESS = 'In Progress',
-    IN_REVIEW = 'In Review',
+    QUALITY_CHECK = 'Quality Check',
     DONE = 'Done'
 }
 
