@@ -111,7 +111,15 @@ const deleteSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
 // @route GET /api/sprints/:id
 // @access Private
 const getSprintById = asyncHandler(async (req: IUserRequest, res: Response) => {
-    const sprint = await Sprint.findById(req.params.id).exec();
+    const sprint = await Sprint.findById(req.params.id)
+    .populate({
+        path: "tasks",
+        select: "name status priority description createdAt updatedAt assignedTo",
+        populate: {
+            path: "assignedTo",
+            select: "name email avatar role",
+        }
+    }).populate("project", "name startDate endDate").exec();
     if(!sprint) {
         res.status(404);
         throw new Error('Sprint not found');
@@ -127,7 +135,15 @@ const getSprintById = asyncHandler(async (req: IUserRequest, res: Response) => {
 // @route GET /api/sprints/project/:id
 // @access Private
 const getSprintsByProject = asyncHandler(async (req: IUserRequest, res: Response) => {
-    const sprints = await Sprint.find({project: req.params.id}).exec();
+    const sprints = await Sprint.find({project: req.params.id})
+    .populate({
+        path: "tasks",
+        select: "name status priority description createdAt updatedAt assignedTo",
+        populate: {
+            path: "assignedTo",
+            select: "name email avatar role",
+        }
+    }).populate("project", "name startDate endDate").exec();
     if(!sprints) {
         res.status(404);
         throw new Error('No sprints found');
@@ -140,35 +156,41 @@ const getSprintsByProject = asyncHandler(async (req: IUserRequest, res: Response
 // @route PATCH /api/sprints/:id/add-task
 // @access Private
 const addTaskToSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
-    // TODO: Add task to sprint
-    const sprint = await Sprint.findById(req.params.id).exec();
-    if(!sprint) {
-        res.status(404);
-        throw new Error('Sprint not found');
+    // here we need to check if the task is already in a sprint
+   const sprint = await Sprint.findById(req.params.id)
+    .populate('tasks', 'name')
+   if(!sprint) {
+    res.status(404);
+    throw new Error('Sprint not found');
+   }
+
+   const {task} = req.body;
+   const taskExists = await Task.findById(task).exec();
+    if(!taskExists) {
+         res.status(404);
+         throw new Error('Task not found');
     } else {
-        const {task} = req.body;
-        const taskExists = await Task.findById(task).exec();
-        if(!taskExists) {
-            res.status(404);
-            throw new Error('Task not found');
+        if(sprint.tasks.includes(task)) {
+            res.status(400);
+            throw new Error('Task already in sprint');
+        } else {
+            sprint.tasks.push(task);
+            await sprint.save();
+
+            await Activity.create({
+                user: req.user?._id,
+                action: 'added',
+                details: `task ${taskExists.name} was added to sprint: ${sprint.name}`,
+                entity: 'sprint',
+                entityId: sprint._id,
+            });
+
+            res.status(200).json({
+                message: 'Task added to sprint successfully',
+                name: sprint.name,
+                _id: sprint._id,
+            });
         }
-        sprint.tasks.push(task);
-        await sprint.save();
-
-        await Activity.create({
-            user: req.user?._id,
-            action: 'added',
-            details: `task ${taskExists.name} was added to sprint: ${sprint.name}`,
-            entity: 'sprint',
-            entityId: sprint._id,
-        });
-
-
-        res.status(200).json({
-            message: 'Task added to sprint successfully',
-            name: sprint.name,
-            _id: sprint._id,
-        });
     }
 });
 
