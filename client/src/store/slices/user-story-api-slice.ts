@@ -50,7 +50,8 @@ export const userStoryApiSlice = apiSlice.injectEndpoints({
                 url: `${USER_STORY_API_URL}/${userStoryId}/add-task`,
                 method: "PATCH",
                 body: formData,
-            })
+            }),
+            invalidatesTags: ["UserStory", "Task"],
         }),
     }),
 });

@@ -75,7 +75,8 @@ export function getTaskStatus(taskDeadLine: Date) {
     return 'Overdue'
   }
 
-  return 'Unknown Deadline Status'
+  //return task date
+  return format(taskDeadLine, 'LLL dd, y')
 }
 
 export function transformStringToArray(inputString: string): string[] {
@@ -108,7 +109,7 @@ export function getTaskPriorityColor(priority: string) {
     case 'Low':
       return 'border-l-4 border-green-500';
     case 'Medium':
-      return 'border-l border-yellow-500';
+      return 'border-l-4 border-yellow-500';
     case 'High':
       return 'border-l-4 border-red-500';
     default:

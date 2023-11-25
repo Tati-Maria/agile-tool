@@ -83,7 +83,7 @@ export default function ProjectRowActions({ data, isActive }: ActionsProps) {
           {user?.role === 'Product Owner' && (
             <>
               <DropdownMenuItem>
-                <Link to={`/projects/${data}/update-project`}>Edit</Link>
+                <Link to={`/projects/${data}/update`}>Edit</Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"

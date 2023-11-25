@@ -31,12 +31,12 @@ const SprintCard = ({sprint}: SprintCardProps) => {
               className={cn(
                 'text-xs font-bold',
                 done && 'text-green-500',
-                started && 'text-indigo-500',
+                started && 'text-indigo-500 dark:text-indigo-300',
                 upcoming && 'text-gray-500'
               )}
             >
               {done && <IoMdDoneAll className="inline-block mr-1" />}
-              {started && <DiScrum className="inline-block mr-1" />}
+              {started && <DiScrum size={18} className="inline-block mr-1" />}
               {upcoming && (
                 <AiOutlineClockCircle className="inline-block mr-1" />
               )}

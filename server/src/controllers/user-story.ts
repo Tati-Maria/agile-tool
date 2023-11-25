@@ -107,13 +107,13 @@ const getUserStoryById = asyncHandler(async (req: IUserRequest, res: Response) =
     const userStory = await UserStory.findById(req.params.id)
     .populate({
         path: "tasks",
-        select: "name status priority description createdAt updatedAt assignedTo",
+        select: "name status priority dueDate description createdAt updatedAt assignedTo",
         populate: {
             path: "assignedTo",
             select: "name email avatar role",
         }
     }).populate("project", "name startDate endDate").exec();
-    
+
     if(!userStory) {
         res.status(404);
         throw new Error('User story not found');
@@ -129,7 +129,7 @@ const getUserStoriesByProjectId = asyncHandler(async (req: IUserRequest, res: Re
     const userStories = await UserStory.find({project: req.params.id})
     .populate({
         path: "tasks",
-        select: "name status priority description createdAt updatedAt assignedTo",
+        select: "name status priority description dueDate createdAt updatedAt assignedTo",
         populate: {
             path: "assignedTo",
             select: "name email avatar role",
