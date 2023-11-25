@@ -1,4 +1,5 @@
 import {apiSlice} from "@/store/slices/api-slice";
+import {UserStory} from "@/types";
 
 const USER_STORY_API_URL = "/api/user-stories";
 
@@ -31,7 +32,7 @@ export const userStoryApiSlice = apiSlice.injectEndpoints({
             query: (id) => `${USER_STORY_API_URL}/${id}`,
             providesTags: ["UserStory"],
         }),
-        getProjectUserStories: builder.query({
+        getProjectUserStories: builder.query<UserStory[], string>({
             query: (projectId) => `${USER_STORY_API_URL}/project/${projectId}`,
             providesTags: ["UserStory"],
         }),

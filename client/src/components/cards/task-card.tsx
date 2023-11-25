@@ -22,7 +22,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
       )}
     >
       <button
-        className="absolute top-0 right-0 p-2 pr-3 hover:text-muted-foreground"
+        className="absolute top-0 right-0 pt-2 hover:text-muted-foreground"
         aria-label="Task options"
       >
         <BsThreeDotsVertical size={18} />
@@ -42,8 +42,8 @@ const TaskCard = ({ task }: TaskCardProps) => {
         <Typography>{task.description}</Typography>
       </div>
       <div className="flex-between">
-        <div>
-          <GoComment size={18} />
+        <div className='flex items-center space-x-1'>
+          <GoComment size={15} />
           <Typography className="text-sm">{task?.comments?.length}</Typography>
         </div>
         <div className="flex items-center flex-row-reverse gap-1">

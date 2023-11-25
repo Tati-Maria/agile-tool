@@ -5,10 +5,12 @@ import { useGetProjectQuery } from "@/store/slices/project-api-slice";
 import UserCard from "@/components/cards/user-card";
 import { User } from "@/types";
 import { useAuth } from "@/hooks/use-auth";
+import { useSetDocumentTitle } from "@/hooks/user-document-title";
 
 
 
 const MembersPage = () => {
+    useSetDocumentTitle("Members");
     const {user} = useAuth();
     const { projectId } = useParams<{projectId: string}>();
     const { data: project, isLoading } = useGetProjectQuery(projectId, {skip: !projectId});

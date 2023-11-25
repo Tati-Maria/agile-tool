@@ -129,7 +129,7 @@ const getUserStoriesByProjectId = asyncHandler(async (req: IUserRequest, res: Re
     const userStories = await UserStory.find({project: req.params.id})
     .populate({
         path: "tasks",
-        select: "name status priority description dueDate createdAt updatedAt assignedTo",
+        select: "name status priority description dueDate createdAt updatedAt assignedTo comments",
         populate: {
             path: "assignedTo",
             select: "name email avatar role",

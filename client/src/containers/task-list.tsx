@@ -10,7 +10,7 @@ import TaskCard from "@/components/cards/task-card";
 import { Heading } from "@/components/shared";
 
 interface TaskListProps {
-    tasks: Task[];
+    tasks: Task[] | undefined;
 }
 
 const TaskList = ({tasks}: TaskListProps) => {

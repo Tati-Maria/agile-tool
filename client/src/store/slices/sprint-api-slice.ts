@@ -33,6 +33,15 @@ export const sprintApiSlice = apiSlice.injectEndpoints({
         }),
         getProjectSprints: builder.query<Sprint[], string>({
             query: (projectId) => `${SPRINT_API_URL}/project/${projectId}`,
+            providesTags: ["Sprint"],
+        }),
+        addTaskToSprint: builder.mutation({
+            query: ({sprintId, formData}) => ({
+                url: `${SPRINT_API_URL}/${sprintId}/add-task`,
+                method: "PATCH",
+                body: formData,
+            }),
+            invalidatesTags: ["Sprint", "Task"],
         }),
     }),
 });
@@ -43,4 +52,5 @@ export const {
     useDeleteSprintMutation,
     useGetSprintByIdQuery,
     useGetProjectSprintsQuery,
+    useAddTaskToSprintMutation,
 } = sprintApiSlice;

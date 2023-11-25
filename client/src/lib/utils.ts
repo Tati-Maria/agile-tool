@@ -120,7 +120,7 @@ export function getTaskPriorityColor(priority: string) {
 export function taskStatusColor(status: string) {
   switch(status) {
     case 'To Do':
-      return 'bg-sky-200 text-sky-800 dark:bg-sky-800 dark:text-sky-200';
+      return 'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200';
     case 'In Progress':
       return 'bg-violet-200 text-violet-800 dark:bg-violet-800 dark:text-violet-200';
     case 'Quality Check':

@@ -11,7 +11,7 @@ const ProjectTasksPage = () => {
     useSetDocumentTitle('Project Tasks');
     const { projectId } = useParams<{ projectId: string }>();
     const navigate = useNavigate();
-    const { data: userStories, isLoading: userStoriesLoading } = useGetProjectUserStoriesQuery(projectId);
+    const { data: userStories, isLoading: userStoriesLoading } = useGetProjectUserStoriesQuery(projectId || '', { skip: !projectId });
     const userStoryTasks = userStories?.map((userStory: UserStory) => userStory.tasks).flat();
 
     if(userStoriesLoading) {
@@ -49,7 +49,7 @@ const ProjectTasksPage = () => {
 
   return (
     <section className='h-full py-5'>
-      <div className="flex flex-col space-y-3 md:space-y-0 md:flex-between">
+      <div className="flex flex-col items-start space-y-3 md:flex-row md:space-y-0 md:justify-between md:items-center">
         <Heading className='text-xl md:text-2xl' level={1}>Project Tasks</Heading>
         <Button variant={'primary'} size={'sm'}>
           Create Task
