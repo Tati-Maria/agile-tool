@@ -17,6 +17,7 @@ import projectRoutes from "./routes/project";
 import sprintRoutes from "./routes/sprint";
 import userStoryRoutes from "./routes/user-story";
 import taskRoutes from "./routes/task";
+import commentRoutes from "./routes/comment";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -35,6 +36,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/sprints', sprintRoutes);
 app.use('/api/user-stories', userStoryRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/comments', commentRoutes);
 // Error handling
 app.use(notFound);
 app.use(errorHandler);
