@@ -1,4 +1,3 @@
-import { Comment } from "@/types";
 import { useForm } from "react-hook-form";
 import {z} from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,23 +6,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "../ui/button";
 
 const commentSchema = z.object({
-    text: z.string({required_error: "Comment is required"}).min(1, "Comment is required").max(500, "Comment cannot be longer than 500 characters")
+    content: z.string({required_error: "Comment is required"}).min(1, "Comment is required").max(500, "Comment cannot be longer than 500 characters")
 });
 
 export type CommentFormData = z.infer<typeof commentSchema>;
 
 interface CommentFormProps {
-    isEditing?: boolean;
-    initialValues?: Comment;
     onSubmit: (data: CommentFormData) => void;
 }
 
 
-const CommentForm = ({initialValues, isEditing, onSubmit}: CommentFormProps) => {
+const CommentForm = ({onSubmit}: CommentFormProps) => {
     const form = useForm<CommentFormData>({
         resolver: zodResolver(commentSchema),
         defaultValues: {
-            text: initialValues?.text ?? "",
+            content: "",
         }
     });
 
@@ -38,7 +35,7 @@ const CommentForm = ({initialValues, isEditing, onSubmit}: CommentFormProps) => 
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <FormField 
-                name="text"
+                name="content"
                 control={form.control}
                 render={({field}) => (
                     <FormItem>
@@ -56,7 +53,7 @@ const CommentForm = ({initialValues, isEditing, onSubmit}: CommentFormProps) => 
                 />
                 <div className="flex justify-end">
                     <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-                        {isEditing ? "Update" : "Add"}
+                        Comment
                     </Button>
                 </div>
             </form>

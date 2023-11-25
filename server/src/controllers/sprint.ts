@@ -143,7 +143,8 @@ const getSprintsByProject = asyncHandler(async (req: IUserRequest, res: Response
             path: "assignedTo",
             select: "name email avatar role",
         },
-    }).populate("project", "name startDate endDate").exec();
+    }).populate("project", "name startDate endDate")
+    .sort({startDate: 1}).exec();
     if(!sprints) {
         res.status(404);
         throw new Error('No sprints found');

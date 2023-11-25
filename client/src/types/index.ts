@@ -57,7 +57,7 @@ export type Attachments = {
 
 export type Comment = {
     _id: string;
-    text: string;
+    content: string;
     author: User;
     createdAt: string;
     updatedAt: string;
