@@ -17,9 +17,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { sprintSchema, SprintSchema } from '@/lib/validation/sprint';
 import { Link } from 'react-router-dom';
+import { Sprint } from '@/types';
 
 interface CreateSprintFormProps {
-  values?: SprintSchema;
+  values?: Sprint | undefined;
   onSubmit: (values: SprintSchema) => void;
   buttonText: string;
 }
@@ -33,8 +34,8 @@ export const CreateSprintForm = ({
     resolver: zodResolver(sprintSchema),
     defaultValues: {
       name: values?.name ?? '',
-      startDate: values?.startDate ?? undefined,
-      endDate: values?.endDate ?? undefined,
+      startDate: new Date(values?.startDate ?? Date.now()) ?? undefined,
+      endDate: new Date(values?.endDate ?? Date.now()) ?? undefined,
       goal: values?.goal ?? '',
     },
   });
