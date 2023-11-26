@@ -47,6 +47,10 @@ export const roles = [
 
 export const taskStatuses = [
     {
+        value: "Backlog",
+        label: "Backlog"
+    },
+    {
         value: "To Do",
         label: "To Do"
     },
@@ -55,13 +59,17 @@ export const taskStatuses = [
         label: "In Progress"
     },
     {
-        value: "Quality Check",
-        label: "Quality Check"
+        value: "Testing",
+        label: "Testing"
     },
     {
         value: "Done",
         label: "Done"
     },
+    {
+        value: "Paused",
+        label: "Paused"
+    }
 ];
 
 export const taskPriorities = [
@@ -70,11 +78,73 @@ export const taskPriorities = [
         label: "Low"
     },
     {
-        value: "Medium",
-        label: "Medium"
+        value: "Normal",
+        label: "Normal"
     },
     {
         value: "High",
         label: "High"
     },
+    {
+        value: "Urgent",
+        label: "Urgent"
+    }
+];
+
+export const taskTypes = [
+    {
+        value: "Bug",
+        label: "Bug"
+    },
+    {
+        value: "Feature",
+        label: "Feature"
+    },
+    {
+        value: "Improvement",
+        label: "Improvement"
+    },
+    {
+        value: "Refactor",
+        label: "Refactor"
+    },
+    {
+        value: "Test",
+        label: "Test"
+    },
+    {
+        value: "Other",
+        label: "Other"
+    }
+];
+
+export const taskResolutions = [
+    {
+        value: "Fixed",
+        label: "Fixed"
+    },
+    {
+        value: "Duplicate",
+        label: "Duplicate"
+    },
+    {
+        value: "Invalid",
+        label: "Invalid"
+    },
+    {
+        value: "Won't Fix",
+        label: "Won't Fix"
+    },
+    {
+        value: "Works For Me",
+        label: "Works For Me"
+    },
+    {
+        value: "Unresolved",
+        label: "Unresolved"
+    },
+    {
+        value: "Other",
+        label: "Other"
+    }
 ];

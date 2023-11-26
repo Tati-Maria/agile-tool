@@ -20,6 +20,7 @@ export interface ITask extends Document {
     dueDate: Date;
     createdAt: Date;
     updatedAt: Date;
+    tags: string[];
 }
 
 enum TaskStatus {

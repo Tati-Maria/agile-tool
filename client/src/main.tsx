@@ -24,9 +24,6 @@ import {
   UpdateProjectPage,
   MembersPage,
   SprintPage,
-  UserStoriesPage,
-  UserStoryByIdPage,
-  UpdateUserStoryPage,
   ProjectTasksPage,
   UpdateSprintPage,
   TaskPage,
@@ -60,12 +57,9 @@ const router = createBrowserRouter(
               path="projects/:projectId/update"
               element={<UpdateProjectPage />}
             />
-            <Route path='projects/:projectId/user-stories' element={<UserStoriesPage />} />
             <Route path="projects/:projectId/sprints" element={<SprintPage />} />
             <Route path="projects/:projectId/tasks" element={<ProjectTasksPage />} />
             <Route path="projects/:projectId/team" element={<MembersPage />} />
-            <Route path="projects/:projectId/user-stories/:userStoryId" element={<UserStoryByIdPage />} />
-            <Route path="projects/:projectId/user-stories/:userStoryId/update" element={<UpdateUserStoryPage />} />
             <Route path="projects/:projectId/sprints/:sprintId" element={<SprintByIdPage />} />
             <Route path='projects/:projectId/sprints/:sprintId/update' element={<UpdateSprintPage />} />
             <Route path="projects/:projectId/tasks/:taskId" element={<TaskPage />} />

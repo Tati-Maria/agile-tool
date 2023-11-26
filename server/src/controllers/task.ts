@@ -24,7 +24,7 @@ const createTask = asyncHandler(async (req: IUserRequest, res: Response) => {
         type,
         projectId,
         comments,
-        attachments,
+        tags,
     } = req.body;
 
     if(new Date(dueDate) < new Date()) {
@@ -79,8 +79,7 @@ const createTask = asyncHandler(async (req: IUserRequest, res: Response) => {
                 createdBy: req.user?._id,
                 projectId,
                 comments: comments || [],
-                attachments: attachments || [],
-
+                tags: tags || [],
             });
 
             res.status(201).json({
@@ -128,7 +127,7 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
         task.assignedTo = assignedTo || task.assignedTo;
         task.type = req.body.type || task.type;
         task.resolution = req.body.resolution || task.resolution;
-
+        task.tags = req.body.tags || task.tags;
         await task.save();
         res.status(200).json({
             message: 'Task updated successfully',

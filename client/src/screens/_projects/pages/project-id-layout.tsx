@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {ProjectHeader} from "@/components/shared";
-import BottonNav from "@/components/shared/botton-nav";
 
 const ProjectIdLayout = () => {
     const { projectId } = useParams<{projectId: string}>();
@@ -44,10 +43,6 @@ const ProjectIdLayout = () => {
     return (
         <div className="h-full">
             <ProjectHeader 
-            routes={routes}
-            projectId={projectId}
-            />
-            <BottonNav 
             routes={routes}
             projectId={projectId}
             />

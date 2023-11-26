@@ -1,11 +1,9 @@
-// Desc: Modal for adding a task to a sprint
-import { useGetProjectUserStoriesQuery } from "@/store/slices/user-story-api-slice";
+
 import { useGetSprintByIdQuery } from "@/store/slices/sprint-api-slice";
 import { toast } from "sonner";
 import { useAddTaskToSprintMutation } from "@/store/slices/sprint-api-slice";
 
 import { Modal } from "@/components/modals/modal";
-import { Loading, EmptyState } from "@/components/shared";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TaskListForm } from "../forms/task-list-form";
 import { TaskToSprintFormData } from "@/lib/validation/task-to-sprint";
@@ -18,10 +16,7 @@ interface AddTaskToSprintModalProps {
 }
 
 const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSprintModalProps) => {
-    const {data: userStories, isLoading: isUserStoriesLoading} = useGetProjectUserStoriesQuery(projectId, {skip: !projectId});
     const {data: sprint} = useGetSprintByIdQuery(sprintId, {skip: !sprintId});
-    const userStoriesWithTasks = userStories?.filter(userStory => userStory.tasks.length > 0);
-    const tasks = userStoriesWithTasks?.map(userStory => userStory.tasks).flat();
     const sprintTasks = sprint?.tasks;
     const [addTaskToSprint] = useAddTaskToSprintMutation();
 
@@ -48,13 +43,8 @@ const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSp
       isOpen={isOpen}
       onClose={onClose}
     >
-      {isUserStoriesLoading && <Loading />}
-      {!isUserStoriesLoading && !userStoriesWithTasks && (
-        <EmptyState text="No tasks found" />
-      )}
       <ScrollArea className="h-[400px] w-full">
         <TaskListForm 
-        tasks={tasks}
         onSubmit={onSubmit}
         values={sprintTasks}
         />

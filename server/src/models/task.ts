@@ -69,7 +69,10 @@ const taskSchema: Schema = new Schema({
         enum: ['Fixed', 'Duplicate', 'Invalid', 'Won\'t Fix', 'Works For Me', 'Unresolved', 'Other'],
         default: null
     },
-
+    tags: [{
+        type: String,
+        required: false,
+    }],
 },  {timestamps: true});
 
 taskSchema.pre("deleteOne", {document: true}, async function (next) {

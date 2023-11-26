@@ -18,17 +18,20 @@ export type Project = {
     _id: string;
     name: string;
     description: string;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
     logo: string;
     logoPublicId: string; // Cloudinary public ID
-    owner: User;
+    accessCode: string;
     team: User[];
-    startDate: string;
-    isActive: boolean;
-    tasks: Task[];
+    owner: User;
+    sprints: Sprint[];
     attachments: Attachments[];
-    endDate: string;
+    tasks: Task[];
     createdAt: string;
     updatedAt: string;
+    activityLog: ActivityLog[];
 }
 
 export type Task = {
@@ -37,16 +40,21 @@ export type Task = {
     description: string;
     status: TaskStatus;
     priority: TaskPriority;
-    dueDate: string;
-    assignedTo: User;
-    comments: Comment[];
+    type: TaskType;
+    resolution: TaskResolution | null; // It's not required because it's only used when the task is closed
     sprint: Sprint;
+    assignedTo: User;
+    projectId: string;
+    createdBy: User;
+    attachments: Attachments[] | null;
+    comments: Comment[];
+    dueDate: string;
     createdAt: string;
     updatedAt: string;
 }
 
 export type Attachments = {
-    id: string;
+    _id: string;
     title: string;
     description: string;
     url: string;
@@ -65,29 +73,40 @@ export type Comment = {
 }
 
 enum TaskStatus {
-    TO_DO = 'To Do',
-    IN_PROGRESS = 'In Progress',
-    QUALITY_CHECK = 'Quality Check',
-    DONE = 'Done'
+  BACKLOG = 'Backlog',
+  TODO = 'To Do',
+  INPROGRESS = 'In Progress',
+  TESTING = 'Testing',
+  DONE = 'Done',
+  PAUSED = 'Paused',
 }
 
 enum TaskPriority {
-    LOW = 'Low',
-    MEDIUM = 'Medium',
-    HIGH = 'High'
+  LOW = 'Low',
+  NORMAL = 'Normal',
+  HIGH = 'High',
+  URGENT = 'Urgent',
 }
 
-export type UserStory = {
-    _id: string;
-    name: string;
-    description: string | null;
-    acceptanceCriteria: string[]
-    estimationPoints: number;
-    project: Project;
-    tasks: Task[];
-    createdAt: string;
-    updatedAt: string;
-};
+enum TaskType {
+  BUG = 'Bug',
+  FEATURE = 'Feature',
+  IMPROVEMENT = 'Improvement',
+  REFACTOR = 'Refactor',
+  TEST = 'Test',
+  OTHER = 'Other',
+}
+
+enum TaskResolution {
+  FIXED = 'Fixed',
+  DUPLICATE = 'Duplicate',
+  INVALID = 'Invalid',
+  WONTFIX = "Won't Fix",
+  WORKSFORME = 'Works For Me',
+  UNRESOLVED = 'Unresolved',
+  OTHER = 'Other',
+}
+
 
 export type Sprint = {
     _id: string;
@@ -99,4 +118,34 @@ export type Sprint = {
     tasks: Task[];
     createdAt: string;
     updatedAt: string;
+}
+
+export type ActivityLog = {
+    _id: string;
+    user: User;
+    action: ActivityAction;
+    details: string;
+    entity: ActivityEntity;
+    entityId: string;
+    projectId: Project;
+    timestamp: string;
+}
+
+enum ActivityAction {
+    CREATE = 'CREATE',
+    UPDATE = 'UPDATE',
+    DELETE = 'DELETE',
+    JOIN = 'JOIN',
+    LEAVE = 'LEAVE',
+    ADD = 'ADD',
+    REMOVE = 'REMOVE',
+    UPLOAD = 'UPLOAD',
+    COMPLETE = 'COMPLETE',
+    ARCHIVE = 'ARCHIVE'
+}
+
+enum ActivityEntity {
+    TASK = 'TASK',
+    SPRINT = 'SPRINT',
+    PROJECT = 'PROJECT',
 }

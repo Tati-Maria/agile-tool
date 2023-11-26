@@ -30,5 +30,4 @@ enum ActivityEntity {
     TASK = "TASK",
     SPRINT = "SPRINT",
     PROJECT = "PROJECT",
-    USER_STORY = "USER_STORY",
 }
