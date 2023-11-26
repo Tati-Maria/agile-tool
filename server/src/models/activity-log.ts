@@ -1,6 +1,7 @@
 import {model, Schema} from 'mongoose';
+import {ILogEntry} from '../types/activity';
 
-const activitySchema: Schema = new Schema({
+const activitySchema: Schema = new Schema<ILogEntry>({
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -22,11 +23,16 @@ const activitySchema: Schema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
     },
-}, {timestamps: true});
+    projectId: {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+        required: true,
+    },
+    timestamp: Date
+});
 
 //purge activity log after 5 days
 activitySchema.index({createdAt: 1}, {expireAfterSeconds: 432000});
-
 
 const Activity = model('Activity', activitySchema);
 export default Activity;

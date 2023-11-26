@@ -1,11 +1,15 @@
-import { Document } from "mongoose";
+import { Document, Schema } from "mongoose";
 import { IUser } from "./user-interface";
+import { IProject } from "./project-interface";
+
 
 export interface ILogEntry extends Document {
     user: IUser;
     action: ActivityAction;
     details: string;
-    entity: ActivityEntity
+    entity: ActivityEntity;
+    entityId: string | Schema.Types.ObjectId;
+    projectId: IProject;
     timestamp: Date;
 }
 
@@ -13,24 +17,13 @@ enum ActivityAction {
     CREATE = "CREATE",
     UPDATE = "UPDATE",
     DELETE = "DELETE",
-    LOGIN = "LOGIN",
-    LOGOUT = "LOGOUT",
     JOIN = "JOIN",
     LEAVE = "LEAVE",
     ADD = "ADD",
     REMOVE = "REMOVE",
     UPLOAD = "UPLOAD",
-    DOWNLOAD = "DOWNLOAD",
-    START = "START",
-    FINISH = "FINISH",
-    PAUSE = "PAUSE",
-    RESUME = "RESUME",
-    RESTART = "RESTART",
-    CANCEL = "CANCEL",
     COMPLETE = "COMPLETE",
-    INCOMPLETE = "INCOMPLETE",
     ARCHIVE = "ARCHIVE",
-    RESTORE = "RESTORE",
 }
 
 enum ActivityEntity {

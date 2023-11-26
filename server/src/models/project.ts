@@ -1,4 +1,10 @@
 import { IProject } from "../types/project-interface";
+import Task from "./task";
+import Sprint from "./sprint";
+import Activity from "./activity-log";
+import Attachment from "./attachment";
+import User from "./user";
+
 import { model, Schema } from "mongoose";
 
 const projectSchema: Schema = new Schema<IProject>({
@@ -59,9 +65,9 @@ const projectSchema: Schema = new Schema<IProject>({
         ref: "Activity",
         required: false,
     }],
-    userStories: [{
+    tasks: [{
         type: Schema.Types.ObjectId,
-        ref: "UserStory",
+        ref: "Task",
         required: false,
     }],
 }, {
@@ -70,11 +76,11 @@ const projectSchema: Schema = new Schema<IProject>({
 
 projectSchema.pre("deleteOne", {document: true}, async function (next) {
     const project = this as IProject;
-    await project.model("Sprint").deleteMany({project: project._id});
-    await project.model("UserStory").deleteMany({project: project._id});
-    await project.model("Task").deleteMany({project: project._id});
-    await project.model("Activity").deleteMany({project: project._id});
-    await project.model("User").updateMany({projects: project._id}, {$pull: {projects: project._id}});
+    await Task.deleteMany({projectId: project._id});
+    await Sprint.deleteMany({projectId: project._id});
+    await Activity.deleteMany({projectId: project._id});
+    await Attachment.deleteMany({projectId: project._id});
+    await User.updateMany({projects: project._id}, {$pull: {projects: project._id}});
     next();
 });
 

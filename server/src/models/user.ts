@@ -74,7 +74,7 @@ userSchema.pre("deleteOne", {document: true}, async function (next) {
   await user.model('Project').deleteMany({owner: user._id});
   await user.model('Task').deleteMany({assignedTo: user._id});
   await user.model('Comment').deleteMany({author: user._id});
-  await user.model('Activity').deleteMany({author: user._id});
+  await user.model('Activity').deleteMany({user: user._id});
   next();
 });
 

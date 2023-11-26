@@ -2,14 +2,13 @@ import { Document } from "mongoose";
 import { IUser } from "./user-interface";
 import { ISprint } from "./sprint";
 import { ILogEntry } from "./activity";
-import { IUserStory } from "./user-story";
+import { ITask } from "./tasks";
 
 export interface IProject extends Document {
     name: string;
     description: string;
     startDate: Date;
     endDate: Date;
-    isActive: boolean;
     logo: string;
     logoPublicId: string; // Cloudinary public ID
     accessCode: string;
@@ -17,9 +16,10 @@ export interface IProject extends Document {
     owner: IUser;
     sprints: ISprint[];
     attachments: string[];
+    tasks: ITask[];
     createdAt: Date;
     updatedAt: Date;
+    isActive: boolean;
     activityLog: ILogEntry[];
-    userStories: IUserStory[];
 }
 

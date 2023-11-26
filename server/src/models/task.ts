@@ -1,5 +1,9 @@
 import {model, Schema} from 'mongoose';
 import {ITask} from '../types/tasks';
+import Comment from './comments';
+import Project from './project';
+import User from './user';
+
 
 const taskSchema: Schema = new Schema({
     name: {
@@ -15,13 +19,13 @@ const taskSchema: Schema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ['To Do', 'In Progress', "Done", "Quality Check"],
-        default: 'To Do'
+        enum: ['Backlog', 'To Do', 'In Progress', 'Testing', 'Done', 'Paused'],
+        default: 'Backlog'
     },
     priority: {
         type: String,
         required: true,
-        enum: ['Low', 'Medium', 'High'],
+        enum: ['Low', 'Normal', 'High', 'Urgent'],
         default: 'Low'
     },
     dueDate: {
@@ -43,11 +47,37 @@ const taskSchema: Schema = new Schema({
         ref: "Sprint",
         required: false,
     },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    projectId: {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+        required: true,
+    },
+    type: {
+        type: String,
+        required: true,
+        enum: ['Bug', 'Feature', 'Improvement', 'Refactor', 'Test', 'Other'],
+        default: 'Bug'
+    },
+    resolution: {
+        type: String,
+        required: false,
+        enum: ['Fixed', 'Duplicate', 'Invalid', 'Won\'t Fix', 'Works For Me', 'Unresolved', 'Other'],
+        default: null
+    },
+
 },  {timestamps: true});
 
 taskSchema.pre("deleteOne", {document: true}, async function (next) {
     const task = this as ITask;
-    await task.model('Comment').deleteMany({task: task._id});
+    await Comment.deleteMany({taskId: task._id});
+    await Project.updateOne({_id: task.projectId}, {$pull: {tasks: task._id}});
+    await User.updateOne({_id: task.createdBy}, {$pull: {tasks: task._id}});
+    await User.updateOne({_id: task.assignedTo}, {$pull: {tasks: task._id}});
     next();
 });
 

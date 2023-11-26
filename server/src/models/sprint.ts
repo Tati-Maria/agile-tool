@@ -1,5 +1,7 @@
 import {model, Schema} from 'mongoose';
 import { ISprint } from '../types/sprint';
+import Task from './task';
+import Project from './project';
 
 const sprintSchema: Schema = new Schema({
     name: {
@@ -32,7 +34,8 @@ const sprintSchema: Schema = new Schema({
 
 sprintSchema.pre("deleteOne", {document: true}, async function (next) {
     const sprint = this as ISprint;
-    await sprint.model('Task').deleteMany({sprint: sprint._id});
+    await Task.deleteMany({sprint: sprint._id});
+    await Project.updateOne({_id: sprint.project}, {$pull: {sprints: sprint._id}});
     next();
 });
 

@@ -11,8 +11,21 @@ import { IUserRequest } from '../types/user-interface';
 // @route   POST /api/tasks
 // @access  Private
 
-const createTask = asyncHandler(async (req: Request, res: Response) => {
-    const {name, description, status, priority, dueDate, assignedTo, sprint} = req.body;
+const createTask = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const {
+        name,
+        description,
+        status,
+        priority,
+        dueDate,
+        assignedTo,
+        sprint,
+        resolution,
+        type,
+        projectId,
+        comments,
+        attachments,
+    } = req.body;
 
     if(new Date(dueDate) < new Date()) {
         res.status(400);
@@ -58,9 +71,16 @@ const createTask = asyncHandler(async (req: Request, res: Response) => {
                 description,
                 status,
                 priority,
-                dueDate,
-                assignedTo,
-                sprint,
+                dueDate: dueDate || null,
+                assignedTo: assignedTo || null,
+                sprint: sprint || null,
+                resolution: resolution || null,
+                type,
+                createdBy: req.user?._id,
+                projectId,
+                comments: comments || [],
+                attachments: attachments || [],
+
             });
 
             res.status(201).json({
@@ -106,6 +126,8 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
         task.priority = priority || task.priority;
         task.dueDate = dueDate || task.dueDate;
         task.assignedTo = assignedTo || task.assignedTo;
+        task.type = req.body.type || task.type;
+        task.resolution = req.body.resolution || task.resolution;
 
         await task.save();
         res.status(200).json({

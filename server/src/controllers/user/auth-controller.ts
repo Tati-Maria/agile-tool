@@ -11,7 +11,7 @@ import { Request, Response } from 'express';
 // @access  Public
 
 const registerUser = asyncHandler(async (req: IUserRequest, res: Response) => {
-    const {name, email, password, role, avatar} = req.body;
+    const {name, email, password, role, avatar, tasks, projects, comments, activityLog} = req.body;
 
     const user = await User.findOne({email});
     if(user) {
@@ -27,6 +27,10 @@ const registerUser = asyncHandler(async (req: IUserRequest, res: Response) => {
         role,
         avatar: avatarResult.secure_url,
         avatarPublicId: avatarResult.public_id,
+        tasks,
+        projects,
+        comments,
+        activityLog,
     });
 
     if(newUser) {
