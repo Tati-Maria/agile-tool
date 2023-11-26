@@ -1,4 +1,4 @@
-import { Heading, Loading, EmptyState } from '@/components/shared';
+import { Heading, Loading, EmptyState, Typography } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 
 import { useParams, useNavigate } from 'react-router-dom';
@@ -42,6 +42,13 @@ const ProjectTasksPage = () => {
                 <EmptyState
                     text={'No Tasks'}
                     desc={'Create a task to get started'}
+                    actionButton={
+                        <Button 
+                        onClick={() =>  navigate(`/projects/${projectId}/user-stories`)}
+                        variant={'primary'} size={'sm'}>
+                            Create Task
+                        </Button>
+                    }
                 />
             </section>
         )
@@ -49,11 +56,13 @@ const ProjectTasksPage = () => {
 
   return (
     <section className='h-full py-5'>
-      <div className="flex flex-col items-start space-y-3 md:flex-row md:space-y-0 md:justify-between md:items-center">
-        <Heading className='text-xl md:text-2xl' level={1}>Project Tasks</Heading>
-        <Button variant={'primary'} size={'sm'}>
-          Create Task
-        </Button>
+      <div className="flex flex-col items-start space-y-3">
+        <Heading className='text-xl md:text-2xl' level={1}>
+            {`Project Tasks (${userStoryTasks?.length})`}
+        </Heading>
+        <Typography>
+            Project tasks are all the tasks that are associated with the user stories in this project.
+        </Typography>
       </div>
       <TaskList tasks={userStoryTasks} />
     </section>
