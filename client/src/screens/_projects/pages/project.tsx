@@ -30,7 +30,7 @@ const ProjectPage = () => {
 
   return (
     <section className="min-h-screen space-y-10">
-      <div className="flex-col flex space-y-4 md:flex-row md:justify-between md:space-y-0">
+      <div className="flex-between">
         <span className="text-slate-500 text-xs">
           Last updated{' '}
           <span className="text-violet-500 font-medium">

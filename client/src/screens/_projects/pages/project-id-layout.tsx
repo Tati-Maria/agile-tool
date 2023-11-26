@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {ProjectHeader} from "@/components/shared";
+import BottonNav from "@/components/shared/botton-nav";
 
 const ProjectIdLayout = () => {
     const { projectId } = useParams<{projectId: string}>();
@@ -46,7 +47,11 @@ const ProjectIdLayout = () => {
             routes={routes}
             projectId={projectId}
             />
-            <main className="max-w-[1450px] mx-auto px-4 h-full">
+            <BottonNav 
+            routes={routes}
+            projectId={projectId}
+            />
+            <main className="max-w-[1450px] mx-auto px-4 pt-10 lg:pt-0 h-full">
                 <Outlet />
                 {/* Project Activity Logs */}
             </main>
