@@ -1,26 +1,52 @@
 import asyncHandler from 'express-async-handler';
+import {getSignedUrl} from "@aws-sdk/s3-request-presigner"
+import crypto from 'crypto';
 import { Response } from 'express';
 import Attachment from '../models/attachment';
 import { IUserRequest } from '../types/user-interface';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { config } from 'dotenv';
+config();
+
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
+
+export const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 // @desc    Upload attachment
 // @route   POST /api/attachments
 // @access  Private
 
 export const uploadAttachment = asyncHandler(async(req: IUserRequest, res: Response) => {
-    const {name, url, description, type, projectId} = req.body;
+  const file = req.file;
+  const imageName = randomImageName();
 
-    const attachment = new Attachment({
-        name,
-        url,
-        description,
-        type,
-        projectId,
-        createdBy: req.user?._id,
-    });
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME!,
+    Key: imageName,
+    Body: file?.buffer,
+    ContentType: file?.mimetype,
+  };
+
+  const command = new PutObjectCommand(params);
+  await s3Client.send(command);
+
+  const attachment = new Attachment({
+    projectId: req.body.projectId,
+    description: req.body.description || '',
+    name: imageName,
+    createdBy: req.user?._id,
+    type: req.body.type || 'File',
+  });
 
     const createdAttachment = await attachment.save();
     res.status(201).json(createdAttachment);
+  
 });
 
 // @desc get all project attachments
@@ -28,6 +54,16 @@ export const uploadAttachment = asyncHandler(async(req: IUserRequest, res: Respo
 // @access Private
 export const getProjectAttachments = asyncHandler(async(req: IUserRequest, res: Response) => {
     const attachments = await Attachment.find({projectId: req.params.projectId});
+    for(const attachment of attachments) {
+        const command = new GetObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: attachment.name,
+        });
+        const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+        attachment.url = url;
+        await attachment.save();
+    }
+
     res.json(attachments);
 });
 
@@ -37,6 +73,13 @@ export const getProjectAttachments = asyncHandler(async(req: IUserRequest, res: 
 export const getAttachmentById = asyncHandler(async(req: IUserRequest, res: Response) => {
     const attachment = await Attachment.findById(req.params.id);
     if(attachment) {
+        const command = new GetObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: attachment.name,
+        });
+        const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 }); // 1 hours
+        attachment.url = url;
+        await attachment.save();
         res.json(attachment);
     } else {
         res.status(404);
@@ -48,12 +91,25 @@ export const getAttachmentById = asyncHandler(async(req: IUserRequest, res: Resp
 // @route DELETE /api/attachments/:id
 // @access Private
 export const deleteAttachment = asyncHandler(async(req: IUserRequest, res: Response) => {
-    const attachment = await Attachment.findByIdAndDelete(req.params.id);
-    if(attachment) {
-        res.json({message: 'Attachment removed'});
-    } else {
+    const attachment = await Attachment.findById(req.params.id);
+    if(!attachment) {
         res.status(404);
         throw new Error('Attachment not found');
+    } else {
+        if(attachment.createdBy.toString() !== req.user?._id.toString()) {
+            res.status(401);
+            throw new Error('Not authorized');
+        } else {
+            const params = {
+                Bucket: process.env.AWS_BUCKET_NAME!,
+                Key: attachment.name,
+            }
+            const command = new DeleteObjectCommand(params);
+            await s3Client.send(command);
+
+            await attachment.deleteOne();
+            res.status(200).json({message: 'Attachment deleted'});
+        }
     }
 });
 
@@ -70,15 +126,13 @@ export const updateAttachment = asyncHandler(async(req: IUserRequest, res: Respo
             res.status(401);
             throw new Error('Not authorized');
         } else {
-            attachment.name = req.body.name || attachment.name;
-            attachment.url = req.body.url || attachment.url;
             attachment.description = req.body.description || attachment.description;
-            attachment.type = req.body.type || attachment.type;
 
             const updatedAttachment = await attachment.save();
-            res.json(updatedAttachment);
+            res.status(200).json(updatedAttachment);
         }
     }
+
 });
 
 // @desc get user attachments
@@ -86,5 +140,15 @@ export const updateAttachment = asyncHandler(async(req: IUserRequest, res: Respo
 // @access Private
 export const getUserAttachments = asyncHandler(async(req: IUserRequest, res: Response) => {
     const attachments = await Attachment.find({createdBy: req.params.userId});
-    res.json(attachments);
+    for(const attachment of attachments) {
+        const command = new GetObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: attachment.name,
+        });
+        const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+        attachment.url = url;
+        await attachment.save();
+    }
+
+    res.status(200).json(attachments);
 });

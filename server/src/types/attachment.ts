@@ -17,4 +17,5 @@ export interface IAttachment extends Document {
 enum AttachmentType {
     FILE = "File",
     LINK = "Link",
+    IMAGE= "Image",
 }

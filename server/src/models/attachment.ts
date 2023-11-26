@@ -6,18 +6,18 @@ export const attachmentSchema: Schema = new Schema<IAttachment>({
         type: String,
         required: true,
     },
-    url: {
-        type: String,
-        required: true,
-    },
     description: {
         type: String,
         required: false,
     },
+    url: {
+        type: String,
+        required: true,
+    },
     type: {
         type: String,
-        enum: ["File", "Link"],
         required: true,
+        enum: ["File", "Link", "Image"],
     },
     projectId: {
         type: Schema.Types.ObjectId,

@@ -11,10 +11,6 @@ const ProjectIdLayout = () => {
             label: 'Overview'
         },
         {
-            href: `/projects/${projectId}/user-stories`,
-            label: 'User Stories'
-        },
-        {
             href: `/projects/${projectId}/sprints`,
             label: 'Sprints'
         },
@@ -33,10 +29,6 @@ const ProjectIdLayout = () => {
         {
             href: `/projects/${projectId}/team`,
             label: 'Members'
-        },
-        {
-            href: `/projects/${projectId}/settings`,
-            label: 'Settings'
         },
     ];
 

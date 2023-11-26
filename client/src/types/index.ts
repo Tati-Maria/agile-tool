@@ -51,6 +51,7 @@ export type Task = {
     dueDate: string;
     createdAt: string;
     updatedAt: string;
+    tags: string[];
 }
 
 export type Attachments = {

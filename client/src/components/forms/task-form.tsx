@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { SelectField } from '@/components/shared';
+import { Required, SelectField } from '@/components/shared';
 import { PickADate } from '@/components/forms/pick-a-date';
 import {
   Select,
@@ -28,7 +28,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { taskSchema, Task } from '@/lib/validation/task';
 import { User, Task as TaskType } from '@/types';
-import { taskPriorities, taskStatuses } from '@/constants';
+import { taskPriorities, taskStatuses, taskTypes } from '@/constants';
 
 interface TaskFormProps {
   onSubmit: (data: Task) => void;
@@ -49,9 +49,11 @@ export const TaskForm = ({
       name: defaultValues?.name ?? '',
       description: defaultValues?.description ?? '',
       status: defaultValues?.status ?? 'To Do',
-      priority: defaultValues?.priority ?? 'Low',
+      priority: defaultValues?.priority ?? 'Normal',
       assignedTo: undefined || defaultValues?.assignedTo._id,
       dueDate: new Date(defaultValues?.dueDate ?? Date.now()) ?? undefined,
+      tags: defaultValues?.tags ?? [],
+      type: defaultValues?.type ?? 'Bug',
     },
   });
 
@@ -83,7 +85,9 @@ export const TaskForm = ({
             control={form.control}
             render={({ field, formState }) => (
               <FormItem>
-                <FormLabel htmlFor={field.name}>Task Name</FormLabel>
+                <FormLabel htmlFor={field.name}>
+                  Task Name <Required />
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -94,6 +98,22 @@ export const TaskForm = ({
                 <FormMessage />
               </FormItem>
             )}
+          />
+          <FormField
+          name='tags'
+          control={form.control}
+          render={({field}) => (
+            <FormItem>
+              <FormLabel htmlFor={field.name}>Tags</FormLabel>
+              <FormControl>
+                <Input
+                {...field}
+                placeholder="Separate tags with commas"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
           />
           <FormField
             name="description"
@@ -118,7 +138,9 @@ export const TaskForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Task Status</FormLabel>
+                  <FormLabel htmlFor={field.name}>
+                    Task Status <Required />
+                  </FormLabel>
                   <SelectField
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -133,7 +155,9 @@ export const TaskForm = ({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Task Priority</FormLabel>
+                  <FormLabel htmlFor={field.name}>
+                    Task Priority <Required />
+                  </FormLabel>
                   <SelectField
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -141,6 +165,20 @@ export const TaskForm = ({
                   />
                 </FormItem>
               )}
+            />
+            <FormField 
+            name='type'
+            control={form.control}
+            render={({field}) => (
+              <FormItem>
+                <FormLabel htmlFor={field.name}>Task Type</FormLabel>
+                <SelectField
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                options={taskTypes}
+                />
+              </FormItem>
+            )}
             />
           </FormGroup>
           <FormField

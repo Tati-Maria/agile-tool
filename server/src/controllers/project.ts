@@ -6,7 +6,6 @@ import Project from '../models/project';
 import User from '../models/user';
 import { IUserRequest } from '../types/user-interface';
 import { uploadLogo, deleteLogo } from '../utils/cloudinary';
-import Attachment from '../models/attachment';
 import Activity from '../models/activity-log';
 
 // @desc    Create a new project
@@ -297,61 +296,7 @@ const generateAccessCode = asyncHandler(
   }
 );
 
-//@desc add a new file to a project
-//@route POST /api/projects/:id/attachments
-//@access Private
-const addAttachment = asyncHandler(async (req: IUserRequest, res: Response) => {
-  const project = await Project.findById(req.params.id).exec();
-  if (!project) {
-    res.status(404);
-    throw new Error('Project not found');
-  } else {
-    const { name, url, type } = req.body;
-    const attachment = await Attachment.create({
-      name,
-      url,
-      type,
-      project: project._id,
-    });
-    project.attachments.push(attachment._id);
-    await project.save();
-    res.status(200).json({
-      message: 'Attachment added successfully',
-      attachment,
-    });
-  }
-});
 
-//@desc delete an attachment from a project
-//@route DELETE /api/projects/:id/attachments/:attachmentId
-//@access Private
-const deleteAttachment = asyncHandler(
-  async (req: IUserRequest, res: Response) => {
-    const project = await Project.findById(req.params.id).exec();
-    if (!project) {
-      res.status(404);
-      throw new Error('Project not found');
-    } else {
-      const attachment = await Attachment.findById(
-        req.params.attachmentId
-      ).exec();
-      if (!attachment) {
-        res.status(404);
-        throw new Error('Attachment not found');
-      } else {
-        await Attachment.findByIdAndDelete(req.params.attachmentId).exec();
-        project.attachments = project.attachments.filter(
-          (attachmentId: any) =>
-            attachmentId.toString() !== req.params.attachmentId
-        );
-        await project.save();
-        res.status(200).json({
-          message: 'Attachment deleted successfully',
-        });
-      }
-    }
-  }
-);
 
 export {
   createProject,
@@ -364,6 +309,4 @@ export {
   removeUserFromProject,
   makeProjectActiveOrInactive,
   generateAccessCode,
-  addAttachment,
-  deleteAttachment,
 };
