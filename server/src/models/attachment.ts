@@ -10,10 +10,6 @@ export const attachmentSchema: Schema = new Schema<IAttachment>({
         type: String,
         required: true,
     },
-    publicId: {
-        type: String,
-        required: true,
-    },
     description: {
         type: String,
         required: false,

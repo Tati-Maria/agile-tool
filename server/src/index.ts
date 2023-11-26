@@ -7,7 +7,10 @@ import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import { createUploadthingExpressHandler } from 'uploadthing/express';
 
+
+import { uploadRouter } from './config/uploadthing';
 // Routes
 import indexRoute from './routes/index-route';
 import connectDB from './config/db';
@@ -15,7 +18,6 @@ import { notFound, errorHandler } from './middlewares/error';
 import userRoutes from './routes/user';
 import projectRoutes from './routes/project';
 import sprintRoutes from './routes/sprint';
-import userStoryRoutes from './routes/user-story';
 import taskRoutes from './routes/task';
 import commentRoutes from './routes/comment';
 
@@ -32,10 +34,10 @@ app.use(morgan(customLogFormat));
 app.use(cookieParser());
 app.use(helmet());
 app.use('/', indexRoute);
+app.use('/api/uploadthing', createUploadthingExpressHandler({router: uploadRouter}))
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/sprints', sprintRoutes);
-app.use('/api/user-stories', userStoryRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/comments', commentRoutes);
 // Error handling
