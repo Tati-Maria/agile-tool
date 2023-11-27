@@ -1,13 +1,20 @@
-import { Link } from "react-router-dom"
-import { cn } from "@/lib/utils";
+import { Link } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 
-const Logo = ({className}: {className?: string}) => {
+const Logo = ({ className }: { className?: string }) => {
   return (
     <Link className="flex-items-center space-x-1" to="/">
-      <img src="/icons/logo.svg" alt="logo" className="w-14 h-14" />
-      <span className={cn('font-semibold text-xl md:text-2xl', className)}>Worktec</span>
+      <img src="/icons/logo.svg" alt="logo" className="w-10 h-10" />
+      <span
+        className={cn(
+          'font-bold text-xl md:text-2xl uppercase',
+          className
+        )}
+      >
+        WorkTec
+      </span>
     </Link>
   );
-}
+};
 
-export default Logo
+export default Logo;

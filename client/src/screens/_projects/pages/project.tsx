@@ -1,6 +1,5 @@
 import UserCard from "@/components/cards/user-card";
 import ProjectCard from "@/components/project-table/project-card";
-import ProjectProgress from "@/components/project-table/project-progress";
 import { Heading, Loading, Typography } from "@/components/shared";
 import EmptyState from "@/components/shared/empty-state";
 import ProjectIntro from "@/components/shared/project-intro";
@@ -87,9 +86,9 @@ const ProjectPage = () => {
             </Link>
           </Typography>
         </div>
-        <div>
+        {/* <div>
           <ProjectProgress projectId={projectId} />
-        </div>
+        </div> */}
       </article>
       <div className="py-5">
         <div className="flex-between">
