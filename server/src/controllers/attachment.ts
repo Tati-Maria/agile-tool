@@ -22,30 +22,54 @@ export const s3Client = new S3Client({
 // @route   POST /api/attachments
 // @access  Private
 
+/*
+before saving the attachment to the db
+we must check if the type is File or Image or Link
+if it's a file, we must upload it to the s3 bucket
+if it's an image, we must upload it to the s3 bucket
+if it's a link, we just save it to the db
+*/
+
 export const uploadAttachment = asyncHandler(async(req: IUserRequest, res: Response) => {
-  const file = req.file;
-  const imageName = randomImageName();
+    const {projectId, description, type, url} = req.body;
+    if(type === "File" || type === "Image") {
+        const file = req.file;
+        const imageName = randomImageName();
 
-  const params = {
-    Bucket: process.env.AWS_BUCKET_NAME!,
-    Key: imageName,
-    Body: file?.buffer,
-    ContentType: file?.mimetype,
-  };
+        const params = {
+            Bucket: process.env.AWS_BUCKET_NAME!,
+            Key: imageName,
+            Body: file?.buffer,
+            ContentType: file?.mimetype,
+        };
 
-  const command = new PutObjectCommand(params);
-  await s3Client.send(command);
+        const command = new PutObjectCommand(params);
+        await s3Client.send(command);
 
-  const attachment = new Attachment({
-    projectId: req.body.projectId,
-    description: req.body.description || '',
-    name: imageName,
-    createdBy: req.user?._id,
-    type: req.body.type || 'File',
-  });
+        const attachment = new Attachment({
+            projectId,
+            description,
+            name: imageName,
+            createdBy: req.user?._id,
+            type,
+        });
 
-    const createdAttachment = await attachment.save();
-    res.status(201).json(createdAttachment);
+        const createdAttachment = await attachment.save();
+        res.status(201).json(createdAttachment);
+    
+    } else if(type === "Link") {
+        const attachment = new Attachment({
+            projectId,
+            description,
+            name: url,
+            createdBy: req.user?._id,
+            url,
+            type,
+        });
+
+        const createdAttachment = await attachment.save();
+        res.status(201).json(createdAttachment);
+    }
   
 });
 

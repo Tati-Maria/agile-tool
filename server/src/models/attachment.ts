@@ -12,7 +12,7 @@ export const attachmentSchema: Schema = new Schema<IAttachment>({
     },
     url: {
         type: String,
-        required: true,
+        required: false,
     },
     type: {
         type: String,
