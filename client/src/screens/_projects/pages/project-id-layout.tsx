@@ -8,28 +8,39 @@ const ProjectIdLayout = () => {
     const routes = [
         {
             href: `/projects/${projectId}`,
-            label: 'Overview'
+            label: 'Overview',
+            icon: "/icons/dashboard.png"
         },
         {
             href: `/projects/${projectId}/sprints`,
-            label: 'Sprints'
+            label: 'Sprints',
+            icon: "/icons/sprint.png"
         },
         {
             href: `/projects/${projectId}/tasks`,
-            label: 'Tasks'
+            label: 'Tasks',
+            icon: "/icons/done.png"
         },
         {
             href: `/projects/${projectId}/files`,
-            label: 'Files'
+            label: 'Files',
+            icon: "/icons/folder.png",
         },
         {
             href: `/projects/${projectId}/activity`,
-            label: 'Activity'
+            label: 'Activity',
+            icon: "/icons/activity.png"
         },
         {
             href: `/projects/${projectId}/team`,
-            label: 'Members'
+            label: 'Members',
+            icon: "/icons/friends.png"
         },
+        {
+            href: `/projects/${projectId}/settings`,
+            label: 'Settings',
+            icon: "/icons/setting.png"
+        }
     ];
 
     return (

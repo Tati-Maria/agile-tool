@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   routes: {
     href: string;
-    icon: React.ReactNode;
+    icon: string;
     label: string;
   }[];
 }
@@ -17,7 +17,7 @@ const Sidebar = ({ routes, className, ...rest }: SidebarProps) => {
         {routes.map((route, index) => (
           <li key={index}>
             <NavLink className="flex items-center space-x-4" to={route.href}>
-              {route.icon}
+              <img src={route.icon} alt={route.label} width={20} height={20} />
               <span className="text-sm font-medium">
                 {route.label}
               </span>
