@@ -21,3 +21,5 @@ router.route("/").post(protect, upload.single("file"), uploadAttachment);
 router.route("/:projectId").get(protect, getProjectAttachments);
 router.route("/user/:userId").get(protect, getUserAttachments);
 router.route("/:id").get(protect, getAttachmentById).delete(protect, deleteAttachment).put(protect, updateAttachment);
+
+export default router;
