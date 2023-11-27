@@ -7,6 +7,7 @@ import User from '../models/user';
 import { IUserRequest } from '../types/user-interface';
 import { uploadLogo, deleteLogo } from '../utils/cloudinary';
 import Activity from '../models/activity-log';
+import sharp from 'sharp';
 
 // @desc    Create a new project
 // @route   POST /api/projects
@@ -26,7 +27,9 @@ const createProject = asyncHandler(async (req: IUserRequest, res: Response) => {
     tasks,
   } = req.body;
 
-  const result: any = await uploadLogo(logo);
+  const resizedLogo = await sharp(logo).resize({width: 200, height: 200, fit: "contain"}).toBuffer()
+
+  const result: any = await uploadLogo(resizedLogo);
   const accessCode = crypto.lib.WordArray.random(10).toString();
 
   const project = await Project.create({
