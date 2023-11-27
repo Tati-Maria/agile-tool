@@ -29,7 +29,7 @@ const ProjectHeader = ({ routes }: ProjectHeaderProps) => {
     <nav className="flex-between py-4  border-b mb-10 max-w-[1450px] mx-auto px-4">
       <div className="flex items-center space-x-5 lg:space-x-16">
         <div
-        className='lg:hidden'
+        className='block lg:hidden'
         >
           <SideModal
           side='left'

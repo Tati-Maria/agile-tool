@@ -39,7 +39,8 @@ const projectSchema: Schema = new Schema<IProject>({
     },
     accessCode: {
         type: String,
-        required: false,
+        required: true,
+        unique: true,
     },
     team: [{
         type: Schema.Types.ObjectId,

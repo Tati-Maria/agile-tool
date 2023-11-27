@@ -52,7 +52,7 @@ const taskSchema: Schema = new Schema({
         ref: "User",
         required: true,
     },
-    projectId: {
+    project: {
         type: Schema.Types.ObjectId,
         ref: "Project",
         required: true,
@@ -78,7 +78,7 @@ const taskSchema: Schema = new Schema({
 taskSchema.pre("deleteOne", {document: true}, async function (next) {
     const task = this as ITask;
     await Comment.deleteMany({taskId: task._id});
-    await Project.updateOne({_id: task.projectId}, {$pull: {tasks: task._id}});
+    await Project.updateOne({_id: task.project}, {$pull: {tasks: task._id}});
     await User.updateOne({_id: task.createdBy}, {$pull: {tasks: task._id}});
     await User.updateOne({_id: task.assignedTo}, {$pull: {tasks: task._id}});
     next();

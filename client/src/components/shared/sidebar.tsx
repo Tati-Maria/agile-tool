@@ -19,8 +19,8 @@ const Sidebar = ({ routes, className, ...rest }: SidebarProps) => {
         {routes.map((route, index) => (
           <li 
           className={cn(
-            "text-sm font-medium cursor-pointer hover:text-teal-600",
-            pathname === route.href && "text-teal-600"
+            "text-sm font-medium cursor-pointer hover:text-blue-600",
+            pathname === route.href && "text-blue-600"
           )}
           key={index}>
             <NavLink className="flex items-center space-x-4" to={route.href}>

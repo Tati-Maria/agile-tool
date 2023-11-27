@@ -43,7 +43,7 @@ const createTask = asyncHandler(async (req: IUserRequest, res: Response) => {
     }
 
     // Ensure that the sprint exists and is part of a project
-    const projectExists = await Project.exists({sprints: sprint});
+    const projectExists = await Project.exists({_id: projectId});
     if(!projectExists) {
         res.status(404);
         throw new Error('Project not found');
@@ -80,6 +80,15 @@ const createTask = asyncHandler(async (req: IUserRequest, res: Response) => {
                 projectId,
                 comments: comments || [],
                 tags: tags || [],
+            });
+
+            await Activity.create({
+                user: req.user?._id,
+                action: 'created',
+                details: `created task: ${task.name}`,
+                entity: 'task',
+                entityId: task._id,
+                projectId: projectId,
             });
 
             res.status(201).json({
@@ -155,12 +164,24 @@ const deleteTask = asyncHandler(async (req: Request, res: Response) => {
     }
 });
 
-// @desc    Get all tasks
-// @route   GET /api/tasks
-// @access  Private
-
+// @desc Get project tasks
+// @route GET /api/tasks/project/:id
+// @access Private
 const getTasks = asyncHandler(async (req: Request, res: Response) => {
-    const tasks = await Task.find({}).exec();
+    const tasks = await Task.find({project: req.params.id})
+    .populate({
+        path: "sprint",
+        select: "name startDate endDate goal project",
+        populate: {
+            path: "project",
+            select: "name startDate endDate logo",
+        }
+    }).populate({
+        path: "assignedTo",
+        select: "name email avatar role",
+    }).sort({status: 1, priority: 1, dueDate: 1})
+    .exec();
+    
     res.status(200).json(tasks);
 });
 

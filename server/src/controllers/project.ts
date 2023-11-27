@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import asyncHandler from 'express-async-handler';
 import crypto from 'crypto-js';
@@ -56,45 +57,37 @@ const createProject = asyncHandler(async (req: IUserRequest, res: Response) => {
 // @desc On board a new user to a project
 // @route POST /api/projects/onboard
 // @access Private
-
 const onboardUser = asyncHandler(async (req: IUserRequest, res: Response) => {
   const { accessCode } = req.body;
-
-  const project = await Project.findOne({ accessCode }).exec();
+  console.log(accessCode);
+  const project = await Project.findOne({ 
+    accessCode: accessCode
+   }).exec();
   if (!project) {
     res.status(404);
     throw new Error('Project not found');
+  } else {
+    if (project.team.includes(req.user?._id!)) {
+      res.status(400);
+      throw new Error('You are already a member of this project');
+    } else {
+      project.team.push(req.user?._id!);
+      await project.save();
+      await Activity.create({
+        user: req.user?._id,
+        action: 'joined',
+        details: `joined project: ${project.name}`,
+        entity: 'project',
+        entityId: project._id,
+        projectId: project._id,
+      });
+      res.status(200).json({
+        message: 'You have been added to the project successfully',
+        name: project.name,
+        _id: project._id,
+      });
+    }
   }
-
-  if (!req.user?._id) {
-    res.status(401);
-    throw new Error('You need to be logged in to join a project');
-  }
-
-  const user = await User.findById(req.user?._id).exec();
-
-  if (project.team.includes(req.user?._id)) {
-    res.status(400);
-    throw new Error('You are already a member of this project');
-  }
-
-  project.team.push(req.user?._id);
-  await project.save();
-
-  await Activity.create({
-    user: req.user?._id,
-    action: 'joined',
-    details: `${user?.name} joined the project`,
-    entity: 'project',
-    entityId: project._id,
-    project: project._id,
-  });
-
-  res.status(200).json({
-    message: 'You have been added to the project successfully',
-    name: project.name,
-    projectId: project._id,
-  });
 });
 
 // @desc Get all projects
@@ -169,6 +162,7 @@ const updateProject = asyncHandler(async (req: Request, res: Response) => {
     details: `updated project: ${project.name}`,
     entity: 'project',
     entityId: project._id,
+    projectId: project._id,
   });
 
   res.status(200).json({
@@ -264,6 +258,17 @@ const makeProjectActiveOrInactive = asyncHandler(
       throw new Error('You are not authorized to perform this action');
     } else {
       project.isActive = !project.isActive;
+      const atictivity = await Activity.create({
+        user: req.user?._id,
+        action: project.isActive ? 'activated' : 'deactivated',
+        details: `${
+          project.isActive ? 'activated' : 'deactivated'
+        } project: ${project.name}`,
+        entity: 'project',
+        entityId: project._id,
+        projectId: project._id,
+      });
+      console.log(atictivity);
       await project.save();
       res.status(200).json({
         message: 'Project status updated successfully',

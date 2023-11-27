@@ -13,7 +13,7 @@ export interface ITask extends Document {
     resolution: TaskResolution | null; // It's not required because it's only used when the task is closed
     sprint: ISprint;
     assignedTo: IUser;
-    projectId: string;
+    project: string;
     createdBy: IUser;
     attachments: IAttachment[] | null;
     comments: IComment[];

@@ -61,6 +61,13 @@ export const projectApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Project"],
         }),
+        generateAccessCode: builder.mutation({
+            query: (id) => ({
+                url: `${PROJECT_API_URL}/${id}/access-code`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["Project"],
+        }),
     }),
 });
 
@@ -74,4 +81,5 @@ export const {
     useDeleteProjectMutation,
     useRemoveUserFromProjectMutation,
     useMakeProjectActiveOrInactiveMutation,
+    useGenerateAccessCodeMutation,
 } = projectApiSlice;

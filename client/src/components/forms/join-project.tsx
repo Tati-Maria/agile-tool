@@ -22,24 +22,26 @@ interface JoinProjectFormProps {
   onClose: () => void;
 }
 
-export const JoinProjectForm = ({onClose}: JoinProjectFormProps) => {
-    const { joinProject } = useJoinProject();
+export const JoinProjectForm = ({ onClose }: JoinProjectFormProps) => {
+  const { joinProject } = useJoinProject();
   const form = useForm<ProjectOnboardSchemaType>({
     resolver: zodResolver(projectOnboardSchema),
     defaultValues: {
       accessCode: '',
-    }
+    },
   });
   const { isSubmitting } = form.formState;
 
-  async function onSubmit(data: ProjectOnboardSchemaType) { 
-    await joinProject(data.accessCode);
+  async function onSubmit(data: ProjectOnboardSchemaType) {
+    await joinProject({
+      accessCode: data.accessCode,
+    });
     onClose();
   }
 
   return (
     <Form {...form}>
-      <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           name="accessCode"
           control={form.control}
