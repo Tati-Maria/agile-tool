@@ -62,7 +62,7 @@ const LoginForm = () => {
               <FormDescription className="text-xs">
                 forgot password?{' '}
                 <Link
-                  className="link-text text-blue-600 underline"
+                  className="link-text text-teal-600 underline"
                   to="/forgot-password"
                 >
                   click here
@@ -79,9 +79,9 @@ const LoginForm = () => {
                 <Icons.spinner className="animate-spin h-4 w-4 ml-2" />
               )}
           </Button>
-          <Typography className="text-center text-slate-700">
+          <Typography className="text-center text-xs">
             Don't have an account?{' '}
-            <Link className="link-text text-blue-600 underline" to="/register">
+            <Link className="link-text text-teal-600 underline" to="/register">
               Register
             </Link>
           </Typography>

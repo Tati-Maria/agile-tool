@@ -32,7 +32,7 @@ const ProjectPage = () => {
       <div className="flex-between">
         <span className="text-slate-500 text-xs">
           Last updated{' '}
-          <span className="text-violet-500 font-medium">
+          <span className="text-teal-500 font-medium">
             {format(new Date(project.updatedAt), 'PPP')}
           </span>
         </span>

@@ -9,7 +9,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ numberOfTasks, text, subtext}: ProjectCardProps) => {
   return (
-    <div className={cn('border px-4 py-2 space-y-1 rounded-2xl', numberOfTasks === 50 && "bg-blue-700", numberOfTasks === 35 && "bg-muted")}>
+    <div className={cn('border px-4 py-2 space-y-1 rounded-2xl', numberOfTasks === 50 && "bg-teal-700", numberOfTasks === 35 && "bg-muted")}>
       <Typography className="font-bold text-2xl md:text-3xl">
         {numberOfTasks}
       </Typography>

@@ -5,7 +5,6 @@ import { IUserRequest } from '../../types/user-interface';
 import generateToken from '../../utils/generate-token';
 import { uploadAvatar, deleteAvatar } from '../../utils/cloudinary';
 import { Request, Response } from 'express';
-import sharp from 'sharp';
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -19,10 +18,8 @@ const registerUser = asyncHandler(async (req: IUserRequest, res: Response) => {
         res.status(400);
         throw new Error('User already exists');
     }
-
-    const resizedAvatar = await sharp(avatar).resize({width: 200, height: 200, fit: "contain"}).toBuffer()
     
-    const avatarResult: any = await uploadAvatar(resizedAvatar);
+    const avatarResult: any = await uploadAvatar(avatar);
     const newUser = await User.create({
         name,
         email: email.toLowerCase(),
@@ -128,8 +125,7 @@ const updateUserProfile = asyncHandler(async (req: IUserRequest, res: Response) 
                 await deleteAvatar(user.avatarPublicId);
             }
 
-            const resizedAvatar = await sharp(req.body.avatar).resize({width: 200, height: 200, fit: "contain"}).toBuffer()
-            const avatarResult: any = await uploadAvatar(resizedAvatar);
+            const avatarResult: any = await uploadAvatar(req.body.avatar);
             user.avatar = avatarResult.secure_url;
             user.avatarPublicId = avatarResult.public_id;
         }

@@ -26,14 +26,15 @@ const ProjectHeader = ({ routes }: ProjectHeaderProps) => {
   const location = useLocation();
 
   return (
-    <nav className="lg:flex-between py-4  border-b mb-10 max-w-[1450px] mx-auto px-4">
-      <div className="flex-center space-x-16">
+    <nav className="flex-between py-4  border-b mb-10 max-w-[1450px] mx-auto px-4">
+      <div className="flex items-center space-x-5 lg:space-x-16">
         <div
         className='lg:hidden'
         >
           <SideModal
+          side='left'
             action={
-              <Button variant={'ghost'} className="p-0">
+              <Button variant={'ghost'} className="p-0 hover:bg-transparent">
                 <RxHamburgerMenu className="w-6 h-6" />
               </Button>
             }
@@ -43,14 +44,14 @@ const ProjectHeader = ({ routes }: ProjectHeaderProps) => {
         </div>
         <NavLink className={'flex-center space-x-1'} to={`/projects`}>
           <img src="/icons/logo.svg" alt="logo" width={40} height={40} />
-          <span className="font-bold text-lg">Worktec</span>
+          <span className="font-bold text-lg uppercase">Worktec</span>
         </NavLink>
-        <ul className="hidden lg:flex-center space-x-8 text-sm font-medium">
+        <ul className="hidden lg:flex-items-center space-x-8 text-sm font-medium">
           {routes.map((route, i) => (
             <li
               className={cn(
-                'cursor-pointer hover:text-blue-600',
-                location.pathname === route.href && 'text-blue-600'
+                'cursor-pointer hover:text-teal-600',
+                location.pathname === route.href && 'text-teal-600'
               )}
               key={i}
             >
@@ -60,10 +61,10 @@ const ProjectHeader = ({ routes }: ProjectHeaderProps) => {
         </ul>
       </div>
       <div className="space-x-2 flex-items-center">
-        <div className="hidden md:flex-center w-8 h-8 bg-muted rounded-full cursor-pointer hover:bg-blue-600">
+        <div className="hidden md:flex-center w-8 h-8 bg-muted rounded-full cursor-pointer hover:bg-teal-600">
           <Icons.search className="w-4 h-4" />
         </div>
-        <div className="hidden md:flex-center w-8 h-8 bg-muted rounded-full cursor-pointer hover:bg-blue-600">
+        <div className="hidden md:flex-center w-8 h-8 bg-muted rounded-full cursor-pointer hover:bg-teal-600">
           <Icons.plusCircle className="w-4 h-4" />
         </div>
         <ModeToggle />

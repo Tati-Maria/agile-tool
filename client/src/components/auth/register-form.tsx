@@ -169,7 +169,7 @@ const RegisterForm = () => {
             )}
           />
           <div className="flex-col-center ">
-            <Button className="w-full mb-4" type="submit" variant="brand">
+            <Button className="w-full mb-4" type="submit" variant="primary">
               Register
               {isSubmitting && (
                 <Icons.spinner className="animate-spin h-4 w-4 ml-2" />
@@ -177,7 +177,7 @@ const RegisterForm = () => {
             </Button>
             <Typography className="text-slate-500 text-center">
               Already have an account?{' '}
-              <Link className="link-text text-blue-500 underline" to="/login">
+              <Link className="link-text text-teal-500 underline" to="/login">
                 Login
               </Link>
             </Typography>

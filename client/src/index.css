@@ -103,6 +103,10 @@ body {
   }
 
   .link-text {
-    @apply hover:text-blue-800 transition-colors duration-200;
+    @apply hover:text-teal-600 transition-colors duration-200;
+  }
+
+  .glass {
+    @apply bg-gray-400 bg-opacity-10 backdrop-filter backdrop-blur-lg bg-clip-padding dark:bg-gray-900 rounded-lg dark:bg-opacity-20;
   }
 }

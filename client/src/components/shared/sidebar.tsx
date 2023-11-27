@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { NavLink } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { useLocation } from 'react-router-dom';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   routes: {
@@ -11,25 +11,27 @@ interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Sidebar = ({ routes, className, ...rest }: SidebarProps) => {
+  const {pathname} = useLocation();
+
   return (
-    <aside className={cn(className, "fixed top-0 left-0 h-screen")} {...rest}>
-      <ul className="flex flex-col space-y-5">
+    <aside className={cn(className, "fixed top-0 py-16 px-8 left-0 h-screen")} {...rest}>
+      <ul className="flex flex-col space-y-10">
         {routes.map((route, index) => (
-          <li key={index}>
+          <li 
+          className={cn(
+            "text-sm font-medium cursor-pointer hover:text-teal-600",
+            pathname === route.href && "text-teal-600"
+          )}
+          key={index}>
             <NavLink className="flex items-center space-x-4" to={route.href}>
               <img src={route.icon} alt={route.label} width={20} height={20} />
-              <span className="text-sm font-medium">
+              <span className="text-sm sm:text-base">
                 {route.label}
               </span>
             </NavLink>
           </li>
         ))}
       </ul>
-      <div>
-        <Button>
-            Create Project
-        </Button>
-      </div>
     </aside>
   );
 };

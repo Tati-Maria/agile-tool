@@ -12,7 +12,7 @@ const Login = () => {
         <Heading className="text-xl md:text-2xl" level={2}>
           Welcome Back
         </Heading>
-        <Typography className="text-slate-500">
+        <Typography>
           Glad to see you again 👋! Login to your account to continue.
         </Typography>
       </div>

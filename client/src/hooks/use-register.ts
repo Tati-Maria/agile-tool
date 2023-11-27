@@ -24,8 +24,7 @@ export const useRegister = () => {
             toast.success("Successfully registered!");
             navigate("/projects");
         } catch (error) {
-            const err = error as {data: {message: string}};
-            toast.error(err.data.message);
+            toast.error("Something went wrong!");
         }
     }
 

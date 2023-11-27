@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/home";
+import { Navbar, Footer } from "@/components/home";
 import { useSetDocumentTitle } from "@/hooks/user-document-title";
 import { Outlet } from "react-router-dom";
 
@@ -12,6 +12,7 @@ const HomeLayout = () => {
       <main className="max-w-[1450px] mx-auto px-4 h-full">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }
