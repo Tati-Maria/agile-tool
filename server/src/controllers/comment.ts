@@ -17,7 +17,7 @@ const createComment = asyncHandler(async (req: IUserRequest, res: Response) => {
         const comment = new Comment({
             content,
             task,
-            createdBy: req.user?._id,
+            author: req.user?._id,
         });
 
         await comment.save();
@@ -69,4 +69,22 @@ const deleteComment = asyncHandler(async (req: IUserRequest, res: Response) => {
     }
 });
 
-export {createComment, updateComment, deleteComment};
+//@desck Get Task Comments
+//@route GET /api/comments/task/:id
+//@access Private
+const getTaskComments = asyncHandler(async (req: IUserRequest, res: Response) => {
+    const task = await Task.findById(req.params.id).exec();
+    if(!task) {
+        res.status(404);
+        throw new Error('Task not found');
+    } else {
+        const comments = await Comment.find({task: req.params.id})
+        .populate({
+            path: "author",
+            select: "name email avatar",
+        })
+        res.status(200).json(comments);
+    }
+});
+
+export {createComment, updateComment, deleteComment, getTaskComments};

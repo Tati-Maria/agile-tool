@@ -8,9 +8,11 @@ import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Typography } from '@/components/shared';
-import { cn } from '@/lib/utils';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { TiPen } from 'react-icons/ti';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
 
 interface CommentCardProps {
   comment: Comment;
@@ -27,8 +29,10 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
   const handleUpdateComment = async () => {
     try {
       const res = await updateComment({
-        commentId: comment._id,
-        content,
+        id: comment._id,
+        body: {
+          content,
+        }
       }).unwrap();
       console.log(res);
       setIsEditing(false);
@@ -54,25 +58,17 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
 
   return (
     <div>
-      <div
-        className={cn(
-          'flex items-center space-x-2',
-          isOwner ? 'justify-end' : 'justify-start'
-        )}
-      >
-        <div>
-          <Avatar>
-            <AvatarImage
-              src={comment.author.avatar}
-              alt={comment.author.name}
-            />
-            <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
-          </Avatar>
+      <div className="flex items-center space-x-2">
+        <Avatar>
+          <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
+          <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <div className=''>
+          <Typography className="text-sm">{comment.author.name}</Typography>
+          <Typography className="text-muted-foreground text-xs">
+            {format(new Date(comment.createdAt), 'dd MMM yyyy hh:mm a')}
+          </Typography>
         </div>
-        <Typography className="text-sm">{comment.author.name}</Typography>
-        <Typography className="text-muted-foreground text-xs">
-          {comment.createdAt}
-        </Typography>
       </div>
       <div className="mt-2">
         {isEditing ? (
@@ -92,9 +88,9 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
         )}
       </div>
       {isOwner && (
-        <div className="flex justify-end mt-2">
+        <div className="flex justify-end mt-2 items-center space-x-3">
           <Button
-            variant={'outline'}
+            variant={'primary'}
             className="text-muted-foreground hover:text-muted-foreground"
             onClick={() => {
               if (isEditing) {
@@ -103,24 +99,51 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
               setIsEditing(!isEditing);
             }}
           >
-            Edit
+            {isEditing ? (
+              <Typography className="text-xs">Save</Typography>
+            ) : (
+              <TiPen size={18} />
+            )}
           </Button>
           <Button
             variant={'destructive'}
             disabled={isUpdating || isDeleting}
             className="text-muted-foreground hover:text-muted-foreground"
             onClick={() => {
-              toast.warning('Are you sure you want to delete this comment?', {
-                action: {
-                  label: 'Yes',
-                  onClick: () => {
-                    handleDeleteComment();
-                  },
-                },
-              });
+              toast.custom((t) => (
+                <div
+                  className="flex flex-col space-y-2 p-2 bg-card border rounded-md shadow-md"
+                  style={{ minWidth: '300px' }}
+                >
+                  <p>
+                    Are you sure you want to delete this comment? This action
+                    cannot be undone.
+                  </p>
+                  <div className="flex justify-end items-center space-x-4">
+                    <Button
+                    onClick={() => toast.dismiss(t)}
+                    size={"sm"}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant={'destructive'}
+                      size={"sm"}
+                      onClick={() => {
+                        handleDeleteComment();
+                        toast.dismiss(t);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ), {
+                duration: 10000,
+              })
             }}
           >
-            Delete
+            <RiDeleteBinLine size={18} />
           </Button>
         </div>
       )}

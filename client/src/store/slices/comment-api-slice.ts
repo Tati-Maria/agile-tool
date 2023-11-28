@@ -18,7 +18,7 @@ export const commentApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body,
       }),
-      invalidatesTags: ['Comment'],
+      invalidatesTags: ['Comment', 'Task'],
     }),
     deleteComment: builder.mutation({
       query: id => ({
@@ -26,6 +26,10 @@ export const commentApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: ['Comment'],
+    }),
+    getTaskComments: builder.query({
+      query: id => `${COMMENT_API_URL}/task/${id}`,
+      providesTags: ['Comment'],
     }),
   }),
   overrideExisting: false,
@@ -35,4 +39,5 @@ export const {
   useCreateCommentMutation,
   useUpdateCommentMutation,
   useDeleteCommentMutation,
+  useGetTaskCommentsQuery,
 } = commentApiSlice;

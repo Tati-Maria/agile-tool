@@ -7,6 +7,7 @@ import { FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
 
 import { useSetDocumentTitle } from '@/hooks/user-document-title';
 import {
+  EmptyState,
   Heading,
   Loading,
   TooltipHover,
@@ -22,6 +23,8 @@ import { toast } from 'sonner';
 import { hasAccess } from '@/lib/utils';
 import CommentForm from '@/components/forms/comment-form';
 import { CommentCard } from '@/components/cards/comment-card';
+import { useGetTaskCommentsQuery } from '@/store/slices/comment-api-slice';
+import { Comment } from '@/types';
 
 const Task = () => {
   const { taskId } = useParams<{ taskId: string }>();
@@ -32,8 +35,12 @@ const Task = () => {
   const { data: task, isLoading } = useGetTaskByIdQuery(taskId as string, {
     skip: !taskId,
   });
+  const {data: comments, isLoading: isCommentsLoading} = useGetTaskCommentsQuery(taskId as string, {
+    skip: !taskId
+  });
+
+  console.log(comments);
   useSetDocumentTitle(`${task?.name}`);
-  console.log(task);
 
   async function handleDeleteTask() {
     try {
@@ -128,12 +135,14 @@ const Task = () => {
         </div>
         <article className="mt-5">
           <div>
-            <Heading level={3}>Comments ({task?.comments?.length})</Heading>
+            <Heading level={3}>Comments ({comments?.length})</Heading>
           </div>
           <div className="mt-5">
             <CommentForm  taskId={taskId as string}/>
             <div className='mt-6 flex-col flex space-y-5'>
-              {task?.comments?.map(comment => (
+              {isCommentsLoading && <Loading />}
+              {comments?.length === 0 && (<EmptyState text="No comments yet" />)}
+              {comments?.map((comment: Comment) => (
                 <CommentCard key={comment._id} comment={comment} />
               ))}
             </div>
