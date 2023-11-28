@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams} from 'react-router-dom';
 import {
   useDeleteTaskMutation,
   useGetTaskByIdQuery,
@@ -11,8 +11,8 @@ import {
   Loading,
   TooltipHover,
   Typography,
+  UserAvatar,
 } from '@/components/shared';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { useState } from 'react';
 import DeleteModal from '@/components/modals/delete-modal';
@@ -20,10 +20,11 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { toast } from 'sonner';
 import { hasAccess } from '@/lib/utils';
+import CommentForm from '@/components/forms/comment-form';
+import { CommentCard } from '@/components/cards/comment-card';
 
 const Task = () => {
   const { taskId } = useParams<{ taskId: string }>();
-  const location = useLocation();
   const { user } = useAuth();
   const [deletTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
   const navigate = useNavigate();
@@ -58,54 +59,85 @@ const Task = () => {
         />
       )}
       <section className="h-full py-5">
-        <Heading level={2}>
+        {isLoading && <Loading />}
+        <Heading className="text-xl md:text-2xl" level={2}>
           {task?.name}
         </Heading>
-        <article className="mt-5">
-          {isLoading && <Loading />}
-          <div className='flex-between'>
-            <div className='space-y-3'>
-              <Typography className="text-muted-foreground">
-                {task?.description || 'No description'}
-              </Typography>
-              <div className='flex flex-row-reverse gap-2 items-center'>
-                <Typography className="text-muted-foreground">
-                  Assigned to {task?.assignedTo.name}
-                </Typography>
-                <Avatar>
-                  <AvatarImage src={task?.assignedTo.avatar} alt="" />
-                  <AvatarFallback>
-                    {task?.assignedTo?.name.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
+        <Typography className="text-sm text-muted-foreground my-2">
+          {task?.description}
+        </Typography>
+        <div className="flex items-center space-x-3 mt-3">
+          <Typography className="border py-1 px-4 rounded-full">
+            Status: {task?.status}
+          </Typography>
+          <Typography className="border py-1 px-4 rounded-full">
+            Type: {task?.type}
+          </Typography>
+          <Typography className="border py-1 px-4 rounded-full">
+            Priority: {task?.priority}
+          </Typography>
+          {hasAccess(user.role) && (
+            <div className='flex items-center space-x-3'>
+              <Link to={`/projects/${task?.project}/tasks/${task?._id}/update`}>
+                <FaRegEdit />
+              </Link>
+              <TooltipHover
+              variant='destructive'
+              text='Delete Task'
+              >
+                <FaRegTrashAlt onClick={() => setIsDeleteModalOpen(true)} />
+              </TooltipHover>
             </div>
-            <div className='flex flex-col space-y-2'>
-              {hasAccess(user?.role) && (
-                <TooltipHover variant='primary' text="Edit Task" asChild={true}>
-                  <Link 
-                  to={`${location.pathname}/update`}
-                  >
-                    <FaRegEdit className="text-2xl" />
-                  </Link>
-                </TooltipHover>
-              )}
-              {hasAccess(user?.role) && (
-                <TooltipHover variant='destructive' text="Delete Task">
-                  <FaRegTrashAlt
-                    className="text-2xl"
-                    onClick={() => setIsDeleteModalOpen(true)}
-                  />
-                </TooltipHover>
-              )}
+          )}
+        </div>
+        <div className="flex items-center space-x-6 mt-3">
+          <div className="space-y-2 text-sm">
+            <span className="text-muted-foreground">Created By</span>
+            <div className="flex items-center space-x-2">
+              <UserAvatar
+                name={task?.createdBy?.name as string}
+                avatarUrl={task?.createdBy?.avatar as string}
+              />
+              <Typography className="font-bold">
+                {task?.createdBy?.name}
+              </Typography>
             </div>
           </div>
-        </article>
-        <article className='mt-5'>
+          <div className="space-y-2 text-sm">
+            <span className="text-muted-foreground">Assigned To</span>
+            <div className="flex items-center space-x-2">
+              <UserAvatar
+                name={task?.assignedTo?.name as string}
+                avatarUrl={task?.assignedTo?.avatar as string}
+              />
+              <Typography className="font-bold">
+                {task?.assignedTo?.name}
+              </Typography>
+            </div>
+          </div>
+        </div>
+        <div className='text-gray-500 italic my-4'>
+          {task?.tags?.map(tag => (
+            <Typography
+              className="text-xs inline-block mr-1"
+              key={tag}
+            >
+              #{tag}
+            </Typography>
+          ))}
+        </div>
+        <article className="mt-5">
           <div>
             <Heading level={3}>Comments ({task?.comments?.length})</Heading>
           </div>
-          {/** //TODO */}
+          <div className="mt-5">
+            <CommentForm  taskId={taskId as string}/>
+            <div className='mt-6 flex-col flex space-y-5'>
+              {task?.comments?.map(comment => (
+                <CommentCard key={comment._id} comment={comment} />
+              ))}
+            </div>
+          </div>
         </article>
       </section>
     </>

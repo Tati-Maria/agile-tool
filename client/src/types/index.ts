@@ -44,7 +44,7 @@ export type Task = {
     resolution: TaskResolution | null; // It's not required because it's only used when the task is closed
     sprint: Sprint;
     assignedTo: User;
-    projectId: string;
+    project: string;
     createdBy: User;
     comments: Comment[];
     dueDate: string;

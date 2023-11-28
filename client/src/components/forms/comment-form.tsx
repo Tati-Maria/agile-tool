@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
+import { useCreateCommentMutation } from "@/store/slices/comment-api-slice";
 import {z} from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 const commentSchema = z.object({
     content: z.string({required_error: "Comment is required"}).min(1, "Comment is required").max(500, "Comment cannot be longer than 500 characters")
@@ -12,11 +14,11 @@ const commentSchema = z.object({
 export type CommentFormData = z.infer<typeof commentSchema>;
 
 interface CommentFormProps {
-    onSubmit: (data: CommentFormData) => void;
+    taskId: string;
 }
 
 
-const CommentForm = ({onSubmit}: CommentFormProps) => {
+const CommentForm = ({taskId}: CommentFormProps) => {
     const form = useForm<CommentFormData>({
         resolver: zodResolver(commentSchema),
         defaultValues: {
@@ -26,14 +28,24 @@ const CommentForm = ({onSubmit}: CommentFormProps) => {
 
     const {formState: {isSubmitting}} = form;
 
-    const handleSubmit = (values: CommentFormData) => {
-        onSubmit(values);
+    const [createComment, {isLoading}] = useCreateCommentMutation();
+    const handleSubmit = async (formData: CommentFormData) => {
+        try {
+            const res = await createComment({
+                task: taskId,
+                content: formData.content
+            }).unwrap();
+            toast.success(res.message);
+        } catch (error) {
+            const err = error as {message: string};
+            toast.error(err.message)
+        }
     }
 
   return (
     <div>
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
                 <FormField 
                 name="content"
                 control={form.control}
@@ -54,6 +66,7 @@ const CommentForm = ({onSubmit}: CommentFormProps) => {
                 <div className="flex justify-end">
                     <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
                         Comment
+                        {isLoading && "ing..."}
                     </Button>
                 </div>
             </form>

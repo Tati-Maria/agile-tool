@@ -14,13 +14,14 @@ const createComment = asyncHandler(async (req: IUserRequest, res: Response) => {
         res.status(404);
         throw new Error('Task not found');
     } else {
-        const comment = await Comment.create({
+        const comment = new Comment({
             content,
-            author: req.user?._id,
             task,
+            createdBy: req.user?._id,
         });
 
-
+        await comment.save();
+        
         res.status(201).json({
             message: 'Comment created successfully',
             content: comment.content,

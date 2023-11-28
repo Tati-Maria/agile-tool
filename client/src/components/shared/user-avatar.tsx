@@ -17,7 +17,7 @@ const UserAvatar = ({
     <Avatar className={cn(className,"rounded-full")} {...rest}>
       <AvatarImage src={avatarUrl} alt={name} />
       <AvatarFallback>
-        {name.slice(0, 2).toUpperCase()}
+        {name?.slice(0, 2).toUpperCase()}
       </AvatarFallback>
     </Avatar>
   );
