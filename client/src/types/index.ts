@@ -27,7 +27,7 @@ export type Project = {
     team: User[];
     owner: User;
     sprints: Sprint[];
-    attachments: Attachments[];
+    attachments: Attachment[];
     tasks: Task[];
     createdAt: string;
     updatedAt: string;
@@ -46,7 +46,6 @@ export type Task = {
     assignedTo: User;
     projectId: string;
     createdBy: User;
-    attachments: Attachments[] | null;
     comments: Comment[];
     dueDate: string;
     createdAt: string;
@@ -54,7 +53,7 @@ export type Task = {
     tags: string[];
 }
 
-export type Attachments = {
+export type Attachment = {
     _id: string;
     title: string;
     description: string;

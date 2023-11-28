@@ -301,6 +301,19 @@ const generateAccessCode = asyncHandler(
   }
 );
 
+// @desc Get project activity log
+// @route GET /api/projects/:id/activity-log
+// @access Private
+const projectActivityLog = asyncHandler(async(req: Request, res: Response) => {
+  const project = await Project.findById(req.params.id).exec();
+  if(!project) {
+    res.status(404);
+    throw new Error('Project not found');
+  } else {
+    const activityLog = await Activity.find({projectId: project._id}).exec();
+    res.status(200).json(activityLog);
+  }
+})
 
 
 export {
@@ -314,4 +327,5 @@ export {
   removeUserFromProject,
   makeProjectActiveOrInactive,
   generateAccessCode,
+  projectActivityLog
 };

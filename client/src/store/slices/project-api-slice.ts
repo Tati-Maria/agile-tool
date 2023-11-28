@@ -68,6 +68,13 @@ export const projectApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Project"],
         }),
+        getProjectActivityLog: builder.query({
+            query: (id) => ({
+                url: `${PROJECT_API_URL}/${id}/activity-log`,
+                method: "GET",
+            }),
+            providesTags: ["Activity"],
+        }),
     }),
 });
 

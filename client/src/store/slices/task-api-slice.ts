@@ -40,7 +40,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 method: "PATCH",
                 body: {status},
             }),
-            invalidatesTags: ["Task", "UserStory"]
+            invalidatesTags: ["Task", "Project"]
         }),
         searchTasks: builder.query({
             query: ({query}) => `${TASK_API_URL}/search?query=${query}`,

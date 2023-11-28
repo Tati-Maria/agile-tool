@@ -15,7 +15,8 @@ export const apiSlice = createApi({
     'Sprint',
     'Task',
     'Comment',
-    'UserStory',
+    'Activity',
+    'Attachment',
   ],
   endpoints: builder => ({}),
 });
