@@ -98,7 +98,7 @@ const SprintCard = ({ sprint }: SprintCardProps) => {
           </div>
         </div>
         <ScrollArea
-          className=" mt-4 h-full"
+          className="mt-4 h-full px-4"
           style={{
             maxHeight:
               location.pathname === `/projects/${sprint.project._id}/sprints`
@@ -106,7 +106,7 @@ const SprintCard = ({ sprint }: SprintCardProps) => {
                 : '100%',
           }}
         >
-          <div className={cn('flex flex-col space-y-6 mb-4 mt-7 h-full p-2', location.pathname === `/projects/${sprint.project._id}/sprints/${sprint._id}` && "grid grid-cols-2 space-y-0 gap-7")}>
+          <div className={cn('flex flex-col space-y-6 mb-4 mt-7 h-full p-1', location.pathname === `/projects/${sprint.project._id}/sprints/${sprint._id}` && "grid grid-cols-2 space-y-0 gap-7")}>
             {sprint.tasks?.map(task => (
               <TaskSprintCArd sprint={sprint} task={task} key={task._id} />
             ))}

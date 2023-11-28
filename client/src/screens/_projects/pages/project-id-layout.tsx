@@ -24,11 +24,6 @@ const ProjectIdLayout = () => {
             icon: "/icons/done.png"
         },
         {
-            href: `/projects/${projectId}/activity`,
-            label: 'Activity',
-            icon: "/icons/activity.png"
-        },
-        {
             href: `/projects/${projectId}/team`,
             label: 'Members',
             icon: "/icons/friends.png"

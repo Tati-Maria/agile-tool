@@ -54,10 +54,10 @@ const RemoveTask = ({sprintId, taskId, className}: RemoveTaskProps) => {
         onClick={() => setIsModalOpen(true)}
         className={cn(
           className,
-          'absolute -top-7 -right-7 bg-transparent hover:bg-transparent m-2'
+          'absolute -top-7 h-10 w-10 bg-transparent hover:bg-transparent -left-7 p-0 m-3'
         )}
       >
-        <TiDeleteOutline className="inline-block text-red-500 hover:text-red-700 h-6 w-6" />
+        <TiDeleteOutline className="inline-block h-6 w-6 bg-red-500 hover:bg-red-600 rounded-full" />
       </Button>
     </>
   );
