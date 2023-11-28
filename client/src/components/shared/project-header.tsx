@@ -26,7 +26,7 @@ const ProjectHeader = ({ routes }: ProjectHeaderProps) => {
   const location = useLocation();
 
   return (
-    <nav className="flex-between py-4  border-b mb-10 max-w-[1450px] mx-auto px-4">
+    <nav className="flex-between py-4  border-b mb-4 max-w-[1450px] mx-auto px-4">
       <div className="flex items-center space-x-5 lg:space-x-16">
         <div
         className='block lg:hidden'

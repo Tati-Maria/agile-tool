@@ -7,6 +7,7 @@ import { Modal } from "@/components/modals/modal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TaskListForm } from "../forms/task-list-form";
 import { TaskToSprintFormData } from "@/lib/validation/task-to-sprint";
+import { useGetTasksQuery } from "@/store/slices/task-api-slice";
 
 interface AddTaskToSprintModalProps {
     projectId: string;
@@ -19,6 +20,7 @@ const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSp
     const {data: sprint} = useGetSprintByIdQuery(sprintId, {skip: !sprintId});
     const sprintTasks = sprint?.tasks;
     const [addTaskToSprint] = useAddTaskToSprintMutation();
+    const {data: tasks} = useGetTasksQuery(projectId, {skip: !projectId});
 
     async function onSubmit(values: TaskToSprintFormData) {
         try {
@@ -47,6 +49,7 @@ const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSp
         <TaskListForm 
         onSubmit={onSubmit}
         values={sprintTasks}
+        tasks={tasks || []}
         />
       </ScrollArea>
     </Modal>

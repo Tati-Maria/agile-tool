@@ -27,6 +27,9 @@ const FileUploader = ({ mediaUrl, fielChange }: FileUploaderProps) => {
     onDrop,
     accept: {
       'image/*': ['.png', '.gif', '.jpeg', '.jpg', '.svg', '.webp'],
+      'video/*': ['.mp4', '.webm'],
+      'audio/*': ['.mp3', '.wav'],
+      'application/pdf': ['.pdf', '.PDF', ".doc", ".docx", ".txt"],
     },
   });
 

@@ -1,32 +1,36 @@
-import { Typography, Heading, EmptyState } from "@/components/shared"
-import {Button} from "@/components/ui/button";
-import AddTaskToSprintModal from "@/components/modals/add-task-to-sprint";
+import { Typography, Heading, EmptyState } from '@/components/shared';
+import { Button } from '@/components/ui/button';
+import AddTaskToSprintModal from '@/components/modals/add-task-to-sprint';
 import { BiEditAlt } from 'react-icons/bi';
 
 import { DiScrum } from 'react-icons/di';
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 import { IoMdDoneAll } from 'react-icons/io';
 import { GoTasklist } from 'react-icons/go';
-import {FcTodoList} from 'react-icons/fc';
+import { FcTodoList } from 'react-icons/fc';
 import { AiOutlineClockCircle } from 'react-icons/ai';
-import { Link } from "react-router-dom";
-import { getSprintStatus } from "@/lib/utils";
-import { Sprint } from "@/types";
-import { format } from "date-fns";
-import { useState } from "react";
-import TaskSprintCArd from "./task-sprint";
-import { useLocation } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { getSprintStatus } from '@/lib/utils';
+import { Sprint } from '@/types';
+import { format } from 'date-fns';
+import { useState } from 'react';
+import TaskSprintCArd from './task-sprint';
 
 interface SprintCardProps {
-    sprint: Sprint;
+  sprint: Sprint;
 }
 
-const SprintCard = ({sprint}: SprintCardProps) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const done = getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) === 'Done';
-    const started = getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) === 'Started';
-    const upcoming = getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) === 'Not Started';
-    const location = useLocation();
+const SprintCard = ({ sprint }: SprintCardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const done =
+    getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) ===
+    'Done';
+  const started =
+    getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) ===
+    'Started';
+  const upcoming =
+    getSprintStatus(new Date(sprint.startDate), new Date(sprint.endDate)) ===
+    'Not Started';
 
   return (
     <>
@@ -43,16 +47,16 @@ const SprintCard = ({sprint}: SprintCardProps) => {
           <Heading className="text-xl hover:link-text w-max" level={3}>
             <Link to={`/sprints/${sprint._id}`}>{sprint.name}</Link>
           </Heading>
-          {location.pathname === `/sprints/${sprint._id}` && (
-            <>
+          <>
             <Typography className="text-xs text-muted-foreground">
               {sprint.goal}
             </Typography>
-            <Link to={`/projects/${sprint.project._id}/sprints/${sprint._id}/update`}>
+            <Link
+              to={`/projects/${sprint.project._id}/sprints/${sprint._id}/update`}
+            >
               <BiEditAlt className="inline-block" />
             </Link>
-            </>
-          )}
+          </>
           <div className="flex-between">
             <div className="flex-center space-x-1">
               <Typography
@@ -124,6 +128,6 @@ const SprintCard = ({sprint}: SprintCardProps) => {
       </div>
     </>
   );
-}
+};
 
-export default SprintCard
+export default SprintCard;

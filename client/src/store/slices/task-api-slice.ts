@@ -33,6 +33,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
         }),
         getTasks: builder.query<Task[], string>({
             query: (projectId) => `${TASK_API_URL}/project/${projectId}`,
+            providesTags: ["Task", "Project"]
         }),
         updateTaskStatus: builder.mutation({
             query: ({id, status}) => ({

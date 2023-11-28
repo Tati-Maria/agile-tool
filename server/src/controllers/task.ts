@@ -51,17 +51,14 @@ const createTask = asyncHandler(async (req: IUserRequest, res: Response) => {
     throw new Error('Tasks cannot be created for inactive projects');
   }
 
-  //we also need to check if the user is part of the project
   //and if the project is active to create a task (only active projects can have tasks)
   const user = await User.findById(req.user?._id).exec();
   if (!user) {
     res.status(404);
     throw new Error('User not found');
-  }
-
-  if (user.projects.indexOf(projectId) === -1) {
+  } else if (!project.team.includes(user._id)) {
     res.status(400);
-    throw new Error('User is not part of this project');
+    throw new Error('User is not a member of this project');
   }
 
   // ensure that the task is not create before the project start date or after the end date
@@ -86,6 +83,7 @@ const createTask = asyncHandler(async (req: IUserRequest, res: Response) => {
     project: projectId,
     comments,
     tags,
+    createdBy: req.user?._id,
   });
 
   await Activity.create({

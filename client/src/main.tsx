@@ -28,10 +28,9 @@ import {
   UpdateSprintPage,
   TaskPage,
   UpdateTaskPage,
-SprintByIdPage,
-ProjectSettingsPage,
-FilesPage,
-ActivityPage
+  SprintByIdPage,
+  ProjectSettingsPage,
+  ActivityPage,
 } from '@/screens/_projects/pages';
 import NotFound from '@/errors/not-found.tsx';
 import ErrorLog from '@/errors/error-page.tsx';
@@ -60,16 +59,39 @@ const router = createBrowserRouter(
               path="projects/:projectId/update"
               element={<UpdateProjectPage />}
             />
-            <Route path="projects/:projectId/sprints" element={<SprintPage />} />
-            <Route path="projects/:projectId/tasks" element={<ProjectTasksPage />} />
+            <Route
+              path="projects/:projectId/sprints"
+              element={<SprintPage />}
+            />
+            <Route
+              path="projects/:projectId/tasks"
+              element={<ProjectTasksPage />}
+            />
             <Route path="projects/:projectId/team" element={<MembersPage />} />
-            <Route path="projects/:projectId/settings" element={<ProjectSettingsPage />} />
-            <Route path="projects/:projectId/sprints/:sprintId" element={<SprintByIdPage />} />
-            <Route path='projects/:projectId/sprints/:sprintId/update' element={<UpdateSprintPage />} />
-            <Route path="projects/:projectId/tasks/:taskId" element={<TaskPage />} />
-            <Route path="projects/:projectId/tasks/:taskId/update" element={<UpdateTaskPage />} />
-            <Route path="projects/:projectId/files" element={<FilesPage />} />
-            <Route path="projects/:projectId/activity" element={<ActivityPage />} />
+            <Route
+              path="projects/:projectId/settings"
+              element={<ProjectSettingsPage />}
+            />
+            <Route
+              path="projects/:projectId/sprints/:sprintId"
+              element={<SprintByIdPage />}
+            />
+            <Route
+              path="projects/:projectId/sprints/:sprintId/update"
+              element={<UpdateSprintPage />}
+            />
+            <Route
+              path="projects/:projectId/tasks/:taskId"
+              element={<TaskPage />}
+            />
+            <Route
+              path="projects/:projectId/tasks/:taskId/update"
+              element={<UpdateTaskPage />}
+            />
+            <Route
+              path="projects/:projectId/activity"
+              element={<ActivityPage />}
+            />
           </Route>
         </Route>
       </Route>
@@ -81,7 +103,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <React.StrictMode>
-      <Toaster richColors position='top-center' />
+      <Toaster richColors position="top-center" />
       <RouterProvider router={router} />
     </React.StrictMode>
   </Provider>

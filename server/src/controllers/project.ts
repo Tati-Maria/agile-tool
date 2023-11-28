@@ -22,7 +22,6 @@ const createProject = asyncHandler(async (req: IUserRequest, res: Response) => {
     isActive,
     logo,
     sprints,
-    attachments,
     activityLog,
     tasks,
   } = req.body;
@@ -42,7 +41,6 @@ const createProject = asyncHandler(async (req: IUserRequest, res: Response) => {
     team: [req.user?._id],
     owner: req.user?._id,
     sprints: sprints || [],
-    attachments: attachments || [],
     activityLog: activityLog || [],
     tasks: tasks || [],
   });
@@ -99,7 +97,6 @@ const getProjects = asyncHandler(async (req: IUserRequest, res: Response) => {
     .populate('team', 'name avatar role email')
     .populate('owner', 'name avatar role email')
     .populate('sprints', 'name startDate endDate')
-    .populate('attachments', 'name url')
     .populate('tasks', 'name description status')
     .exec();
 
@@ -114,7 +111,6 @@ const getProject = asyncHandler(async (req: Request, res: Response) => {
     .populate('team', 'name avatar role email')
     .populate('owner', 'name avatar role email')
     .populate('sprints', 'name startDate endDate')
-    .populate('attachments', 'name url')
     .populate('tasks', 'name description status')
     .exec();
 
@@ -310,7 +306,11 @@ const projectActivityLog = asyncHandler(async(req: Request, res: Response) => {
     res.status(404);
     throw new Error('Project not found');
   } else {
-    const activityLog = await Activity.find({projectId: project._id}).exec();
+    const activityLog = await Activity.find({projectId: project._id})
+    .populate('user', 'name avatar role email')
+    .populate('entityId', 'name')
+    
+    .sort({createdAt: -1})
     res.status(200).json(activityLog);
   }
 })

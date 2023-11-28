@@ -45,7 +45,7 @@ const ProjectTasksPage = () => {
 
 
   return (
-    <section className="h-full py-5">
+    <section className="h-full">
       <div className="flex flex-col space-y-2 sm:justify-between sm:flex-row sm:space-y-0 sm:items-center">
         <div className="flex flex-col items-start space-y-3">
           <Heading className="text-xl md:text-2xl" level={2}>

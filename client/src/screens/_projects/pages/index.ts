@@ -10,5 +10,4 @@ export {default as UpdateTaskPage} from "./update-task";
 export {default as ProjectTasksPage} from "./project-tasks";
 export {default as UpdateSprintPage} from "./update-sprint";
 export {default as SprintByIdPage} from "./sprint";
-export {default as FilesPage} from "./files";
 export {default as ActivityPage} from "./activity";

@@ -22,11 +22,6 @@ const ProjectIdLayout = () => {
             icon: "/icons/done.png"
         },
         {
-            href: `/projects/${projectId}/files`,
-            label: 'Files',
-            icon: "/icons/folder.png",
-        },
-        {
             href: `/projects/${projectId}/activity`,
             label: 'Activity',
             icon: "/icons/activity.png"
@@ -49,7 +44,7 @@ const ProjectIdLayout = () => {
             routes={routes}
             projectId={projectId}
             />
-            <main className="max-w-[1450px] mx-auto px-4 pt-10 lg:pt-0 h-full">
+            <main className="max-w-[1450px] mx-auto px-4 py-5 h-full">
                 <Outlet />
             </main>
         </div>

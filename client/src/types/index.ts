@@ -55,10 +55,12 @@ export type Task = {
 
 export type Attachment = {
     _id: string;
-    title: string;
-    description: string;
+    name: string;
+    description: string | null;
     url: string;
-    project: Project;
+    type: "Image" | "File" | "Link";
+    projectId: Project;
+    createdBy: User;
     createdAt: string;
     updatedAt: string;
 }

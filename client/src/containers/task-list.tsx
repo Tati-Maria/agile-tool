@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { DragDropContext, Droppable, DropResult, Draggable } from "@hello-pangea/dnd";
 import { useUpdateTaskStatusMutation } from "@/store/slices/task-api-slice";
 import { toast } from "sonner";
-import { cn, taskStatusColor } from "@/lib/utils";
-import { GoDotFill } from 'react-icons/go';
+import { cn} from "@/lib/utils";
 
 import TaskCard from "@/components/cards/task-card";
 import { Heading } from "@/components/shared";
@@ -59,22 +58,23 @@ const TaskList = ({tasks}: TaskListProps) => {
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 mt-10 rounded-md">
         {statuses.map((status, index) => (
           <div key={index}>
-            <Heading
-              className={cn(
-                'w-max mb-5 py-0.5 rounded-full px-3 text-sm flex-center space-x-1',
-                taskStatusColor(status)
-              )}
-              level={3}
-            >
-              <GoDotFill /> <span>{status}</span>
-            </Heading>
+            <div className="border p-3 rounded-xl mb-4">
+              <Heading
+                className={cn(
+                  'text-lg font-extrabold'
+                )}
+                level={3}
+              >
+                {status}
+              </Heading>
+            </div>
             <Droppable droppableId={`${index}`}>
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   className={cn(
-                    'rounded-md p-4 border-2 border-dashed border-gray-300 dark:border-gray-700',
+                    'rounded-md',
                     snapshot.isDraggingOver &&
                       'border-2 border-dashed border-gray-300'
                   )}
@@ -93,7 +93,7 @@ const TaskList = ({tasks}: TaskListProps) => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             className={cn(
-                              'rounded-md p-4 mb-2 bg-slate-50 dark:bg-slate-800',
+                              'rounded-md mb-2 ',
                               snapshot.isDragging && 'shadow-lg'
                             )}
                           >
