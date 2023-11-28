@@ -51,7 +51,6 @@ const ProjectIdLayout = () => {
             />
             <main className="max-w-[1450px] mx-auto px-4 pt-10 lg:pt-0 h-full">
                 <Outlet />
-                {/* Project Activity Logs */}
             </main>
         </div>
     )

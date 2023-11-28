@@ -89,4 +89,5 @@ export const {
     useRemoveUserFromProjectMutation,
     useMakeProjectActiveOrInactiveMutation,
     useGenerateAccessCodeMutation,
+    useGetProjectActivityLogQuery,
 } = projectApiSlice;

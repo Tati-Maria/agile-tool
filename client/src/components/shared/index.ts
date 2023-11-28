@@ -13,3 +13,4 @@ export {default as SprintList} from './sprint-list';
 export {default as Actions} from './actions';
 export {default as UserDropDownMenu} from './user-dropdown-menu';
 export {default as TooltipHover} from './tooltip-hover';
+export {default as UserAvatar} from './user-avatar';
