@@ -33,6 +33,7 @@ const createSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
             details: `created a new sprint: ${sprint.name}`,
             entity: 'sprint',
             entityId: sprint._id,
+            projectId: project,
         })
 
         res.status(201).json({
@@ -73,6 +74,7 @@ const updateSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
                 details: `updated sprint: ${updatedSprint?.name}`,
                 entity: 'sprint',
                 entityId: updatedSprint?._id,
+                projectId: updatedSprint?.project,
             })
 
             res.status(200).json({
@@ -100,6 +102,7 @@ const deleteSprint = asyncHandler(async (req: IUserRequest, res: Response) => {
         details: `deleted sprint: ${sprint?.name}`,
         entity: 'sprint',
         entityId: sprint?._id,
+        projectId: sprint?.project,
     });
 
     res.status(200).json({

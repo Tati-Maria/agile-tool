@@ -15,7 +15,7 @@ interface TaskListProps {
 
 const TaskList = ({tasks}: TaskListProps) => {
     const [updateTaskStatus] = useUpdateTaskStatusMutation();
-    const statuses = ['To Do', 'In Progress', 'Quality Check', 'Done'];
+    const statuses = ["Backlog", "To Do", "In Progress", "Testing", "Done", "Paused"];
 
     useEffect(() => {
         if (tasks) {

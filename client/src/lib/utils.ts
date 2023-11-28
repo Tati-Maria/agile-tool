@@ -119,14 +119,18 @@ export function getTaskPriorityColor(priority: string) {
 
 export function taskStatusColor(status: string) {
   switch(status) {
+    case "Backlog":
+      return 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
     case 'To Do':
       return 'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200';
     case 'In Progress':
       return 'bg-violet-200 text-violet-800 dark:bg-violet-800 dark:text-violet-200';
-    case 'Quality Check':
+    case 'Testing':
       return 'bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200';
     case 'Done':
-      return 'bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200'; 
+      return 'bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200';
+    case 'Paused':
+      return 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200'; 
     default:
       return 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
   }
