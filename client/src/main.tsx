@@ -30,7 +30,6 @@ import {
   UpdateTaskPage,
   SprintByIdPage,
   ProjectSettingsPage,
-  ActivityPage,
 } from '@/screens/_projects/pages';
 import NotFound from '@/errors/not-found.tsx';
 import ErrorLog from '@/errors/error-page.tsx';
@@ -87,10 +86,6 @@ const router = createBrowserRouter(
             <Route
               path="projects/:projectId/tasks/:taskId/update"
               element={<UpdateTaskPage />}
-            />
-            <Route
-              path="projects/:projectId/activity"
-              element={<ActivityPage />}
             />
           </Route>
         </Route>

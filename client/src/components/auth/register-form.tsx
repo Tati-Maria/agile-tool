@@ -123,7 +123,7 @@ const RegisterForm = () => {
                       placeholder="Enter your password"
                     />
                   </FormControl>
-                  <FormDescription className='text-xs'>
+                  <FormDescription className='text-xs text-muted'>
                     Password must be at least 6 characters long
                   </FormDescription>
                   <FormMessage />

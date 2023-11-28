@@ -184,6 +184,10 @@ const getTasks = asyncHandler(async (req: Request, res: Response) => {
       path: 'assignedTo',
       select: 'name email avatar role',
     })
+    .populate({
+      path: 'createdBy',
+      select: 'name email avatar role',
+    })
     .sort({ status: 1, priority: 1, dueDate: 1 })
     .exec();
 
@@ -206,6 +210,18 @@ const getTaskById = asyncHandler(async (req: Request, res: Response) => {
     .populate({
       path: 'assignedTo',
       select: 'name email avatar role',
+    })
+    .populate({
+      path: 'createdBy',
+      select: 'name email avatar role',
+    }).
+    populate({
+      path: 'comments',
+      select: 'content author task',
+      populate: {
+        path: 'author',
+        select: 'name email avatar role',
+      },
     })
     .exec();
   if (!task) {

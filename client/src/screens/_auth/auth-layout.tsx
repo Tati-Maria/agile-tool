@@ -9,7 +9,7 @@ const AuthLayout = () => {
         className="absolute inset-0 h-full w-full object-cover"
       />{' '}
       {/* Background image */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>{' '}
+      <div className="absolute inset-0 bg-black opacity-20"></div>{' '}
       {/* Background overlay */}
       <div
         className="relative z-10 flex flex-col items-center justify-center h-full"

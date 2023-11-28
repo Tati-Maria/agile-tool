@@ -14,7 +14,7 @@ const UserAvatar = ({
   ...rest
 }: UserAvatarProps) => {
   return (
-    <Avatar className={cn(className)} {...rest}>
+    <Avatar className={cn(className,"rounded-full")} {...rest}>
       <AvatarImage src={avatarUrl} alt={name} />
       <AvatarFallback>
         {name.slice(0, 2).toUpperCase()}

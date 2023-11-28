@@ -51,10 +51,6 @@ export const taskStatuses = [
         label: "Backlog"
     },
     {
-        value: "To Do",
-        label: "To Do"
-    },
-    {
         value: "In Progress",
         label: "In Progress"
     },
@@ -66,10 +62,6 @@ export const taskStatuses = [
         value: "Done",
         label: "Done"
     },
-    {
-        value: "Paused",
-        label: "Paused"
-    }
 ];
 
 export const taskPriorities = [

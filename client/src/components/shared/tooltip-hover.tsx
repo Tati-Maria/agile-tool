@@ -11,7 +11,7 @@ interface TooltipHoverProps {
   text: string;
   children: React.ReactNode;
   asChild?: boolean;
-variant?: "primary" | "secondary" | "destructive" | "link" | "brand" | "primary" | "outline";
+variant?: "primary" | "secondary" | "destructive" | "link" | "brand" | "primary" | "outline" | "ghost";
 }
 
 const TooltipHover = ({ text, children, asChild, variant }: TooltipHoverProps) => {

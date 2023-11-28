@@ -29,7 +29,7 @@ const FileUploader = ({ mediaUrl, fielChange }: FileUploaderProps) => {
       'image/*': ['.png', '.gif', '.jpeg', '.jpg', '.svg', '.webp'],
       'video/*': ['.mp4', '.webm'],
       'audio/*': ['.mp3', '.wav'],
-      'application/pdf': ['.pdf', '.PDF', ".doc", ".docx", ".txt"],
+      'application/pdf': ['.pdf', '.PDF', '.doc', '.docx', '.txt'],
     },
   });
 
@@ -37,24 +37,32 @@ const FileUploader = ({ mediaUrl, fielChange }: FileUploaderProps) => {
     <div className="flex space-x-2 items-center w-full">
       <div
         {...getRootProps()}
-        className="w-20 h-20 cursor-pointer rounded-full flex items-center justify-center"
+        className="w-20 h-20 cursor-pointer rounded-full flex items-center justify-center border-2 border-gray-200"
       >
         <input className="cursor-pointer" {...getInputProps()} />
-        {isDragActive && <Icons.user className="w-10 h-10 text-blue-800" />}
-        {!isDragActive && (
+        {preview ? (
           <img
-            src={preview || '/images/placehold-avatar.jpg'}
-            alt="avatar"
-            className="w-20 h-20 rounded-full object-cover"
+            src={preview}
+            alt="preview"
+            className="w-full h-full object-cover rounded-full"
           />
+        ) : (
+          <Icons.user className="w-10 h-10 text-gray-400" />
         )}
       </div>
-      <div>
-        <Button className='h-7' type="button" variant={'outline'} size={'sm'}>
-          <Typography>Upload</Typography>
-        </Button>
-        <Typography className='text-slate-500'>
-          {file.length > 0 ? file[0].name : 'No file selected'}
+      <div className="flex flex-col space-y-1">
+        <Typography className="text-sm font-semibold">
+          {isDragActive
+            ? 'Drop the files here ...'
+            : 'Drag and drop file here'}
+        </Typography>
+        <Typography className="text-xs">
+          {isDragActive
+            ? 'Drop the file here ...'
+            : 'Drag and drop file here or click to select files'}
+        </Typography>
+        <Typography className="text-xs">
+          {file.length > 0 && `${file.length} files selected`}
         </Typography>
       </div>
     </div>

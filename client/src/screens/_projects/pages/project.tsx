@@ -12,7 +12,6 @@ import { Link, useParams } from "react-router-dom"
 const ProjectPage = () => {
   const {projectId} = useParams<{projectId: string}>()
   const {data: project, isLoading} = useGetProjectQuery(projectId, {skip: !projectId});
-  console.log(project)
 
   if(isLoading) {
     return (

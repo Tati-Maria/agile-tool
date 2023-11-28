@@ -188,6 +188,7 @@ const addTaskToSprint = asyncHandler(async (req: IUserRequest, res: Response) =>
                         details:`${tasksToAdd.length} tasks were added to sprint: ${sprint.name}`,
                         entity: 'sprint',
                         entityId: sprint._id,
+                        projectId: sprint.project,
                     });
 
                     res.status(200).json({
@@ -230,6 +231,7 @@ const removeTaskFromSprint = asyncHandler(async (req: IUserRequest, res: Respons
             details: `task ${taskExists.name} was removed from sprint: ${sprint.name}`,
             entity: 'sprint',
             entityId: sprint._id,
+            projectId: sprint.project,
         });
 
         await sprint.save();

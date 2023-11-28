@@ -10,11 +10,11 @@ import { useSetDocumentTitle } from "@/hooks/user-document-title";
 
 
 const MembersPage = () => {
-    useSetDocumentTitle("Members");
-    const {user} = useAuth();
-    const { projectId } = useParams<{projectId: string}>();
-    const { data: project, isLoading } = useGetProjectQuery(projectId, {skip: !projectId});
-    const projectMembers = project?.team
+  const {user} = useAuth();
+  const { projectId } = useParams<{projectId: string}>();
+  const { data: project, isLoading } = useGetProjectQuery(projectId, {skip: !projectId});
+  const projectMembers = project?.team
+  useSetDocumentTitle(`${project?.name} Members`);
     
 
 

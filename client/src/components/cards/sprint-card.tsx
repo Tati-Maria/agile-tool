@@ -14,7 +14,8 @@ import { getSprintStatus } from '@/lib/utils';
 import { Sprint } from '@/types';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import TaskSprintCArd from './task-sprint';
+import TaskSprintCArd from '@/components/cards/task-sprint';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface SprintCardProps {
   sprint: Sprint;
@@ -45,7 +46,9 @@ const SprintCard = ({ sprint }: SprintCardProps) => {
       <div className="flex-col-center border p-4 rounded-sm border-t-4">
         <div className="space-y-2">
           <Heading className="text-xl hover:link-text w-max" level={3}>
-            <Link to={`/sprints/${sprint._id}`}>{sprint.name}</Link>
+            <Link to={`/projects/${sprint.project._id}/sprints/${sprint._id}`}>
+              {sprint.name}
+            </Link>
           </Heading>
           <>
             <Typography className="text-xs text-muted-foreground">
@@ -94,26 +97,36 @@ const SprintCard = ({ sprint }: SprintCardProps) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col space-y-6 mb-4 mt-7 h-full">
-          {sprint.tasks?.map(task => (
-            <TaskSprintCArd sprint={sprint} task={task} key={task._id} />
-          ))}
-          {sprint.tasks?.length === 0 && (
-            <EmptyState
-              text={'No tasks'}
-              desc={'Add tasks to the sprint'}
-              actionButton={
-                <Button
-                  onClick={() => setIsModalOpen(true)}
-                  variant={'primary'}
-                  size={'sm'}
-                >
-                  Add Task
-                </Button>
-              }
-            />
-          )}
-        </div>
+        <ScrollArea
+          className=" mt-4 h-full"
+          style={{
+            maxHeight:
+              location.pathname === `/projects/${sprint.project._id}/sprints`
+                ? 300
+                : '100%',
+          }}
+        >
+          <div className={cn('flex flex-col space-y-6 mb-4 mt-7 h-full p-2', location.pathname === `/projects/${sprint.project._id}/sprints/${sprint._id}` && "grid grid-cols-2 space-y-0 gap-7")}>
+            {sprint.tasks?.map(task => (
+              <TaskSprintCArd sprint={sprint} task={task} key={task._id} />
+            ))}
+            {sprint.tasks?.length === 0 && (
+              <EmptyState
+                text={'No tasks'}
+                desc={'Add tasks to the sprint'}
+                actionButton={
+                  <Button
+                    onClick={() => setIsModalOpen(true)}
+                    variant={'primary'}
+                    size={'sm'}
+                  >
+                    Add Task
+                  </Button>
+                }
+              />
+            )}
+          </div>
+        </ScrollArea>
         {sprint.tasks?.length > 0 && (
           <div className="mt-4">
             <Button

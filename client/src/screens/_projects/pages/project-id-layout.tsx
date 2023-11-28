@@ -1,9 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {ProjectHeader} from "@/components/shared";
+import { useSetDocumentTitle } from "@/hooks/user-document-title";
 
 const ProjectIdLayout = () => {
     const { projectId } = useParams<{projectId: string}>();
+    useSetDocumentTitle(`Project`);
 
     const routes = [
         {

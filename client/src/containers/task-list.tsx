@@ -1,5 +1,4 @@
 import { Task } from "@/types";
-import { useEffect } from "react";
 import { DragDropContext, Droppable, DropResult, Draggable } from "@hello-pangea/dnd";
 import { useUpdateTaskStatusMutation } from "@/store/slices/task-api-slice";
 import { toast } from "sonner";
@@ -14,13 +13,8 @@ interface TaskListProps {
 
 const TaskList = ({tasks}: TaskListProps) => {
     const [updateTaskStatus] = useUpdateTaskStatusMutation();
-    const statuses = ["Backlog", "To Do", "In Progress", "Testing", "Done", "Paused"];
+    const statuses = ["Backlog", "In Progress", "Testing", "Done"];
 
-    useEffect(() => {
-        if (tasks) {
-            tasks.sort((a, b) => a.status.localeCompare(b.status));
-        }
-    }, [tasks]);
 
     async function handleOnDragEnd(result: DropResult) {
       const { destination, source, draggableId } = result;
@@ -48,7 +42,6 @@ const TaskList = ({tasks}: TaskListProps) => {
         toast.success(res.message);
       } catch (error) {
         const err = error as Error;
-        console.log(err.message);
         toast.error(err.message);
       }
     }
@@ -57,8 +50,8 @@ const TaskList = ({tasks}: TaskListProps) => {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 mt-10 rounded-md">
         {statuses.map((status, index) => (
-          <div key={index}>
-            <div className="border p-3 rounded-xl mb-4">
+          <div className="bg-muted rounded-xl p-2" key={index}>
+            <div className="border p-3 border-white rounded-xl mb-4">
               <Heading
                 className={cn(
                   'text-lg font-extrabold'
@@ -76,7 +69,7 @@ const TaskList = ({tasks}: TaskListProps) => {
                   className={cn(
                     'rounded-md',
                     snapshot.isDraggingOver &&
-                      'border-2 border-dashed border-gray-300'
+                      'border-2 border-dashed border-teal-500'
                   )}
                 >
                   {tasks
@@ -93,8 +86,8 @@ const TaskList = ({tasks}: TaskListProps) => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             className={cn(
-                              'rounded-md mb-2 ',
-                              snapshot.isDragging && 'shadow-lg'
+                              'rounded-md mb-2',
+                              snapshot.isDragging && 'border border-teal-500'
                             )}
                           >
                             <TaskCard task={task} />

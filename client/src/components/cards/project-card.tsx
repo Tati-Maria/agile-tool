@@ -12,7 +12,7 @@ const ProjectCard = ({project}: ProjectCardProps) => {
   return (
     <div className="flex flex-col space-y-2 border rounded-md w-max py-3 px-5">
       <Heading level={3}>{project?.name}</Heading>
-      <Typography className="text-slate-600">{project.description}</Typography>
+      <Typography className="text-slate-600 truncate w-max">{project.description}</Typography>
       <div className="flex-between">
         <div className="flex-col flex space-y-1">
           <small className="text-muted-foreground uppercase text-[11px]">

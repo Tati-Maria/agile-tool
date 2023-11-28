@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TaskListForm } from "../forms/task-list-form";
 import { TaskToSprintFormData } from "@/lib/validation/task-to-sprint";
 import { useGetTasksQuery } from "@/store/slices/task-api-slice";
+import { Task } from "@/types";
 
 interface AddTaskToSprintModalProps {
     projectId: string;
@@ -21,6 +22,22 @@ const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSp
     const sprintTasks = sprint?.tasks;
     const [addTaskToSprint] = useAddTaskToSprintMutation();
     const {data: tasks} = useGetTasksQuery(projectId, {skip: !projectId});
+
+    /*
+    It should only show tasks that are not in the sprint
+    also tasks that have due dates that are within the sprint start and end date
+     */
+   const filterTasks = tasks?.filter(task => {
+        const taskInSprint = sprintTasks?.find(sprintTask => sprintTask._id === task._id);
+        if(taskInSprint) return false;
+        const tasksWithDueDate = tasks?.filter(task => task.dueDate);
+        if(!tasksWithDueDate) return false;
+        const taskDueDate = new Date(task.dueDate);
+        const sprintStartDate = new Date(sprint?.startDate as string);
+        const sprintEndDate = new Date(sprint?.endDate as string);
+        if(taskDueDate >= sprintStartDate && taskDueDate <= sprintEndDate) return true;
+        return false;
+   });
 
     async function onSubmit(values: TaskToSprintFormData) {
         try {
@@ -49,7 +66,7 @@ const AddTaskToSprintModal = ({projectId, sprintId, isOpen, onClose}:AddTaskToSp
         <TaskListForm 
         onSubmit={onSubmit}
         values={sprintTasks}
-        tasks={tasks || []}
+        tasks={filterTasks as Task[]}
         />
       </ScrollArea>
     </Modal>

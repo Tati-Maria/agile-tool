@@ -8,6 +8,10 @@ import { useSetDocumentTitle } from "@/hooks/user-document-title";
 import { Task } from "@/lib/validation/task";
 import { toast } from "sonner";
 
+const convertStringToArr = (str: string) => {
+  return str.split(',').map(item => item.trim());
+};
+
 const UpdateTask = () => {
     const { taskId } = useParams<{taskId: string}>();
     const {data: task, isLoading} = useGetTaskByIdQuery(taskId as string, {skip: !taskId});
@@ -30,6 +34,9 @@ const UpdateTask = () => {
                     status: values.status,
                     dueDate: values.dueDate,
                     assignedTo: values.assignedTo,
+                    tags: values.tags ? convertStringToArr(values.tags) : [],
+                    type: values.type,
+                    
                 }
             }).unwrap();
             toast.success(res.message);

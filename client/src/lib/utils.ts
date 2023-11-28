@@ -117,6 +117,22 @@ export function getTaskPriorityColor(priority: string) {
   }
 }
 
+export function getTaskPriorityTextColor(priority: string) {
+  switch(priority) {
+    case 'Low':
+      return 'text-green-500';
+    case 'Normal':
+      return 'text-yellow-500';
+    case 'High':
+      return 'text-red-500';
+    case "Urgent":
+      return 'text-red-500';
+    default:
+      return 'text-green-500';
+  }
+
+}
+
 export function taskStatusColor(status: string) {
   switch(status) {
     case "Backlog":
