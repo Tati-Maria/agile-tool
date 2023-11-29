@@ -1,10 +1,12 @@
 import UserCard from "@/components/cards/user-card";
 import ProjectCard from "@/components/project-table/project-card";
+import ProjectProgress from "@/components/project-table/project-progress";
 import { Heading, Loading, Typography } from "@/components/shared";
 import EmptyState from "@/components/shared/empty-state";
 import ProjectIntro from "@/components/shared/project-intro";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetProjectQuery } from "@/store/slices/project-api-slice"
+import { useGetTasksQuery } from "@/store/slices/task-api-slice";
 import { User } from "@/types";
 import { format } from "date-fns";
 import { Link, useParams } from "react-router-dom"
@@ -12,6 +14,7 @@ import { Link, useParams } from "react-router-dom"
 const ProjectPage = () => {
   const {projectId} = useParams<{projectId: string}>()
   const {data: project, isLoading} = useGetProjectQuery(projectId, {skip: !projectId});
+  const {data: tasks} = useGetTasksQuery(projectId as string, {skip: !projectId});
 
   if(isLoading) {
     return (
@@ -57,22 +60,22 @@ const ProjectPage = () => {
           <ProjectCard
             text="Total Tasks"
             subtext="+2 this week"
-            numberOfTasks={50}
+            numberOfTasks={tasks?.length || 0}
           />
           <ProjectCard
             text="Completed Tasks"
-            subtext="+1 this week"
-            numberOfTasks={12}
+            subtext="+2 this week"
+            numberOfTasks={tasks?.filter(task => task.status === 'Done').length || 0}
           />
           <ProjectCard
             text="Overdue Tasks"
-            subtext="+1 this week"
-            numberOfTasks={3}
+            subtext="No overdue tasks"
+            numberOfTasks={tasks?.filter(task => task.dueDate && new Date(task.dueDate) < new Date() && task.status !== 'Done').length || 0}
           />
           <ProjectCard
             text="To Do Tasks"
             subtext="+12 this week"
-            numberOfTasks={35}
+            numberOfTasks={tasks?.filter(task => task.status === 'Backlog').length || 0}
           />
         </div>
         <div className=" bg-[#58ea81] flex flex-col justify-around rounded-2xl px-8 py-3 text-black">
@@ -86,9 +89,9 @@ const ProjectPage = () => {
             </Link>
           </Typography>
         </div>
-        {/* <div>
+        <div>
           <ProjectProgress projectId={projectId} />
-        </div> */}
+        </div>
       </article>
       <div className="py-5">
         <div className="flex-between">

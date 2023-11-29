@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Link } from 'react-router-dom';
 
 import { cn } from '@/lib/utils';
 
@@ -14,12 +15,12 @@ const UserAvatar = ({
   ...rest
 }: UserAvatarProps) => {
   return (
-    <Avatar className={cn(className,"rounded-full")} {...rest}>
-      <AvatarImage src={avatarUrl} alt={name} />
-      <AvatarFallback>
-        {name?.slice(0, 2).toUpperCase()}
-      </AvatarFallback>
-    </Avatar>
+    <Link to="/profile">
+      <Avatar className={cn(className, 'rounded-full')} {...rest}>
+        <AvatarImage src={avatarUrl} alt={name} />
+        <AvatarFallback>{name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+      </Avatar>
+    </Link>
   );
 };
 

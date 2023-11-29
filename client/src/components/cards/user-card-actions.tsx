@@ -59,28 +59,30 @@ const UserCardActions = ({
             <Typography>{isCopied ? 'Copied!' : 'Copy Email'}</Typography>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         {user.role === 'Product Owner' && (
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <DropdownMenuItem>
-                <ArrowBigRight className="mr-2 h-4 w-4" />
-                <Typography>Manage</Typography>
-              </DropdownMenuItem>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
                 <DropdownMenuItem>
-                  <Plus className="mr-2 h-4 w-4" />
-                  <Typography>Assign Task</Typography>
+                  <ArrowBigRight className="mr-2 h-4 w-4" />
+                  <Typography>Manage</Typography>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <XCircle className="mr-2 h-4 w-4" />
-                  <Typography>Remove User</Typography>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>
+                    <Plus className="mr-2 h-4 w-4" />
+                    <Typography>Assign Task</Typography>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <XCircle className="mr-2 h-4 w-4" />
+                    <Typography>Remove User</Typography>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -12,7 +12,7 @@ import {
 import { store } from '@/store/index.ts';
 import { Provider } from 'react-redux';
 import HomeLayout from '@/screens/_root/home-layout';
-import { Home } from '@/screens/_root/pages';
+import { Home, ProfilePage } from '@/screens/_root/pages';
 import AuthLayout from '@/screens/_auth/auth-layout.tsx';
 import { ProtectedPages } from '@/components/shared/private-route';
 import { ForgotPassword, Login, Register } from '@/screens/_auth/pages';
@@ -39,6 +39,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route path="" element={<HomeLayout />}>
         <Route index element={<Home />} />
+        <Route path="profile" element={<ProfilePage />} />
       </Route>
       <Route path="" element={<AuthLayout />}>
         <Route path="login" element={<Login />} />

@@ -8,18 +8,18 @@ import { IUserRequest } from 'types/user-interface';
 // @access Private
 
 const getUserProfile = asyncHandler(async (req: IUserRequest, res: Response) => {
-    const user = await User.findById(req.user?._id).exec();
+    const user = await User.findById(req.user?._id)
+    .select('-password')
+    .populate("projects", "name description")
+    .populate("tasks", "name description")
+    .populate("comments", "text")
+    .exec();
+
     if(!user) {
         res.status(404);
         throw new Error('User not found');
     } else {
-        res.status(200).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            avatar: user.avatar,
-            role: user.role,
-        });
+        res.status(200).json(user);
     }
 });
 
