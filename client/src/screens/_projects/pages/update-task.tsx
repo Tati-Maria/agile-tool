@@ -40,7 +40,7 @@ const UpdateTask = () => {
                 }
             }).unwrap();
             toast.success(res.message);
-            navigate(`/tasks/${task?._id}`);
+            navigate(`/projects/${projectId}/tasks/${taskId}`);
         } catch (error) {
             const err = error as {message: string};
             toast.error(err.message);

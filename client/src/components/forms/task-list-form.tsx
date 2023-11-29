@@ -96,7 +96,7 @@ export const TaskListForm = ({
           )}
         />
         <Button
-          disabled={form.formState.isSubmitting}
+          disabled={form.formState.isSubmitting || !form.formState.isValid}
           type="submit"
           variant="brand"
           size="sm"

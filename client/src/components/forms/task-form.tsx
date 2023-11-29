@@ -52,7 +52,7 @@ export const TaskForm = ({
       priority: defaultValues?.priority ?? 'Normal',
       assignedTo: undefined || defaultValues?.assignedTo._id,
       dueDate: new Date(defaultValues?.dueDate ?? Date.now()) ?? undefined,
-      tags: defaultValues?.tags ?? [],
+      tags: defaultValues?.tags.join(', ') ?? '',
       type: defaultValues?.type ?? 'Bug',
     },
   });

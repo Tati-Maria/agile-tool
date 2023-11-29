@@ -39,11 +39,15 @@ const TaskSprintCArd = ({ task, sprint }: TaskSprintCardProps) => {
         >
           <span>{task.status}</span>
         </div>
-        <UserAvatar
-          avatarUrl={task.assignedTo.avatar}
-          name={task.assignedTo.name}
-          className="w-6 h-6"
-        />
+        {task.assignedTo ? (
+          <UserAvatar
+            avatarUrl={task.assignedTo.avatar}
+            name={task.assignedTo.name}
+            className="w-6 h-6"
+          />
+        ) : (
+          <span className="text-xs">Unassigned</span>
+        )}
       </div>
     </li>
   );
