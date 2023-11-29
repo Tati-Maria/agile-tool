@@ -39,7 +39,6 @@ const Task = () => {
     skip: !taskId
   });
 
-  console.log(comments);
   useSetDocumentTitle(`${task?.name}`);
 
   async function handleDeleteTask() {

@@ -28,18 +28,16 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
 
   const handleUpdateComment = async () => {
     try {
-      const res = await updateComment({
+      await updateComment({
         id: comment._id,
         body: {
           content,
-        }
+        },
       }).unwrap();
-      console.log(res);
       setIsEditing(false);
       toast.success('Comment updated successfully');
     } catch (error) {
       const err = error as Error;
-      console.log(err.message);
       toast.error(err.message);
     }
   };
@@ -57,20 +55,20 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
   };
 
   return (
-    <div>
+    <div className="border-b pb-2">
       <div className="flex items-center space-x-2">
         <Avatar>
           <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
           <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
         </Avatar>
-        <div className=''>
+        <div className="">
           <Typography className="text-sm">{comment.author.name}</Typography>
           <Typography className="text-muted-foreground text-xs">
             {format(new Date(comment.createdAt), 'dd MMM yyyy hh:mm a')}
           </Typography>
         </div>
       </div>
-      <div className="mt-2">
+      <div className="mt-4">
         {isEditing ? (
           <Textarea
             rows={3}
@@ -89,6 +87,11 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
       </div>
       {isOwner && (
         <div className="flex justify-end mt-2 items-center space-x-3">
+          {isEditing && (
+            <Button variant={'link'} onClick={() => setIsEditing(!isEditing)}>
+              Cancel
+            </Button>
+          )}
           <Button
             variant={'primary'}
             className="text-muted-foreground hover:text-muted-foreground"
@@ -110,37 +113,37 @@ export const CommentCard = ({ comment }: CommentCardProps) => {
             disabled={isUpdating || isDeleting}
             className="text-muted-foreground hover:text-muted-foreground"
             onClick={() => {
-              toast.custom((t) => (
-                <div
-                  className="flex flex-col space-y-2 p-2 bg-card border rounded-md shadow-md"
-                  style={{ minWidth: '300px' }}
-                >
-                  <p>
-                    Are you sure you want to delete this comment? This action
-                    cannot be undone.
-                  </p>
-                  <div className="flex justify-end items-center space-x-4">
-                    <Button
-                    onClick={() => toast.dismiss(t)}
-                    size={"sm"}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant={'destructive'}
-                      size={"sm"}
-                      onClick={() => {
-                        handleDeleteComment();
-                        toast.dismiss(t);
-                      }}
-                    >
-                      Delete
-                    </Button>
+              toast.custom(
+                t => (
+                  <div
+                    className="flex flex-col space-y-2 p-2 bg-card border rounded-md shadow-md"
+                    style={{ minWidth: '300px' }}
+                  >
+                    <p>
+                      Are you sure you want to delete this comment? This action
+                      cannot be undone.
+                    </p>
+                    <div className="flex justify-end items-center space-x-4">
+                      <Button onClick={() => toast.dismiss(t)} size={'sm'}>
+                        Cancel
+                      </Button>
+                      <Button
+                        variant={'destructive'}
+                        size={'sm'}
+                        onClick={() => {
+                          handleDeleteComment();
+                          toast.dismiss(t);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ), {
-                duration: 10000,
-              })
+                ),
+                {
+                  duration: 10000,
+                }
+              );
             }}
           >
             <RiDeleteBinLine size={18} />
